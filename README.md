@@ -2,16 +2,16 @@
 
 # 🦅 Kujto
 
-**AI-ja e parë shqiptare e memories për iOS. Portative, dygjuhëshe, open source.**
-**The first Albanian iOS memory AI. Portable, bilingual, open source.**
+**AI-ja e parë shqiptare e memories për dev iOS. E versionuar, dygjuhëshe, e gjallë.**
+**The first Albanian AI memory base for iOS developers. Versioned, bilingual, alive.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Made in Albania](https://img.shields.io/badge/Made%20in-Albania%20🇦🇱-red)](https://github.com/peterdsp/kujto)
-[![iOS](https://img.shields.io/badge/iOS-Xcode%2015%2B-blue?logo=apple)](https://developer.apple.com/xcode/)
+[![Focus](https://img.shields.io/badge/Focus-iOS%20first-blue?logo=apple)](memory/domains/ios/)
 [![Agents](https://img.shields.io/badge/Agents-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Copilot-purple)](AGENTS.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Quickstart](#quickstart) · [Memory](#memory) · [Simulator](#simulator)
+[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Memory](#memory) · [Tools](#tools) · [Roadmap](#roadmap)
 
 </div>
 
@@ -19,12 +19,20 @@
 
 ## 🇦🇱 Shqip
 
-**Kujto** ("kujto!" në mënyrën urdhërore) është dy gjëra në një repo:
+**Kujto** ("kujto!" në mënyrën urdhërore) është një **bazë memorie për agjentët AI që punojnë në projekte iOS**. Mban të vërtetën afatgjatë (konventa Swift, modele TCA, rregulla snapshot-esh, higjienë git, stil shkrimi) në Markdown të strukturuar dhe të versionuar, jo në kontekstin e brishtë të një bisede.
 
-1. **Një framework memorie** për agjentët AI (Claude, Codex, Gemini, Copilot), që mban të vërtetën e gjatë në file Markdown të strukturuar dhe të versionuar, jo në kontekstin e brishtë të një bisede.
-2. **Një `simulator.sh` ultra-portativ** për iOS, që ndizet pa konfigurim në çdo repo Xcode. Auto-detekton workspace, scheme, simulator dhe bundle id, ndërton, instalon, hap dhe streamon log-et.
+Fokusi fillestar është **iOS me Claude, Codex, Gemini dhe Copilot**, sepse aty rri vlera më e drejtpërdrejtë: dev iOS i shqipfolur nuk ka pasur kurrë një bazë memorie në gjuhën amtare që agjentët e tij ta lexojnë në çdo sesion.
 
-Pse ekziston: agjentët AI harrojnë. iOS dev-i shqiptar nuk ka pasur kurrë një bazë memorie në gjuhën amtare. Dhe ndezja e një app-i në simulator ka mbetur 4 komanda më shumë nga sa duhet.
+Arkitektura është bërë për t'u zgjeruar (`memory/domains/`), por në fillim po e dërgojmë mirë një fushë të vetme.
+
+Si bonus, repo-ja sjell **`simulator.sh`**, një skript ultra-portativ që ndez çdo projekt Xcode pa konfigurim. Ai është vegla e parë në një familje që do të rritet bashkë me memorien.
+
+### Çfarë merr sot
+
+- **Memory framework dygjuhësh** (shqip dhe anglisht në të njëjtin file), me rregulla bërthamë, konventa iOS dhe workflow.
+- **Adapter për Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** përmes një `AGENTS.md` të vetëm.
+- **`simulator.sh` zero-config** për ndërtim, instalim, ndezje dhe streaming log-esh në çdo projekt iOS Xcode.
+- **`wire.sh`** për lidhjen e Kujto-s në çdo repo me dy komanda.
 
 ### Instalim me një rresht
 
@@ -32,49 +40,44 @@ Pse ekziston: agjentët AI harrojnë. iOS dev-i shqiptar nuk ka pasur kurrë nj�
 curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash
 ```
 
-Ose klono dhe instalo lokal:
+Ose lokalisht:
 
 ```bash
 git clone https://github.com/peterdsp/kujto.git ~/kujto
 cd ~/kujto && ./install.sh
 ```
 
-### Quickstart
-
-Ndez një app iOS pa konfigurim:
+### Quickstart për dev iOS
 
 ```bash
+# 1. Lidh memory-në te projekti yt iOS
 cd path/to/your/ios/project
+~/kujto/wire.sh
+
+# 2. Ndez app-in pa konfigurim
 ~/kujto/simulator.sh
 ```
 
-Lidh memory-në te projekti yt:
-
-```bash
-cd path/to/your/project
-~/kujto/bin/sync/wire.sh
-```
-
-### Çfarë ke pas instalimit
-
-```
-~/kujto/
-├── memory/        bazë memorie dygjuhëshe për agjentët AI
-├── bin/ios/       simulator.sh (zero-config) dhe helpera iOS
-├── bin/sync/      install, wire, auto-pull, auto-push
-└── integrations/  shabllonë për Claude, Codex, Gemini, Copilot, Cursor
-```
+Tani agjentët e tu (Claude, Codex, Gemini, Copilot) e lexojnë `AGENTS.md` dhe e ndjekin `memory/MEMORY.md` ne çdo sesion.
 
 ---
 
 ## 🇬🇧 English
 
-**Kujto** ("remember!" in Albanian, imperative) is two things in one repo:
+**Kujto** ("remember!" in Albanian, imperative) is a **memory base for AI agents working on iOS projects**. It stores long-term truth (Swift conventions, TCA patterns, snapshot rules, git hygiene, writing style) in structured, versioned Markdown, not in the fragile context of a single chat.
 
-1. **A memory framework** for AI agents (Claude, Codex, Gemini, Copilot) that stores long-term truth in structured, versioned Markdown files instead of the fragile context of a single chat.
-2. **An ultra-portable `simulator.sh`** for iOS that boots any Xcode project with zero config. It auto-detects workspace, scheme, simulator, and bundle id, then builds, installs, launches, and streams logs.
+The initial focus is **iOS with Claude, Codex, Gemini, and Copilot**, because that is where the most direct value lives: Albanian-speaking iOS devs never had a native-language memory base their agents could pick up in every session.
 
-Why it exists: AI agents forget. Albanian iOS devs never had a native-language memory base. And booting an app in the simulator still takes 4 commands more than it should.
+The architecture is built to expand (`memory/domains/`), but we are shipping one domain well first.
+
+As a bonus, the repo ships **`simulator.sh`**, an ultra-portable script that boots any Xcode project with zero config. It is the first tool in a family that will grow alongside the memory.
+
+### What you get today
+
+- **Bilingual memory framework** (Albanian and English in the same file), with core rules, iOS conventions, and workflows.
+- **Adapter for Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** through a single `AGENTS.md`.
+- **Zero-config `simulator.sh`** for building, installing, launching, and tailing logs on any iOS Xcode project.
+- **`wire.sh`** to attach Kujto to any repo with two commands.
 
 ### One-line install
 
@@ -82,69 +85,67 @@ Why it exists: AI agents forget. Albanian iOS devs never had a native-language m
 curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash
 ```
 
-Or clone and install locally:
+Or locally:
 
 ```bash
 git clone https://github.com/peterdsp/kujto.git ~/kujto
 cd ~/kujto && ./install.sh
 ```
 
-### Quickstart
-
-Boot an iOS app with zero config:
+### Quickstart for iOS devs
 
 ```bash
+# 1. Wire memory into your iOS project
 cd path/to/your/ios/project
+~/kujto/wire.sh
+
+# 2. Boot the app with zero config
 ~/kujto/simulator.sh
 ```
 
-Wire memory into your project:
-
-```bash
-cd path/to/your/project
-~/kujto/bin/sync/wire.sh
-```
-
-### What you get
-
-```
-~/kujto/
-├── memory/        bilingual memory base for AI agents
-├── bin/ios/       simulator.sh (zero-config) and iOS helpers
-├── bin/sync/      install, wire, auto-pull, auto-push
-└── integrations/  templates for Claude, Codex, Gemini, Copilot, Cursor
-```
+Your agents (Claude, Codex, Gemini, Copilot) now read `AGENTS.md` and follow `memory/MEMORY.md` in every session.
 
 ---
 
-## Quickstart
-
-<table>
-<tr><th>Step</th><th>Hap</th><th>Command</th></tr>
-<tr><td>1. Install</td><td>1. Instalo</td><td><code>curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></td></tr>
-<tr><td>2. Boot an iOS app</td><td>2. Ndez app-in iOS</td><td><code>cd your-ios-project && ~/kujto/simulator.sh</code></td></tr>
-<tr><td>3. Wire memory</td><td>3. Lidh memory-në</td><td><code>~/kujto/bin/sync/wire.sh</code></td></tr>
-</table>
-
 ## Memory
 
-The memory framework lives in [`memory/`](memory/). Read it in this order:
+The memory base is the heart of the project. It lives in [`memory/`](memory/) and follows this reading order:
 
-1. [`AGENTS.md`](AGENTS.md) (top-level rules for every agent, bilingual)
-2. [`memory/MEMORY.md`](memory/MEMORY.md) (the index)
-3. The referenced files only when relevant to the task
+1. [`AGENTS.md`](AGENTS.md) at the root (rules for every agent, bilingual).
+2. [`memory/MEMORY.md`](memory/MEMORY.md) (the index).
+3. Only the referenced files relevant to the task.
 
-Memory is split into:
+### Layout
 
-- [`memory/core/`](memory/core/): identity, writing style, safety, git, handoff
-- [`memory/domains/ios/`](memory/domains/ios/): Swift, Xcode, snapshots, TCA
-- [`memory/workflows/`](memory/workflows/): portable workflows like PR descriptions
+```
+memory/
+├── MEMORY.md                       indeks dygjuhesh / bilingual index
+├── core/
+│   ├── writing_style.md            stil i shkrimit, rregulli no-em-dash
+│   ├── safety_and_git.md           siguri dhe disipline git
+│   └── handoff.md                  ruajtja e gjendjes ne limit konteksti
+├── domains/
+│   └── ios/                        FOKUSI I FILLIMIT / INITIAL FOCUS
+│       ├── swift_conventions.md
+│       ├── xcode_workflow.md
+│       ├── snapshot_testing.md
+│       ├── tca_patterns.md
+│       └── navigation.md
+└── workflows/
+    ├── answer_order.md
+    ├── pr_descriptions.md
+    └── git_hygiene.md
+```
 
-See [docs/memory-architecture.md](docs/memory-architecture.md) for the full spec.
+Detaje në [docs/memory-architecture.md](docs/memory-architecture.md).
 
-## Simulator
+## Tools
 
-`simulator.sh` is the headline iOS tool. Zero config in 99% of cases.
+Vegla e parë qe shoqeron memorien:
+
+### `simulator.sh`
+
+Zero-config për çdo projekt iOS Xcode.
 
 ```bash
 ./simulator.sh                       # auto-detect everything
@@ -153,45 +154,55 @@ See [docs/memory-architecture.md](docs/memory-architecture.md) for the full spec
 ./simulator.sh --clean               # rebuild from scratch
 ./simulator.sh --list                # list schemes and devices
 ./simulator.sh --no-logs             # do not stream logs
+./simulator.sh --stop                # terminate app and shutdown sim
 ```
 
-See [docs/simulator-guide.md](docs/simulator-guide.md) for all flags.
+Detaje në [docs/simulator-guide.md](docs/simulator-guide.md).
 
 ## Integrations
 
-Kujto wires into the agents you already use:
-
-| Agent | File | Folder |
+| Agent | Wires into | Folder |
 |---|---|---|
 | Claude Code | `~/.claude/CLAUDE.md` | [`integrations/claude/`](integrations/claude/) |
-| OpenAI Codex CLI | `~/.codex/CODEX.md` | [`integrations/codex/`](integrations/codex/) |
+| OpenAI Codex CLI | `~/.codex/AGENTS.md` | [`integrations/codex/`](integrations/codex/) |
 | Gemini CLI | `~/.gemini/GEMINI.md` | [`integrations/gemini/`](integrations/gemini/) |
 | GitHub Copilot | `.github/copilot-instructions.md` | [`integrations/copilot/`](integrations/copilot/) |
-| Cursor | `.cursor/rules` | [`integrations/cursor/`](integrations/cursor/) |
+| Cursor | `.cursor/rules/kujto.mdc` | [`integrations/cursor/`](integrations/cursor/) |
 
-All four (Claude, Codex, Gemini, Copilot) read the same `AGENTS.md` via symlinks. One source of truth.
+Të katërt (Claude, Codex, Gemini, Copilot) lexojnë të njëjtin `AGENTS.md` përmes symlink-eve. One source of truth.
 
 ## Philosophy
 
-Three rules drive every decision in this repo:
-
-1. **One source of truth.** Memory is versioned Markdown, not chat history.
-2. **Zero config wins.** If a flag can default, it defaults.
-3. **Bilingual is identity.** Albanian first, English equal. Never lose either.
+1. **Memorie e versionuar, jo memorie chat-i.** / Versioned memory, not chat memory.
+2. **iOS pari, ne thelle, jo gjeresisht.** / iOS first, deep before wide.
+3. **Zero config fiton.** / Zero config wins.
+4. **Dygjuhesh eshte identitet.** / Bilingual is identity. Shqipja e para. Albanian first.
 
 ## Roadmap
 
+### v0.1 (sot / today)
 - [x] Memory framework (core, domains/ios, workflows)
-- [x] `simulator.sh` with full auto-detection
-- [x] Bilingual everything
-- [ ] `kujto` CLI (single entry point)
+- [x] AGENTS.md + adapter për Claude, Codex, Gemini, Copilot, Cursor
+- [x] `simulator.sh` me auto-detektim të plotë
+- [x] `wire.sh` për integrim me repo
+- [x] CI me shellcheck, no-em-dash guard, bilingual sections guard
+
+### v0.2 (per të ardhmen e afërt / near future)
+- [ ] Pasurim i `memory/domains/ios/`: SwiftUI patterns, performance, accessibility, testing
+- [ ] `snapshots.sh` për regjistrim batch të snapshot-eve
+- [ ] `xcode-cleanup.sh` për DerivedData dhe simulator hygiene
 - [ ] Homebrew formula
-- [ ] VSCode and Xcode extension wrappers
-- [ ] Templates for SwiftPM, TCA, MVVM
+- [ ] CLI i vetëm `kujto` për të gjitha veglat
+
+### v1.0 (zgjerimi / expansion)
+- [ ] `memory/domains/android/` (Kotlin, Compose, Gradle)
+- [ ] `memory/domains/backend/` (Vapor, Express, FastAPI)
+- [ ] `memory/domains/web/` (React, Vue, SvelteKit)
+- [ ] Plugin për Xcode dhe VSCode
 
 ## Contributing
 
-PRs welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. Both languages must stay in sync in every file.
+PR-të janë të mirëpritura. Lexo [CONTRIBUTING.md](CONTRIBUTING.md) i pari. Të dyja gjuhët duhet të mbeten në sinkron në çdo file.
 
 ## License
 
@@ -201,8 +212,10 @@ PRs welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. Both languages must 
 
 <div align="center">
 
+Ndertuar me 🦅 ne Tirane dhe Athine nga [@peterdsp](https://github.com/peterdsp).
 Built with 🦅 in Tirana and Athens by [@peterdsp](https://github.com/peterdsp).
 
+Nese Kujto te kurseu nje komande, lere nje ⭐.
 If Kujto saved you a command, drop a ⭐.
 
 </div>
