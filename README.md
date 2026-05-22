@@ -30,6 +30,7 @@ Si bonus, repo-ja sjell **`simulator.sh`**, një skript ultra-portativ që ndez 
 ### Çfarë merr sot
 
 - **Memory framework dygjuhësh** (shqip dhe anglisht në të njëjtin file), me rregulla bërthamë, konventa iOS dhe workflow.
+- **8 modele arkitekturë iOS state-of-the-art** të dokumentuara: MVVM, MVVM-C, VIPER, Clean Swift (VIP), Clean Architecture, TCA, Unidirectional/Redux, MV + @Observable. Plus një guidë vendimi për të zgjedhur saktë midis tyre.
 - **Adapter për Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** përmes një `AGENTS.md` të vetëm.
 - **`simulator.sh` zero-config** për ndërtim, instalim, ndezje dhe streaming log-esh në çdo projekt iOS Xcode.
 - **`wire.sh`** për lidhjen e Kujto-s në çdo repo me dy komanda.
@@ -75,6 +76,7 @@ As a bonus, the repo ships **`simulator.sh`**, an ultra-portable script that boo
 ### What you get today
 
 - **Bilingual memory framework** (Albanian and English in the same file), with core rules, iOS conventions, and workflows.
+- **8 state-of-the-art iOS architecture patterns** documented: MVVM, MVVM-C, VIPER, Clean Swift (VIP), Clean Architecture, TCA, Unidirectional/Redux, MV + @Observable. Plus a decision guide for choosing between them.
 - **Adapter for Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** through a single `AGENTS.md`.
 - **Zero-config `simulator.sh`** for building, installing, launching, and tailing logs on any iOS Xcode project.
 - **`wire.sh`** to attach Kujto to any repo with two commands.
@@ -129,8 +131,17 @@ memory/
 │       ├── swift_conventions.md
 │       ├── xcode_workflow.md
 │       ├── snapshot_testing.md
-│       ├── tca_patterns.md
-│       └── navigation.md
+│       ├── navigation.md
+│       └── architectures/          modele arkitekture / architecture patterns
+│           ├── README.md           si te zgjedhesh / how to choose
+│           ├── mvvm.md             SwiftUI + Combine
+│           ├── mvvm_c.md           UIKit + Coordinator
+│           ├── viper.md            UIKit, ekipe te medha / large teams
+│           ├── clean_swift_vip.md  VIP, unidirectional
+│           ├── clean_architecture.md  Domain/Data/Presentation
+│           ├── tca.md              The Composable Architecture
+│           ├── unidirectional.md   Redux family overview
+│           └── mv_observable.md    SwiftUI 17+ Apple-recommended
 └── workflows/
     ├── answer_order.md
     ├── pr_descriptions.md
