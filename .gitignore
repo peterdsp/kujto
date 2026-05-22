@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Xcode and iOS build artifacts
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Logs
+*.log
+logs/
+
+# Editors
+.vscode/.history
+.idea/
+
+# Personal handoff file, never commit
+memory/handoff_active.md
+memory/handoff_*.md
+
+# Local environment
+.env
+.env.local
+*.local
+
+# Node, in case docs add tooling
+node_modules/

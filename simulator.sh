@@ -1,0 +1,1 @@
+bin/ios/simulator.sh

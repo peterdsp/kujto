@@ -1,0 +1,1 @@
+bin/sync/auto-pull.sh
