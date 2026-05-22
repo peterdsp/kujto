@@ -18,7 +18,7 @@ fi
 git fetch --quiet origin 2>/dev/null || exit 0
 
 LOCAL="$(git rev-parse @ 2>/dev/null || echo)"
-REMOTE="$(git rev-parse @{u} 2>/dev/null || echo)"
+REMOTE="$(git rev-parse '@{u}' 2>/dev/null || echo)"
 
 if [[ -z "$LOCAL" || -z "$REMOTE" ]]; then
   exit 0
@@ -28,7 +28,7 @@ if [[ "$LOCAL" == "$REMOTE" ]]; then
   exit 0
 fi
 
-BASE="$(git merge-base @ @{u} 2>/dev/null || echo)"
+BASE="$(git merge-base @ '@{u}' 2>/dev/null || echo)"
 if [[ "$LOCAL" != "$BASE" ]]; then
   # Local has diverged, do not auto-pull.
   exit 0

@@ -25,13 +25,13 @@ fi
 git fetch --quiet origin 2>/dev/null || exit 0
 
 LOCAL="$(git rev-parse @)"
-REMOTE="$(git rev-parse @{u} 2>/dev/null || echo)"
+REMOTE="$(git rev-parse '@{u}' 2>/dev/null || echo)"
 
 if [[ -z "$REMOTE" || "$LOCAL" == "$REMOTE" ]]; then
   exit 0
 fi
 
-BASE="$(git merge-base @ @{u})"
+BASE="$(git merge-base @ '@{u}')"
 if [[ "$REMOTE" != "$BASE" ]]; then
   # Remote moved, do not auto-push.
   exit 0
