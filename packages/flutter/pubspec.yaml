@@ -1,6 +1,6 @@
 name: kujto
 description: AI memory wiring tool for Flutter and Dart repositories.
-version: 0.1.2
+version: 0.1.3
 repository: https://github.com/peterdsp/kujto
 homepage: https://github.com/peterdsp/kujto
 issue_tracker: https://github.com/peterdsp/kujto/issues

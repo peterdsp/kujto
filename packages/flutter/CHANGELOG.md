@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- Add Maven package metadata for GitHub Packages.
+- Publish a clean SwiftPM tag release.
+
 ## 0.1.2
 
 - Fix Gradle plugin compilation for package publishing.
