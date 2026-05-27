@@ -7,10 +7,6 @@ plugins {
 group = "com.github.peterdsp"
 version = providers.gradleProperty("kujtoVersion").orElse("0.1.0").get()
 
-repositories {
-    mavenCentral()
-}
-
 gradlePlugin {
     plugins {
         create("kujto") {
