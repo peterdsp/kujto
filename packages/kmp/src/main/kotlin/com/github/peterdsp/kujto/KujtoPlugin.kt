@@ -42,9 +42,9 @@ abstract class KujtoWireTask : DefaultTask() {
 
 class KujtoPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.tasks.register("kujtoWire", KujtoWireTask::class.java) {
-            group = "kujto"
-            description = "Wire a Kujto marker into this Android or KMP repository."
+        project.tasks.register("kujtoWire", KujtoWireTask::class.java) { task ->
+            task.group = "kujto"
+            task.description = "Wire a Kujto marker into this Android or KMP repository."
         }
     }
 }
