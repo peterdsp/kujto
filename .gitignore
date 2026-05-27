@@ -6,6 +6,7 @@
 
 # Xcode and iOS build artifacts
 build/
+.build/
 DerivedData/
 *.xcuserstate
 xcuserdata/

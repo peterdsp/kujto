@@ -1,0 +1,40 @@
+plugins {
+    `java-gradle-plugin`
+    `maven-publish`
+    kotlin("jvm") version "2.1.21"
+}
+
+group = "com.github.peterdsp"
+version = providers.gradleProperty("kujtoVersion").orElse("0.1.0").get()
+
+repositories {
+    mavenCentral()
+}
+
+gradlePlugin {
+    plugins {
+        create("kujto") {
+            id = "com.github.peterdsp.kujto"
+            implementationClass = "com.github.peterdsp.kujto.KujtoPlugin"
+            displayName = "Kujto"
+            description = "Wire Kujto AI memory into Android and KMP repositories."
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/peterdsp/kujto")
+            credentials {
+                username = providers.gradleProperty("gpr.user")
+                    .orElse(providers.environmentVariable("GITHUB_ACTOR"))
+                    .orNull
+                password = providers.gradleProperty("gpr.key")
+                    .orElse(providers.environmentVariable("GITHUB_TOKEN"))
+                    .orNull
+            }
+        }
+    }
+}

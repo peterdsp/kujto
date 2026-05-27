@@ -11,7 +11,7 @@
 [![Agents](https://img.shields.io/badge/Agents-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Copilot-purple)](AGENTS.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Memory](#memory) · [Tools](#tools) · [Roadmap](#roadmap)
+[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Memory](#memory) · [Tools](#tools) · [Packages](#packages) · [Roadmap](#roadmap)
 
 </div>
 
@@ -194,44 +194,53 @@ version is tagged.
 
 ## Packages
 
-Nuk ka package të publikuar ende. Për iOS, rruga praktike është Swift Package
-Manager me URL të repo-s dhe tag versioni, jo domosdoshmërisht GitHub
-Packages.
+Kujto ka tani sipërfaqe fillestare package për SwiftPM, KMP/Gradle dhe
+Flutter/Dart. Publikimi lidhet me release-et: kur publikohet një GitHub
+Release, workflow `Packages` ndërton SwiftPM, publikon Gradle plugin në
+GitHub Packages dhe bën dry-run për Flutter.
 
-Kujto mund të publikohet si Swift package, por duhet të jetë package vegle:
-një command plugin ose executable që lidh `AGENTS.md`, `memory/` dhe skriptet
-te projekti iOS. Si dependency runtime brenda app-it nuk sjell vlerë, sepse
-Kujto është memorie dhe workflow për agjentë, jo library që importohet nga app-i.
+Për iOS, rruga praktike është Swift Package Manager me URL të repo-s dhe tag
+versioni:
 
-E njëjta ide mund të mbulojë edhe KMP dhe Flutter, por jo si runtime SDK.
-Forma e duhur është:
+```bash
+swift package resolve
+swift run kujto wire --target /path/to/your/repo --memory
+```
 
-- **SwiftPM**: package vegle me `Package.swift`, command plugin ose executable,
-  versionuar me Git tags.
-- **KMP**: Gradle plugin ose Kotlin CLI, publikuar në Maven Central vetëm kur
-  ka vlerë reale për projekte Android/KMP.
-- **Flutter**: Dart CLI ose Flutter tool package, publikuar në pub.dev vetëm
-  kur mund të instalojë ose sinkronizojë memorien pa prekur runtime-in e app-it.
+Për KMP/Gradle, GitHub Packages është i dobishëm për plugin-in:
 
-No package has been published yet. For iOS, the practical path is Swift Package
-Manager with the repository URL and a version tag, not necessarily GitHub
-Packages.
+```kotlin
+plugins {
+    id("com.github.peterdsp.kujto") version "0.1.0"
+}
+```
 
-Kujto can be published as a Swift package, but it should be a tooling package:
-a command plugin or executable that wires `AGENTS.md`, `memory/`, and scripts
-into the iOS project. As a runtime dependency inside the app it would not add
-value, because Kujto is agent memory and workflow, not a library imported by
-the app.
+Për Flutter, package është CLI vegle dhe duhet të shkojë në pub.dev kur të jetë
+gati për publikim publik. Nuk duhet të jetë runtime dependency e app-it.
 
-The same idea can cover KMP and Flutter too, but not as a runtime SDK. The
-right shape is:
+Kujto now has initial package surfaces for SwiftPM, KMP/Gradle, and
+Flutter/Dart. Publishing is tied to releases: when a GitHub Release is
+published, the `Packages` workflow builds SwiftPM, publishes the Gradle plugin
+to GitHub Packages, and dry-runs Flutter.
 
-- **SwiftPM**: tooling package with `Package.swift`, a command plugin or
-  executable, versioned with Git tags.
-- **KMP**: Gradle plugin or Kotlin CLI, published to Maven Central only when it
-  brings real value to Android/KMP projects.
-- **Flutter**: Dart CLI or Flutter tool package, published to pub.dev only when
-  it can install or sync memory without touching the app runtime.
+For iOS, the practical path is Swift Package Manager with the repository URL
+and a version tag:
+
+```bash
+swift package resolve
+swift run kujto wire --target /path/to/your/repo --memory
+```
+
+For KMP/Gradle, GitHub Packages is useful for the plugin:
+
+```kotlin
+plugins {
+    id("com.github.peterdsp.kujto") version "0.1.0"
+}
+```
+
+For Flutter, the package is a tooling CLI and should go to pub.dev when it is
+ready for public publishing. It should not be an app runtime dependency.
 
 ### Commit distance
 
