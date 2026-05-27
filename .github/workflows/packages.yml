@@ -44,6 +44,7 @@ jobs:
           VERSION: ${{ github.event.release.tag_name || inputs.version }}
         run: |
           VERSION="${VERSION#v}"
+          gradle build -PkujtoVersion="$VERSION"
           gradle publish -PkujtoVersion="$VERSION"
 
   flutter:
