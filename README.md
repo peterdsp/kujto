@@ -19,7 +19,7 @@
 
 ## 🇦🇱 Shqip
 
-**Kujto** ("kujto!" në mënyrën urdhërore) është një **bazë memorie për agjentët AI që punojnë në projekte iOS**. Mban të vërtetën afatgjatë (konventa Swift, modele TCA, rregulla snapshot-esh, higjienë git, stil shkrimi) në Markdown të strukturuar dhe të versionuar, jo në kontekstin e brishtë të një bisede.
+**Kujto** ("kujto!" në mënyrën urdhërore) është një **bazë memorie për agjentët AI që punojnë në projekte iOS**. Mban të vërtetën afatgjatë (konventa Swift, modelet kryesore të arkitekturës iOS, rregulla snapshot-esh, higjienë git, stil shkrimi) në Markdown të strukturuar dhe të versionuar, jo në kontekstin e brishtë të një bisede.
 
 Fokusi fillestar është **iOS me Claude, Codex, Gemini dhe Copilot**, sepse aty rri vlera më e drejtpërdrejtë: dev iOS i shqipfolur nuk ka pasur kurrë një bazë memorie në gjuhën amtare që agjentët e tij ta lexojnë në çdo sesion.
 
@@ -30,7 +30,7 @@ Si bonus, repo-ja sjell **`simulator.sh`**, një skript ultra-portativ që ndez 
 ### Çfarë merr sot
 
 - **Memory framework dygjuhësh** (shqip dhe anglisht në të njëjtin file), me rregulla bërthamë, konventa iOS dhe workflow.
-- **8 modele arkitekturë iOS state-of-the-art** të dokumentuara: MVVM, MVVM-C, VIPER, Clean Swift (VIP), Clean Architecture, TCA, Unidirectional/Redux, MV + @Observable. Plus një guidë vendimi për të zgjedhur saktë midis tyre.
+- **12 guida arkitekture iOS** për modele klasike, UIKit, SwiftUI, reactive dhe unidirectional. Plus një guidë vendimi për të zgjedhur saktë midis tyre.
 - **Adapter për Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** përmes një `AGENTS.md` të vetëm.
 - **`simulator.sh` zero-config** për ndërtim, instalim, ndezje dhe streaming log-esh në çdo projekt iOS Xcode.
 - **`wire.sh`** për lidhjen e Kujto-s në çdo repo me dy komanda.
@@ -65,7 +65,7 @@ Tani agjentët e tu (Claude, Codex, Gemini, Copilot) e lexojnë `AGENTS.md` dhe 
 
 ## 🇬🇧 English
 
-**Kujto** ("remember!" in Albanian, imperative) is a **memory base for AI agents working on iOS projects**. It stores long-term truth (Swift conventions, TCA patterns, snapshot rules, git hygiene, writing style) in structured, versioned Markdown, not in the fragile context of a single chat.
+**Kujto** ("remember!" in Albanian, imperative) is a **memory base for AI agents working on iOS projects**. It stores long-term truth (Swift conventions, the main iOS architecture patterns, snapshot rules, git hygiene, writing style) in structured, versioned Markdown, not in the fragile context of a single chat.
 
 The initial focus is **iOS with Claude, Codex, Gemini, and Copilot**, because that is where the most direct value lives: Albanian-speaking iOS devs never had a native-language memory base their agents could pick up in every session.
 
@@ -76,7 +76,7 @@ As a bonus, the repo ships **`simulator.sh`**, an ultra-portable script that boo
 ### What you get today
 
 - **Bilingual memory framework** (Albanian and English in the same file), with core rules, iOS conventions, and workflows.
-- **8 state-of-the-art iOS architecture patterns** documented: MVVM, MVVM-C, VIPER, Clean Swift (VIP), Clean Architecture, TCA, Unidirectional/Redux, MV + @Observable. Plus a decision guide for choosing between them.
+- **12 iOS architecture guides** across classic, UIKit, SwiftUI, reactive, and unidirectional patterns. Plus a decision guide for choosing between them.
 - **Adapter for Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** through a single `AGENTS.md`.
 - **Zero-config `simulator.sh`** for building, installing, launching, and tailing logs on any iOS Xcode project.
 - **`wire.sh`** to attach Kujto to any repo with two commands.
@@ -134,14 +134,7 @@ memory/
 │       ├── navigation.md
 │       └── architectures/          modele arkitekture / architecture patterns
 │           ├── README.md           si te zgjedhesh / how to choose
-│           ├── mvvm.md             SwiftUI + Combine
-│           ├── mvvm_c.md           UIKit + Coordinator
-│           ├── viper.md            UIKit, ekipe te medha / large teams
-│           ├── clean_swift_vip.md  VIP, unidirectional
-│           ├── clean_architecture.md  Domain/Data/Presentation
-│           ├── tca.md              The Composable Architecture
-│           ├── unidirectional.md   Redux family overview
-│           └── mv_observable.md    SwiftUI 17+ Apple-recommended
+│           └── *.md                guida per modelet kryesore iOS / guides
 └── workflows/
     ├── answer_order.md
     ├── pr_descriptions.md
@@ -189,9 +182,82 @@ Të katërt (Claude, Codex, Gemini, Copilot) lexojnë të njëjtin `AGENTS.md` p
 3. **Zero config fiton.** / Zero config wins.
 4. **Dygjuhesh eshte identitet.** / Bilingual is identity. Shqipja e para. Albanian first.
 
+## Releases
+
+Nuk ka release të publikuar ende. Release-i i parë do të shfaqet te
+[GitHub Releases](https://github.com/peterdsp/kujto/releases) sapo të
+tag-ohet versioni i parë.
+
+No release has been published yet. The first release will appear in
+[GitHub Releases](https://github.com/peterdsp/kujto/releases) once the first
+version is tagged.
+
+## Packages
+
+Nuk ka package të publikuar ende. Për iOS, rruga praktike është Swift Package
+Manager me URL të repo-s dhe tag versioni, jo domosdoshmërisht GitHub
+Packages.
+
+Kujto mund të publikohet si Swift package, por duhet të jetë package vegle:
+një command plugin ose executable që lidh `AGENTS.md`, `memory/` dhe skriptet
+te projekti iOS. Si dependency runtime brenda app-it nuk sjell vlerë, sepse
+Kujto është memorie dhe workflow për agjentë, jo library që importohet nga app-i.
+
+E njëjta ide mund të mbulojë edhe KMP dhe Flutter, por jo si runtime SDK.
+Forma e duhur është:
+
+- **SwiftPM**: package vegle me `Package.swift`, command plugin ose executable,
+  versionuar me Git tags.
+- **KMP**: Gradle plugin ose Kotlin CLI, publikuar në Maven Central vetëm kur
+  ka vlerë reale për projekte Android/KMP.
+- **Flutter**: Dart CLI ose Flutter tool package, publikuar në pub.dev vetëm
+  kur mund të instalojë ose sinkronizojë memorien pa prekur runtime-in e app-it.
+
+No package has been published yet. For iOS, the practical path is Swift Package
+Manager with the repository URL and a version tag, not necessarily GitHub
+Packages.
+
+Kujto can be published as a Swift package, but it should be a tooling package:
+a command plugin or executable that wires `AGENTS.md`, `memory/`, and scripts
+into the iOS project. As a runtime dependency inside the app it would not add
+value, because Kujto is agent memory and workflow, not a library imported by
+the app.
+
+The same idea can cover KMP and Flutter too, but not as a runtime SDK. The
+right shape is:
+
+- **SwiftPM**: tooling package with `Package.swift`, a command plugin or
+  executable, versioned with Git tags.
+- **KMP**: Gradle plugin or Kotlin CLI, published to Maven Central only when it
+  brings real value to Android/KMP projects.
+- **Flutter**: Dart CLI or Flutter tool package, published to pub.dev only when
+  it can install or sync memory without touching the app runtime.
+
+### Commit distance
+
+Çdo commit duhet të ketë një distancë logjike të qartë nga tjetri:
+
+- 1 qëllim për commit.
+- 5 deri 200 rreshta diff si rregull praktik.
+- Ndaje commit-in kur prek dy fusha, për shembull README dhe skript runtime.
+- Mos bëj commit vetëm se kaluan 10 minuta. Bëje kur ka një njësi pune që
+  kompilon, lexohet dhe mund të kthehet mbrapsht më vete.
+- Tag release vetëm kur README, install path dhe smoke test janë në sinkron.
+
+Each commit should have clear logical distance from the next:
+
+- 1 intent per commit.
+- 5 to 200 diff lines as a practical default.
+- Split the commit when it touches two concerns, for example README and a
+  runtime script.
+- Do not commit just because 10 minutes passed. Commit when there is a unit of
+  work that builds, reads cleanly, and can be reverted on its own.
+- Tag a release only when README, install path, and smoke test are aligned.
+
 ## Roadmap
 
 ### v0.1 (sot / today)
+
 - [x] Memory framework (core, domains/ios, workflows)
 - [x] AGENTS.md + adapter për Claude, Codex, Gemini, Copilot, Cursor
 - [x] `simulator.sh` me auto-detektim të plotë

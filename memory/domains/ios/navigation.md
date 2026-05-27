@@ -7,13 +7,14 @@
 ## Shqip
 
 ### Modeli i preferuar
-1. **TCA me state**: `StackState<Path.State>` per push, `@Presents` per modal. I parashikueshem dhe i testueshem.
-2. **SwiftUI NavigationStack me path**: per app pa TCA, perdor `NavigationStack(path:)` me enum destinations.
-3. **UIKit coordinator**: vetem ne kodbaza ekzistuese qe e perdorin tashme. Mos i shtosh coordinator te ri kur ke alternative.
+1. **SwiftUI NavigationStack me path**: per app SwiftUI, perdor `NavigationStack(path:)` me enum destinations ose state te tipizuar.
+2. **TCA me state**: `StackState<Path.State>` per push, `@Presents` per modal. I parashikueshem dhe i testueshem kur app-i eshte TCA.
+3. **UIKit coordinator ose router**: per MVVM-C, VIPER, RIBs dhe kodbaza UIKit qe e perdorin tashme.
+4. **Router domain-specific**: per deep links komplekse, mbaje perkthimin URL -> destination ne nje vend.
 
 ### Deep links
-- Resolve ne nje vend te vetem (reducer kryesor ose app-level router).
-- Shndrro URL-ne ne `Action` ose `Path.State`, pastaj lere navigimin te ndodhe normalisht.
+- Resolve ne nje vend te vetem (app-level router, root reducer, coordinator ose deep-link handler).
+- Shndrro URL-ne ne destination te tipizuar, `Action`, `Path.State` ose route command, pastaj lere navigimin te ndodhe normalisht.
 - Mos beje navigim imperativ ne mes te app-it nga handler-i i URL-se.
 
 ### Modal vs push
@@ -30,13 +31,14 @@
 ## English
 
 ### Preferred model
-1. **TCA with state**: `StackState<Path.State>` for push, `@Presents` for modal. Predictable and testable.
-2. **SwiftUI NavigationStack with path**: for non-TCA apps, use `NavigationStack(path:)` with enum destinations.
-3. **UIKit coordinator**: only in existing codebases that already use it. Do not add new coordinators when you have an alternative.
+1. **SwiftUI NavigationStack with path**: for SwiftUI apps, use `NavigationStack(path:)` with enum destinations or typed state.
+2. **TCA with state**: `StackState<Path.State>` for push, `@Presents` for modal. Predictable and testable when the app is TCA.
+3. **UIKit coordinator or router**: for MVVM-C, VIPER, RIBs, and UIKit codebases that already use it.
+4. **Domain-specific router**: for complex deep links, keep URL -> destination translation in one place.
 
 ### Deep links
-- Resolve in one place (root reducer or app-level router).
-- Translate the URL into an `Action` or `Path.State`, then let navigation happen normally.
+- Resolve in one place (app-level router, root reducer, coordinator, or deep-link handler).
+- Translate the URL into a typed destination, `Action`, `Path.State`, or route command, then let navigation happen normally.
 - Do not do imperative navigation from the URL handler in the middle of the app.
 
 ### Modal vs push

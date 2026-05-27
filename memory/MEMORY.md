@@ -18,10 +18,12 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Konventat Swift](domains/ios/swift_conventions.md): emertim, struktura, modernizim Swift 6.
 - [Workflow Xcode](domains/ios/xcode_workflow.md): worktree, scheme, simulator, build.
 - [Snapshots](domains/ios/snapshot_testing.md): regjistrim, rishikim, kufij testimi.
-- [Navigim](domains/ios/navigation.md): coordinator vs TCA, deep links, modal.
+- [Navigim](domains/ios/navigation.md): NavigationStack, coordinator, router, deep links, modal.
 
 ### iOS, arkitektura
 - [Permbledhje arkitekturash](domains/ios/architectures/README.md): si te zgjedhesh midis tyre.
+- [MVC](domains/ios/architectures/mvc.md): modeli klasik Apple, i dobishem vetem kur mbahet i vogel.
+- [MVP](domains/ios/architectures/mvp.md): UIKit me Presenter te testueshem dhe View pasive.
 - [MVVM](domains/ios/architectures/mvvm.md): SwiftUI + Combine, ekipe te vogla.
 - [MVVM-C](domains/ios/architectures/mvvm_c.md): UIKit me Coordinator.
 - [VIPER](domains/ios/architectures/viper.md): UIKit, ekipe te medha, ndarje strikte rolesh.
@@ -29,6 +31,8 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Clean Architecture](domains/ios/architectures/clean_architecture.md): shtresa Domain/Data/Presentation.
 - [TCA](domains/ios/architectures/tca.md): The Composable Architecture, state-driven, DI te forte.
 - [Unidirectional / Redux](domains/ios/architectures/unidirectional.md): familja e gjere, jo specifike TCA.
+- [ReactorKit](domains/ios/architectures/reactorkit.md): RxSwift me Action, Mutation, State.
+- [RIBs](domains/ios/architectures/ribs.md): arkitekture peme per app shume te medha.
 - [MV + @Observable](domains/ios/architectures/mv_observable.md): Apple-recommended per SwiftUI 17+.
 
 ### Workflows
@@ -49,10 +53,12 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Swift conventions](domains/ios/swift_conventions.md): naming, structure, Swift 6 modernisation.
 - [Xcode workflow](domains/ios/xcode_workflow.md): worktree, scheme, simulator, build.
 - [Snapshots](domains/ios/snapshot_testing.md): recording, review, testing limits.
-- [Navigation](domains/ios/navigation.md): coordinator vs TCA, deep links, modals.
+- [Navigation](domains/ios/navigation.md): NavigationStack, coordinator, router, deep links, modals.
 
 ### iOS, architectures
 - [Architectures overview](domains/ios/architectures/README.md): how to choose between them.
+- [MVC](domains/ios/architectures/mvc.md): classic Apple pattern, useful only when kept small.
+- [MVP](domains/ios/architectures/mvp.md): UIKit with a testable Presenter and passive View.
 - [MVVM](domains/ios/architectures/mvvm.md): SwiftUI + Combine, small teams.
 - [MVVM-C](domains/ios/architectures/mvvm_c.md): UIKit with Coordinator.
 - [VIPER](domains/ios/architectures/viper.md): UIKit, large teams, strict role separation.
@@ -60,6 +66,8 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Clean Architecture](domains/ios/architectures/clean_architecture.md): Domain/Data/Presentation layers.
 - [TCA](domains/ios/architectures/tca.md): The Composable Architecture, state-driven, strong DI.
 - [Unidirectional / Redux](domains/ios/architectures/unidirectional.md): the broader family, not TCA-specific.
+- [ReactorKit](domains/ios/architectures/reactorkit.md): RxSwift with Action, Mutation, State.
+- [RIBs](domains/ios/architectures/ribs.md): tree architecture for very large apps.
 - [MV + @Observable](domains/ios/architectures/mv_observable.md): Apple-recommended for SwiftUI 17+.
 
 ### Workflows
