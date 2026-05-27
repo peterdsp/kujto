@@ -211,7 +211,7 @@ Për KMP/Gradle, GitHub Packages është i dobishëm për plugin-in:
 
 ```kotlin
 plugins {
-    id("com.github.peterdsp.kujto") version "0.1.2"
+    id("com.github.peterdsp.kujto") version "0.1.3"
 }
 ```
 
@@ -235,7 +235,7 @@ For KMP/Gradle, GitHub Packages is useful for the plugin:
 
 ```kotlin
 plugins {
-    id("com.github.peterdsp.kujto") version "0.1.2"
+    id("com.github.peterdsp.kujto") version "0.1.3"
 }
 ```
 
