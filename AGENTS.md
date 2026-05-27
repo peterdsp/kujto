@@ -30,7 +30,7 @@ This file is the source of truth for every AI agent (Claude, Codex, Gemini, Copi
 memory/
   MEMORY.md         indeks
   core/             stil shkrimi, siguri, git, handoff
-  domains/ios/      Swift, Xcode, snapshots, TCA, navigim
+  domains/ios/      Swift, Xcode, snapshots, arkitektura, navigim
   workflows/        rendi i përgjigjeve, përshkrime PR, higjienë git
 ```
 
@@ -75,7 +75,7 @@ Shkruaj `memory/handoff_active.md` me gjendjen e tanishme dhe planin për të va
 memory/
   MEMORY.md         index
   core/             writing style, safety, git, handoff
-  domains/ios/      Swift, Xcode, snapshots, TCA, navigation
+  domains/ios/      Swift, Xcode, snapshots, architectures, navigation
   workflows/        answer order, PR descriptions, git hygiene
 ```
 

@@ -7,7 +7,15 @@
 ## Shqip
 
 ### Commit-et
+
 - Te vegjel dhe te fokusuar. Nje qellim per commit.
+- 5 deri 200 rreshta diff si rregull praktik, jo si ligj.
+- Ndaje commit-in kur ndryshimi prek dy qellime ose dy shtresa qe mund te
+  rishikohen vecmas.
+- Mos bej commit nga ora. Bej commit kur njesia e punes kompilon, lexohet dhe
+  mund te kthehet mbrapsht me vete.
+- Commit-et e dokumentacionit mund te jene me te vegjel. Commit-et qe prekin
+  arkitekture, build ose release duhet te jene me te izoluar.
 - Subject ne kohen e tashme imperative: `shto X`, `rregullo Y`, `hiq Z`.
 - Body opsionale, vetem nese arsyeja nuk eshte e qarte nga diff-i.
 - Pa "wip", "stuff", "more changes". Bej squash para PR-it.
@@ -34,7 +42,15 @@
 ## English
 
 ### Commits
+
 - Small and focused. One purpose per commit.
+- 5 to 200 diff lines as a practical default, not a law.
+- Split the commit when the change touches two intents or two layers that can
+  be reviewed separately.
+- Do not commit by the clock. Commit when the work unit builds, reads cleanly,
+  and can be reverted on its own.
+- Documentation commits can be smaller. Architecture, build, or release commits
+  should be more isolated.
 - Subject in imperative present: `add X`, `fix Y`, `remove Z`.
 - Body optional, only if the reason is not clear from the diff.
 - No "wip", "stuff", "more changes". Squash before PR.
