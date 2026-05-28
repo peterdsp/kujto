@@ -10,6 +10,7 @@
 [![Focus](https://img.shields.io/badge/Focus-iOS%20first-blue?logo=apple)](memory/domains/ios/)
 [![Agents](https://img.shields.io/badge/Agents-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Copilot-purple)](AGENTS.md)
 [![Site](https://img.shields.io/badge/Site-kujto.peterdsp.dev-black)](https://kujto.peterdsp.dev)
+[![Version](https://img.shields.io/github/v/release/peterdsp/kujto?label=version)](https://github.com/peterdsp/kujto/releases/latest)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 [🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Site](#site) · [Memory](#memory) · [Tools](#tools) · [Packages](#packages) · [Roadmap](#roadmap)
@@ -214,13 +215,11 @@ Të katërt (Claude, Codex, Gemini, Copilot) lexojnë të njëjtin `AGENTS.md` p
 
 ## Releases
 
-Nuk ka release të publikuar ende. Release-i i parë do të shfaqet te
-[GitHub Releases](https://github.com/peterdsp/kujto/releases) sapo të
-tag-ohet versioni i parë.
+Versioni aktual: **v0.1.3**. Shiko te gjitha release-et te
+[GitHub Releases](https://github.com/peterdsp/kujto/releases).
 
-No release has been published yet. The first release will appear in
-[GitHub Releases](https://github.com/peterdsp/kujto/releases) once the first
-version is tagged.
+Current version: **v0.1.3**. See all releases at
+[GitHub Releases](https://github.com/peterdsp/kujto/releases).
 
 ## Packages
 
@@ -295,7 +294,7 @@ Each commit should have clear logical distance from the next:
 
 ## Roadmap
 
-### v0.1 (sot / today)
+### v0.1.3 (aktual / current)
 
 - [x] Memory framework (core, domains/ios, workflows)
 - [x] AGENTS.md + adapter per Claude, Codex, Gemini, Copilot, Cursor
@@ -305,18 +304,18 @@ Each commit should have clear logical distance from the next:
 - [x] Faqe statike e gjalle te [kujto.peterdsp.dev](https://kujto.peterdsp.dev) me GitHub Pages
 - [x] Perkthim i plote ne shqip me zbulim automatik vendndodhjeje dhe ndërrues gjuhe
 
-### v0.2 (per te ardhmen e afert / near future)
+### v0.2 (ne vijim / next)
 - [ ] Pasurim i `memory/domains/ios/`: SwiftUI patterns, performance, accessibility, testing
 - [ ] `snapshots.sh` per regjistrim batch te snapshot-eve
 - [ ] `xcode-cleanup.sh` per DerivedData dhe simulator hygiene
 - [ ] Homebrew formula
 - [ ] CLI i vetem `kujto` per te gjitha veglat
 
-### v1.0 (zgjerimi / expansion)
+### Me tej / Later
 - [ ] `memory/domains/android/` (Kotlin, Compose, Gradle)
 - [ ] `memory/domains/backend/` (Vapor, Express, FastAPI)
 - [ ] `memory/domains/web/` (React, Vue, SvelteKit)
-- [ ] Plugin për Xcode dhe VSCode
+- [ ] Plugin per Xcode dhe VSCode
 
 ## Contributing
 
