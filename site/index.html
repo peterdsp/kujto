@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kujto, versioned AI memory for iOS agents</title>
+    <meta
+      name="description"
+      content="Kujto is a bilingual, versioned AI memory base for iOS developers using Claude, Codex, Gemini, Copilot, and Cursor."
+    >
+    <meta property="og:title" content="Kujto">
+    <meta
+      property="og:description"
+      content="Versioned AI memory for iOS agents. Albanian first, built for Claude, Codex, Gemini, Copilot, and Cursor."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kujto.peterdsp.dev">
+    <meta name="theme-color" content="#111111">
+    <link rel="canonical" href="https://kujto.peterdsp.dev">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Kujto home">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span>Kujto</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#why">Why</a>
+        <a href="#how">How</a>
+        <a href="#install">Install</a>
+        <a href="#deploy">Deploy</a>
+      </nav>
+      <a class="header-cta" href="https://github.com/peterdsp/kujto">Star on GitHub</a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">AI memory for iOS agents</p>
+          <h1 id="hero-title">Kujto</h1>
+          <p class="hero-subtitle">
+            The Albanian first memory base that gives Claude, Codex, Gemini,
+            Copilot, and Cursor the same long-term project truth.
+          </p>
+          <p class="hero-shqip">
+            Memorie e versionuar, dygjuheshe, per agjente AI qe punojne ne
+            projekte iOS.
+          </p>
+          <div class="hero-actions" aria-label="Hero actions">
+            <a class="button primary" href="https://github.com/peterdsp/kujto">
+              <span aria-hidden="true">*</span>
+              Star Kujto
+            </a>
+            <a class="button secondary" href="#install">
+              <span aria-hidden="true">$</span>
+              Install
+            </a>
+          </div>
+          <div class="metric-row" aria-label="Project highlights">
+            <div>
+              <strong>5 agents</strong>
+              <span>one source</span>
+            </div>
+            <div>
+              <strong>12 guides</strong>
+              <span>iOS architecture</span>
+            </div>
+            <div>
+              <strong>0 config</strong>
+              <span>simulator tool</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Kujto memory flow">
+          <div class="memory-stack">
+            <div class="iphone-mockup" aria-label="iPhone 17 Pro Max">
+              <div class="iphone-screen">
+                <span class="dynamic-island"></span>
+                <span class="screen-label">iPhone 17 Pro Max</span>
+                <span class="screen-line"></span>
+                <span class="screen-line short"></span>
+              </div>
+              <div class="camera-plate" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <i></i>
+              </div>
+            </div>
+            <div class="memory-file active">
+              <span class="file-name">AGENTS.md</span>
+              <span class="line wide"></span>
+              <span class="line"></span>
+              <span class="line short"></span>
+              <div class="rule-list">
+                <span>Read memory/MEMORY.md</span>
+                <span>No em-dash</span>
+                <span>Bilingual output</span>
+              </div>
+            </div>
+            <div class="memory-file">
+              <span class="file-name">MEMORY.md</span>
+              <span class="line wide"></span>
+              <span class="line"></span>
+              <span class="line short"></span>
+            </div>
+          </div>
+          <div class="agent-grid" aria-label="Supported agents">
+            <span>Claude</span>
+            <span>Codex</span>
+            <span>Gemini</span>
+            <span>Copilot</span>
+            <span>Cursor</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="proof-band" aria-label="What Kujto ships">
+        <span>Versioned Markdown memory</span>
+        <span>Swift and Xcode workflow</span>
+        <span>Architecture decision guides</span>
+        <span>Agent adapter files</span>
+      </section>
+
+      <section id="why" class="section split" aria-labelledby="why-title">
+        <div>
+          <p class="eyebrow">Why it exists</p>
+          <h2 id="why-title">Stop re-teaching every agent the same iOS context.</h2>
+        </div>
+        <div class="comparison">
+          <article>
+            <h3>Without Kujto</h3>
+            <p>
+              You paste coding style, architecture rules, simulator commands,
+              and PR habits into every new chat.
+            </p>
+          </article>
+          <article>
+            <h3>With Kujto</h3>
+            <p>
+              Each agent reads the same repo-backed memory before touching
+              code, docs, or workflows.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="how" class="section" aria-labelledby="how-title">
+        <div class="section-heading">
+          <p class="eyebrow">How it works</p>
+          <h2 id="how-title">A memory base your tools can actually inspect.</h2>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <span class="feature-index">01</span>
+            <h3>Wire once</h3>
+            <p>
+              <code>wire.sh</code> links AGENTS, CLAUDE, CODEX, and GEMINI
+              instructions into a project.
+            </p>
+          </article>
+          <article>
+            <span class="feature-index">02</span>
+            <h3>Read the index</h3>
+            <p>
+              Agents start at <code>memory/MEMORY.md</code>, then open only the
+              memory files relevant to the task.
+            </p>
+          </article>
+          <article>
+            <span class="feature-index">03</span>
+            <h3>Keep truth in git</h3>
+            <p>
+              Project rules evolve through reviewable Markdown diffs instead
+              of disappearing into chat history.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="install" class="section install" aria-labelledby="install-title">
+        <div>
+          <p class="eyebrow">Install</p>
+          <h2 id="install-title">Add Kujto in one command.</h2>
+          <p>
+            Start with the global memory, then fork it and make it yours.
+            Shqipja stays first, English stays in sync.
+          </p>
+        </div>
+        <pre><code>curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></pre>
+      </section>
+
+      <section class="section use-cases" aria-labelledby="use-cases-title">
+        <div class="section-heading">
+          <p class="eyebrow">Built for attention</p>
+          <h2 id="use-cases-title">Clear reasons to star, fork, and share.</h2>
+        </div>
+        <div class="use-case-list">
+          <article>
+            <h3>For iOS developers</h3>
+            <p>
+              A ready memory base for Swift conventions, Xcode workflow,
+              snapshots, navigation, and architecture choices.
+            </p>
+          </article>
+          <article>
+            <h3>For AI agent users</h3>
+            <p>
+              One pattern that works across Claude, Codex, Gemini, Copilot,
+              Cursor, and future tools.
+            </p>
+          </article>
+          <article>
+            <h3>For Albanian builders</h3>
+            <p>
+              A visible, useful open-source project with Albanian identity at
+              the front, not hidden in a footnote.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="deploy" class="section deploy" aria-labelledby="deploy-title">
+        <div>
+          <p class="eyebrow">Deployment</p>
+          <h2 id="deploy-title">GitHub Pages is the best first launch.</h2>
+          <p>
+            It is free, fast, close to the star button, and simple to connect
+            to <code>kujto.peterdsp.dev</code>. Your Pi is better later if you
+            want full control, analytics, or self-hosting practice.
+          </p>
+        </div>
+        <div class="deploy-options">
+          <article>
+            <h3>GitHub Pages</h3>
+            <p>Recommended for public launch and GitHub discovery.</p>
+            <span>Uses <code>site/</code> and <code>site/CNAME</code>.</span>
+          </article>
+          <article>
+            <h3>Raspberry Pi</h3>
+            <p>Good for self-hosted control, but needs uptime and TLS care.</p>
+            <span>Serve the same static files with Caddy or Nginx.</span>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        <strong>Kujto</strong>
+        <span>Versioned memory for agents. Memorie e versionuar per agjente.</span>
+      </div>
+      <a href="https://github.com/peterdsp/kujto">github.com/peterdsp/kujto</a>
+    </footer>
+  </body>
+</html>
