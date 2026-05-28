@@ -21,6 +21,7 @@ logs/
 # Editors
 .vscode/.history
 .idea/
+.claude/
 
 # Personal handoff file, never commit
 memory/handoff_active.md

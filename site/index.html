@@ -27,49 +27,53 @@
         <span>Kujto</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
-        <a href="#why">Why</a>
-        <a href="#how">How</a>
-        <a href="#install">Install</a>
-        <a href="#deploy">Deploy</a>
+        <a href="#why" data-i18n="nav.why">Why</a>
+        <a href="#how" data-i18n="nav.how">How</a>
+        <a href="#install" data-i18n="nav.install">Install</a>
+        <a href="#deploy" data-i18n="nav.deploy">Deploy</a>
       </nav>
-      <a class="header-cta" href="https://github.com/peterdsp/kujto">Star on GitHub</a>
+      <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">
+        <span class="lang-option" data-lang="en">EN</span>
+        <span class="lang-option" data-lang="sq">SQ</span>
+      </button>
+      <a class="header-cta" href="https://github.com/peterdsp/kujto" data-i18n="nav.cta">Star on GitHub</a>
     </header>
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow">AI memory for iOS agents</p>
+          <p class="eyebrow" data-i18n="hero.eyebrow">AI memory for iOS agents</p>
           <h1 id="hero-title">Kujto</h1>
-          <p class="hero-subtitle">
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
             The Albanian first memory base that gives Claude, Codex, Gemini,
             Copilot, and Cursor the same long-term project truth.
           </p>
-          <p class="hero-shqip">
+          <p class="hero-shqip" data-i18n="hero.shqip">
             Memorie e versionuar, dygjuheshe, per agjente AI qe punojne ne
             projekte iOS.
           </p>
           <div class="hero-actions" aria-label="Hero actions">
             <a class="button primary" href="https://github.com/peterdsp/kujto">
               <span aria-hidden="true">*</span>
-              Star Kujto
+              <span data-i18n="hero.star">Star Kujto</span>
             </a>
             <a class="button secondary" href="#install">
               <span aria-hidden="true">$</span>
-              Install
+              <span data-i18n="hero.installBtn">Install</span>
             </a>
           </div>
           <div class="metric-row" aria-label="Project highlights">
             <div>
-              <strong>5 agents</strong>
-              <span>one source</span>
+              <strong data-i18n="hero.metric1.value">5 agents</strong>
+              <span data-i18n="hero.metric1.label">one source</span>
             </div>
             <div>
-              <strong>12 guides</strong>
-              <span>iOS architecture</span>
+              <strong data-i18n="hero.metric2.value">12 guides</strong>
+              <span data-i18n="hero.metric2.label">iOS architecture</span>
             </div>
             <div>
-              <strong>0 config</strong>
-              <span>simulator tool</span>
+              <strong data-i18n="hero.metric3.value">0 config</strong>
+              <span data-i18n="hero.metric3.label">simulator tool</span>
             </div>
           </div>
         </div>
@@ -96,9 +100,9 @@
               <span class="line"></span>
               <span class="line short"></span>
               <div class="rule-list">
-                <span>Read memory/MEMORY.md</span>
-                <span>No em-dash</span>
-                <span>Bilingual output</span>
+                <span data-i18n="visual.rule1">Read memory/MEMORY.md</span>
+                <span data-i18n="visual.rule2">No em-dash</span>
+                <span data-i18n="visual.rule3">Bilingual output</span>
               </div>
             </div>
             <div class="memory-file">
@@ -119,28 +123,28 @@
       </section>
 
       <section class="proof-band" aria-label="What Kujto ships">
-        <span>Versioned Markdown memory</span>
-        <span>Swift and Xcode workflow</span>
-        <span>Architecture decision guides</span>
-        <span>Agent adapter files</span>
+        <span data-i18n="proof.1">Versioned Markdown memory</span>
+        <span data-i18n="proof.2">Swift and Xcode workflow</span>
+        <span data-i18n="proof.3">Architecture decision guides</span>
+        <span data-i18n="proof.4">Agent adapter files</span>
       </section>
 
       <section id="why" class="section split" aria-labelledby="why-title">
         <div>
-          <p class="eyebrow">Why it exists</p>
-          <h2 id="why-title">Stop re-teaching every agent the same iOS context.</h2>
+          <p class="eyebrow" data-i18n="why.eyebrow">Why it exists</p>
+          <h2 id="why-title" data-i18n="why.title">Stop re-teaching every agent the same iOS context.</h2>
         </div>
         <div class="comparison">
           <article>
-            <h3>Without Kujto</h3>
-            <p>
+            <h3 data-i18n="why.without.title">Without Kujto</h3>
+            <p data-i18n="why.without.text">
               You paste coding style, architecture rules, simulator commands,
               and PR habits into every new chat.
             </p>
           </article>
           <article>
-            <h3>With Kujto</h3>
-            <p>
+            <h3 data-i18n="why.with.title">With Kujto</h3>
+            <p data-i18n="why.with.text">
               Each agent reads the same repo-backed memory before touching
               code, docs, or workflows.
             </p>
@@ -150,30 +154,30 @@
 
       <section id="how" class="section" aria-labelledby="how-title">
         <div class="section-heading">
-          <p class="eyebrow">How it works</p>
-          <h2 id="how-title">A memory base your tools can actually inspect.</h2>
+          <p class="eyebrow" data-i18n="how.eyebrow">How it works</p>
+          <h2 id="how-title" data-i18n="how.title">A memory base your tools can actually inspect.</h2>
         </div>
         <div class="feature-grid">
           <article>
             <span class="feature-index">01</span>
-            <h3>Wire once</h3>
-            <p>
+            <h3 data-i18n="how.f1.title">Wire once</h3>
+            <p data-i18n="how.f1.text">
               <code>wire.sh</code> links AGENTS, CLAUDE, CODEX, and GEMINI
               instructions into a project.
             </p>
           </article>
           <article>
             <span class="feature-index">02</span>
-            <h3>Read the index</h3>
-            <p>
+            <h3 data-i18n="how.f2.title">Read the index</h3>
+            <p data-i18n="how.f2.text">
               Agents start at <code>memory/MEMORY.md</code>, then open only the
               memory files relevant to the task.
             </p>
           </article>
           <article>
             <span class="feature-index">03</span>
-            <h3>Keep truth in git</h3>
-            <p>
+            <h3 data-i18n="how.f3.title">Keep truth in git</h3>
+            <p data-i18n="how.f3.text">
               Project rules evolve through reviewable Markdown diffs instead
               of disappearing into chat history.
             </p>
@@ -183,9 +187,9 @@
 
       <section id="install" class="section install" aria-labelledby="install-title">
         <div>
-          <p class="eyebrow">Install</p>
-          <h2 id="install-title">Add Kujto in one command.</h2>
-          <p>
+          <p class="eyebrow" data-i18n="install.eyebrow">Install</p>
+          <h2 id="install-title" data-i18n="install.title">Add Kujto in one command.</h2>
+          <p data-i18n="install.text">
             Start with the global memory, then fork it and make it yours.
             Shqipja stays first, English stays in sync.
           </p>
@@ -195,27 +199,27 @@
 
       <section class="section use-cases" aria-labelledby="use-cases-title">
         <div class="section-heading">
-          <p class="eyebrow">Built for attention</p>
-          <h2 id="use-cases-title">Clear reasons to star, fork, and share.</h2>
+          <p class="eyebrow" data-i18n="usecases.eyebrow">Built for attention</p>
+          <h2 id="use-cases-title" data-i18n="usecases.title">Clear reasons to star, fork, and share.</h2>
         </div>
         <div class="use-case-list">
           <article>
-            <h3>For iOS developers</h3>
-            <p>
+            <h3 data-i18n="usecases.ios.title">For iOS developers</h3>
+            <p data-i18n="usecases.ios.text">
               A ready memory base for Swift conventions, Xcode workflow,
               snapshots, navigation, and architecture choices.
             </p>
           </article>
           <article>
-            <h3>For AI agent users</h3>
-            <p>
+            <h3 data-i18n="usecases.ai.title">For AI agent users</h3>
+            <p data-i18n="usecases.ai.text">
               One pattern that works across Claude, Codex, Gemini, Copilot,
               Cursor, and future tools.
             </p>
           </article>
           <article>
-            <h3>For Albanian builders</h3>
-            <p>
+            <h3 data-i18n="usecases.alb.title">For Albanian builders</h3>
+            <p data-i18n="usecases.alb.text">
               A visible, useful open-source project with Albanian identity at
               the front, not hidden in a footnote.
             </p>
@@ -225,9 +229,9 @@
 
       <section id="deploy" class="section deploy" aria-labelledby="deploy-title">
         <div>
-          <p class="eyebrow">Deployment</p>
-          <h2 id="deploy-title">GitHub Pages is the best first launch.</h2>
-          <p>
+          <p class="eyebrow" data-i18n="deploy.eyebrow">Deployment</p>
+          <h2 id="deploy-title" data-i18n="deploy.title">GitHub Pages is the best first launch.</h2>
+          <p data-i18n="deploy.text">
             It is free, fast, close to the star button, and simple to connect
             to <code>kujto.peterdsp.dev</code>. Your Pi is better later if you
             want full control, analytics, or self-hosting practice.
@@ -236,13 +240,13 @@
         <div class="deploy-options">
           <article>
             <h3>GitHub Pages</h3>
-            <p>Recommended for public launch and GitHub discovery.</p>
-            <span>Uses <code>site/</code> and <code>site/CNAME</code>.</span>
+            <p data-i18n="deploy.pages.text">Recommended for public launch and GitHub discovery.</p>
+            <span data-i18n="deploy.pages.note">Uses <code>site/</code> and <code>site/CNAME</code>.</span>
           </article>
           <article>
             <h3>Raspberry Pi</h3>
-            <p>Good for self-hosted control, but needs uptime and TLS care.</p>
-            <span>Serve the same static files with Caddy or Nginx.</span>
+            <p data-i18n="deploy.pi.text">Good for self-hosted control, but needs uptime and TLS care.</p>
+            <span data-i18n="deploy.pi.note">Serve the same static files with Caddy or Nginx.</span>
           </article>
         </div>
       </section>
@@ -251,9 +255,178 @@
     <footer class="footer">
       <div>
         <strong>Kujto</strong>
-        <span>Versioned memory for agents. Memorie e versionuar per agjente.</span>
+        <span data-i18n="footer.tagline">Versioned memory for agents. Memorie e versionuar per agjente.</span>
       </div>
       <a href="https://github.com/peterdsp/kujto">github.com/peterdsp/kujto</a>
     </footer>
+
+    <script>
+      var T = {
+        en: {
+          "nav.why": "Why",
+          "nav.how": "How",
+          "nav.install": "Install",
+          "nav.deploy": "Deploy",
+          "nav.cta": "Star on GitHub",
+          "hero.eyebrow": "AI memory for iOS agents",
+          "hero.subtitle": "The Albanian first memory base that gives Claude, Codex, Gemini, Copilot, and Cursor the same long-term project truth.",
+          "hero.shqip": "Memorie e versionuar, dygjuheshe, per agjente AI qe punojne ne projekte iOS.",
+          "hero.star": "Star Kujto",
+          "hero.installBtn": "Install",
+          "hero.metric1.value": "5 agents",
+          "hero.metric1.label": "one source",
+          "hero.metric2.value": "12 guides",
+          "hero.metric2.label": "iOS architecture",
+          "hero.metric3.value": "0 config",
+          "hero.metric3.label": "simulator tool",
+          "visual.rule1": "Read memory/MEMORY.md",
+          "visual.rule2": "No em-dash",
+          "visual.rule3": "Bilingual output",
+          "proof.1": "Versioned Markdown memory",
+          "proof.2": "Swift and Xcode workflow",
+          "proof.3": "Architecture decision guides",
+          "proof.4": "Agent adapter files",
+          "why.eyebrow": "Why it exists",
+          "why.title": "Stop re-teaching every agent the same iOS context.",
+          "why.without.title": "Without Kujto",
+          "why.without.text": "You paste coding style, architecture rules, simulator commands, and PR habits into every new chat.",
+          "why.with.title": "With Kujto",
+          "why.with.text": "Each agent reads the same repo-backed memory before touching code, docs, or workflows.",
+          "how.eyebrow": "How it works",
+          "how.title": "A memory base your tools can actually inspect.",
+          "how.f1.title": "Wire once",
+          "how.f1.text": "<code>wire.sh</code> links AGENTS, CLAUDE, CODEX, and GEMINI instructions into a project.",
+          "how.f2.title": "Read the index",
+          "how.f2.text": "Agents start at <code>memory/MEMORY.md</code>, then open only the memory files relevant to the task.",
+          "how.f3.title": "Keep truth in git",
+          "how.f3.text": "Project rules evolve through reviewable Markdown diffs instead of disappearing into chat history.",
+          "install.eyebrow": "Install",
+          "install.title": "Add Kujto in one command.",
+          "install.text": "Start with the global memory, then fork it and make it yours. Shqipja stays first, English stays in sync.",
+          "usecases.eyebrow": "Built for attention",
+          "usecases.title": "Clear reasons to star, fork, and share.",
+          "usecases.ios.title": "For iOS developers",
+          "usecases.ios.text": "A ready memory base for Swift conventions, Xcode workflow, snapshots, navigation, and architecture choices.",
+          "usecases.ai.title": "For AI agent users",
+          "usecases.ai.text": "One pattern that works across Claude, Codex, Gemini, Copilot, Cursor, and future tools.",
+          "usecases.alb.title": "For Albanian builders",
+          "usecases.alb.text": "A visible, useful open-source project with Albanian identity at the front, not hidden in a footnote.",
+          "deploy.eyebrow": "Deployment",
+          "deploy.title": "GitHub Pages is the best first launch.",
+          "deploy.text": "It is free, fast, close to the star button, and simple to connect to <code>kujto.peterdsp.dev</code>. Your Pi is better later if you want full control, analytics, or self-hosting practice.",
+          "deploy.pages.text": "Recommended for public launch and GitHub discovery.",
+          "deploy.pages.note": "Uses <code>site/</code> and <code>site/CNAME</code>.",
+          "deploy.pi.text": "Good for self-hosted control, but needs uptime and TLS care.",
+          "deploy.pi.note": "Serve the same static files with Caddy or Nginx.",
+          "footer.tagline": "Versioned memory for agents. Memorie e versionuar per agjente."
+        },
+        sq: {
+          "nav.why": "Pse",
+          "nav.how": "Si",
+          "nav.install": "Instalo",
+          "nav.deploy": "Publiko",
+          "nav.cta": "Ylli ne GitHub",
+          "hero.eyebrow": "Memorie AI per agjente iOS",
+          "hero.subtitle": "Baza e memories shqip-e-para qe u jep Claude, Codex, Gemini, Copilot dhe Cursor te njejten te vertete afatgjate te projektit.",
+          "hero.shqip": "Memorie e versionuar, dygjuheshe, per agjente AI qe punojne ne projekte iOS.",
+          "hero.star": "Ylli Kujto",
+          "hero.installBtn": "Instalo",
+          "hero.metric1.value": "5 agjente",
+          "hero.metric1.label": "nje burim",
+          "hero.metric2.value": "12 udhezues",
+          "hero.metric2.label": "arkitekture iOS",
+          "hero.metric3.value": "0 konfigurim",
+          "hero.metric3.label": "vegla simulatori",
+          "visual.rule1": "Lexo memory/MEMORY.md",
+          "visual.rule2": "Pa vize te gjate",
+          "visual.rule3": "Dalje dygjuheshe",
+          "proof.1": "Memorie Markdown e versionuar",
+          "proof.2": "Rrjedhe pune Swift dhe Xcode",
+          "proof.3": "Udhezues vendimesh arkitekturore",
+          "proof.4": "Skedare adaptues per agjente",
+          "why.eyebrow": "Pse ekziston",
+          "why.title": "Mos ia mesoni cdo agjenti te njejtin kontekst iOS.",
+          "why.without.title": "Pa Kujto",
+          "why.without.text": "Ngjitni stilin e kodimit, rregullat e arkitektures, komandat e simulatorit dhe zakonet e PR-ve ne cdo chat te ri.",
+          "why.with.title": "Me Kujto",
+          "why.with.text": "Cdo agjent lexon te njejten memorie te mbeshtur ne repo para se te preke kodin, dokumentet ose rrjedhat e punes.",
+          "how.eyebrow": "Si funksionon",
+          "how.title": "Nje baze memorieje qe veglat tuaja mund ta inspektojne.",
+          "how.f1.title": "Lidhe nje here",
+          "how.f1.text": "<code>wire.sh</code> lidh udhezime AGENTS, CLAUDE, CODEX dhe GEMINI ne nje projekt.",
+          "how.f2.title": "Lexo indeksin",
+          "how.f2.text": "Agjentet nisin nga <code>memory/MEMORY.md</code>, pastaj hapin vetem skedaret e memories qe lidhen me detyren.",
+          "how.f3.title": "Ruaje te verteten ne git",
+          "how.f3.text": "Rregullat e projektit zhvillohen permes diff-eve Markdown te rishikueshme ne vend qe te zhduken ne historikun e chat-it.",
+          "install.eyebrow": "Instalo",
+          "install.title": "Shto Kujto me nje komande.",
+          "install.text": "Fillo me memorien globale, pastaj beje fork dhe beje tenden. Shqipja qendron e para, anglishtja qendron ne sinkron.",
+          "usecases.eyebrow": "Ndertuar per vemendje",
+          "usecases.title": "Arsye te qarta per te dhene yll, fork dhe per te ndare.",
+          "usecases.ios.title": "Per zhvillues iOS",
+          "usecases.ios.text": "Nje baze memorieje e gatshme per konventat Swift, rrjedhen e punes ne Xcode, snapshots, navigimin dhe zgjedhjet arkitekturore.",
+          "usecases.ai.title": "Per perdoruesit e agjenteve AI",
+          "usecases.ai.text": "Nje model qe funksionon ne Claude, Codex, Gemini, Copilot, Cursor dhe veglat e se ardhmes.",
+          "usecases.alb.title": "Per ndertuesit shqiptare",
+          "usecases.alb.text": "Nje projekt open-source i dukshem dhe i dobishem me identitet shqiptar ne balle, jo i fshehur ne nje fushnote.",
+          "deploy.eyebrow": "Publikimi",
+          "deploy.title": "GitHub Pages eshte nisja me e mire e pare.",
+          "deploy.text": "Eshte falas, i shpejte, afer butonit te yllit dhe i thjeshte per t'u lidhur me <code>kujto.peterdsp.dev</code>. Pi-ja juaj eshte me mire me vone nese doni kontroll te plote, analitike ose praktike vete-hostimi.",
+          "deploy.pages.text": "E rekomanduar per publikim publik dhe zbulim ne GitHub.",
+          "deploy.pages.note": "Perdor <code>site/</code> dhe <code>site/CNAME</code>.",
+          "deploy.pi.text": "E mire per kontroll te vete-hostuar, por kerkon kohe funksionimi dhe kujdes TLS.",
+          "deploy.pi.note": "Sherbeni te njejtat skedare statike me Caddy ose Nginx.",
+          "footer.tagline": "Memorie e versionuar per agjente. Versioned memory for agents."
+        }
+      };
+
+      var currentLang = "en";
+
+      function setLang(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        localStorage.setItem("kujto-lang", lang);
+        var els = document.querySelectorAll("[data-i18n]");
+        for (var i = 0; i < els.length; i++) {
+          var key = els[i].getAttribute("data-i18n");
+          if (T[lang] && T[lang][key]) {
+            els[i].innerHTML = T[lang][key];
+          }
+        }
+        var opts = document.querySelectorAll(".lang-option");
+        for (var j = 0; j < opts.length; j++) {
+          if (opts[j].getAttribute("data-lang") === lang) {
+            opts[j].classList.add("active");
+          } else {
+            opts[j].classList.remove("active");
+          }
+        }
+      }
+
+      document.getElementById("lang-toggle").addEventListener("click", function() {
+        setLang(currentLang === "en" ? "sq" : "en");
+      });
+
+      (function init() {
+        var saved = localStorage.getItem("kujto-lang");
+        if (saved) {
+          setLang(saved);
+          return;
+        }
+        fetch("https://ipapi.co/country_code/")
+          .then(function(r) { return r.text(); })
+          .then(function(code) {
+            var c = code.trim().toUpperCase();
+            if (c === "AL" || c === "XK" || c === "MK") {
+              setLang("sq");
+            } else {
+              setLang("en");
+            }
+          })
+          .catch(function() {
+            setLang("en");
+          });
+      })();
+    </script>
   </body>
 </html>
