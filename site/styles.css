@@ -339,8 +339,7 @@ p {
 }
 
 .split,
-.install,
-.launch {
+.install {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(2rem, 5vw, 5rem);
@@ -354,8 +353,7 @@ p {
 
 .comparison,
 .feature-grid,
-.use-case-list,
-.launch-panel {
+.use-case-list {
   display: grid;
   gap: 1rem;
 }
@@ -371,8 +369,7 @@ p {
 
 .comparison article,
 .feature-grid article,
-.use-case-list article,
-.launch-panel article {
+.use-case-list article {
   min-height: 12rem;
   padding: 1.25rem;
   border: 1px solid var(--line);
@@ -456,21 +453,72 @@ pre code {
   overflow-wrap: anywhere;
 }
 
-.launch-panel {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-.launch-panel a,
-.launch-panel span {
-  display: block;
-  margin-top: 1.5rem;
-  color: var(--red-dark);
-  font-size: 0.92rem;
-  font-weight: 760;
+.roadmap-grid article {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
 }
 
-.launch-panel a:hover {
-  color: var(--ink);
+.roadmap-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.roadmap-grid article:nth-child(2) .roadmap-icon {
+  background: var(--mint);
+}
+
+.roadmap-grid article:nth-child(3) .roadmap-icon {
+  background: var(--amber);
+}
+
+.roadmap-grid article:nth-child(4) .roadmap-icon {
+  background: var(--blue);
+}
+
+.pse-shqip {
+  padding: clamp(4rem, 8vw, 7rem) 5vw;
+  background:
+    radial-gradient(ellipse at bottom right, rgba(213, 24, 32, 0.08), transparent 28rem),
+    #111111;
+  color: #ffffff;
+}
+
+.pse-shqip .eyebrow {
+  color: #ff6b72;
+}
+
+.pse-shqip-inner {
+  max-width: 42rem;
+}
+
+.pse-shqip-body p {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 1.05rem;
+  line-height: 1.72;
+}
+
+.pse-shqip-body p + p {
+  margin-top: 0.6rem;
+}
+
+.pse-shqip .button.primary {
+  margin-top: 1.6rem;
 }
 
 .footer {
@@ -511,8 +559,7 @@ pre code {
 
   .hero,
   .split,
-  .install,
-  .launch {
+  .install {
     grid-template-columns: 1fr;
   }
 
@@ -523,7 +570,7 @@ pre code {
   .proof-band,
   .feature-grid,
   .use-case-list,
-  .launch-panel {
+  .roadmap-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -561,7 +608,7 @@ pre code {
   .comparison,
   .feature-grid,
   .use-case-list,
-  .launch-panel {
+  .roadmap-grid {
     grid-template-columns: 1fr;
   }
 
