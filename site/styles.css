@@ -76,8 +76,14 @@ a {
   display: grid;
   place-items: center;
   background: var(--ink);
-  color: #ffffff;
   box-shadow: inset 0 -0.25rem 0 var(--red);
+  overflow: hidden;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .nav {
@@ -268,257 +274,43 @@ p {
 
 .hero-visual {
   position: relative;
-  min-height: 32rem;
-  padding: clamp(1rem, 3vw, 2rem);
-  border: 1px solid #272727;
+  aspect-ratio: 16 / 10;
+  border: 1px solid rgba(17, 17, 17, 0.18);
   border-radius: 8px;
   overflow: hidden;
-  background:
-    linear-gradient(145deg, rgba(213, 24, 32, 0.2), transparent 45%),
-    linear-gradient(160deg, #141414 0%, #262626 55%, #f5efe3 160%);
+  background: #07080c;
   box-shadow: var(--shadow);
 }
 
-.hero-visual::before {
-  content: "";
+.hero-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-art-caption {
   position: absolute;
-  inset: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  pointer-events: none;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
-.memory-stack {
-  position: relative;
-  min-height: 23rem;
-}
-
-.iphone-mockup {
-  position: absolute;
-  right: 0;
-  top: 0.4rem;
-  z-index: 1;
-  width: clamp(9.8rem, 27vw, 14.5rem);
-  aspect-ratio: 0.49;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 2rem;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 36%),
-    linear-gradient(160deg, #2e3447 0%, #111318 58%, #060607 100%);
-  box-shadow:
-    inset 0 0 0 0.42rem #090a0d,
-    0 1.8rem 4rem rgba(0, 0, 0, 0.42);
-  transform: rotate(7deg);
-}
-
-.iphone-screen {
-  position: absolute;
-  inset: 0.78rem;
-  border-radius: 1.48rem;
-  overflow: hidden;
-  background:
-    linear-gradient(135deg, rgba(213, 24, 32, 0.18), transparent 35%),
-    radial-gradient(circle at 72% 55%, rgba(242, 165, 65, 0.3), transparent 22%),
-    linear-gradient(180deg, #07080c 0%, #141722 52%, #050507 100%);
-}
-
-.iphone-screen::before,
-.iphone-screen::after {
-  content: "";
-  position: absolute;
-  left: 16%;
-  right: 16%;
-  height: 2.4rem;
-  border: 2px solid rgba(255, 139, 78, 0.62);
-  border-radius: 1.3rem;
-  filter: drop-shadow(0 0 0.85rem rgba(255, 122, 68, 0.35));
-}
-
-.iphone-screen::before {
-  top: 30%;
-}
-
-.iphone-screen::after {
-  top: 48%;
-}
-
-.dynamic-island {
-  position: absolute;
-  top: 0.65rem;
-  left: 50%;
-  width: 4.3rem;
-  height: 1.1rem;
-  border-radius: 999px;
-  background: #020203;
-  transform: translateX(-50%);
-}
-
-.screen-label,
-.screen-line {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  z-index: 1;
-}
-
-.screen-label {
-  bottom: 4.1rem;
-  color: #ffffff;
-  font-size: clamp(0.58rem, 1.15vw, 0.78rem);
-  font-weight: 820;
-  text-align: center;
-}
-
-.screen-line {
-  bottom: 2.55rem;
-  height: 0.42rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.32);
-}
-
-.screen-line.short {
-  left: 28%;
-  right: 28%;
-  bottom: 1.75rem;
-}
-
-.camera-plate {
-  position: absolute;
-  top: 1.1rem;
-  left: 1.1rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.42rem;
-  width: 4.65rem;
-  height: 4.65rem;
-  padding: 0.38rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 1.2rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.camera-plate span,
-.camera-plate i {
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 40% 34%, #4d5a7d 0 15%, #050609 36%, #020203 100%);
-  box-shadow:
-    inset 0 0 0 0.18rem rgba(255, 255, 255, 0.08),
-    0 0.28rem 0.8rem rgba(0, 0, 0, 0.45);
-}
-
-.camera-plate span:nth-child(3) {
-  grid-column: 1;
-}
-
-.camera-plate i {
-  width: 0.72rem;
-  height: 0.72rem;
-  align-self: center;
-  justify-self: center;
-  background: #d7d1c8;
-}
-
-.memory-file {
-  position: absolute;
-  left: 7%;
-  right: 6%;
-  top: 18%;
-  min-height: 14rem;
-  padding: 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(20px);
-  transform: rotate(3deg);
-}
-
-.memory-file.active {
-  z-index: 3;
-  left: 0;
-  right: 13%;
-  top: 4%;
-  background: rgba(255, 255, 255, 0.13);
-  transform: rotate(-3deg);
-}
-
-.file-name {
+.hero-art-caption span {
+  min-height: 2rem;
   display: inline-flex;
   align-items: center;
-  min-height: 2.35rem;
-  margin-bottom: 1rem;
-  padding: 0 0.85rem;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
-  background: var(--red);
+  background: rgba(7, 8, 12, 0.62);
   color: #ffffff;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.9rem;
-  font-weight: 800;
-}
-
-.line {
-  display: block;
-  width: 70%;
-  height: 0.72rem;
-  margin: 0.75rem 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.line.wide {
-  width: 88%;
-}
-
-.line.short {
-  width: 45%;
-}
-
-.rule-list {
-  display: grid;
-  gap: 0.55rem;
-  margin-top: 1rem;
-}
-
-.rule-list span {
-  min-height: 2rem;
-  padding: 0.45rem 0.7rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 0.88rem;
-}
-
-.agent-grid {
-  position: relative;
-  z-index: 4;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.65rem;
-}
-
-.agent-grid span {
-  min-height: 3rem;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
-  color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 760;
-}
-
-.agent-grid span:nth-child(2) {
-  color: #f2a541;
-}
-
-.agent-grid span:nth-child(3) {
-  color: #82d6c8;
-}
-
-.agent-grid span:nth-child(4) {
-  color: #93a7ff;
+  backdrop-filter: blur(14px);
 }
 
 .proof-band {
@@ -548,7 +340,7 @@ p {
 
 .split,
 .install,
-.deploy {
+.launch {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(2rem, 5vw, 5rem);
@@ -563,7 +355,7 @@ p {
 .comparison,
 .feature-grid,
 .use-case-list,
-.deploy-options {
+.launch-panel {
   display: grid;
   gap: 1rem;
 }
@@ -580,7 +372,7 @@ p {
 .comparison article,
 .feature-grid article,
 .use-case-list article,
-.deploy-options article {
+.launch-panel article {
   min-height: 12rem;
   padding: 1.25rem;
   border: 1px solid var(--line);
@@ -664,16 +456,21 @@ pre code {
   overflow-wrap: anywhere;
 }
 
-.deploy-options {
+.launch-panel {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.deploy-options span {
+.launch-panel a,
+.launch-panel span {
   display: block;
   margin-top: 1.5rem;
   color: var(--red-dark);
   font-size: 0.92rem;
   font-weight: 760;
+}
+
+.launch-panel a:hover {
+  color: var(--ink);
 }
 
 .footer {
@@ -715,7 +512,7 @@ pre code {
   .hero,
   .split,
   .install,
-  .deploy {
+  .launch {
     grid-template-columns: 1fr;
   }
 
@@ -723,14 +520,10 @@ pre code {
     min-height: auto;
   }
 
-  .hero-visual {
-    min-height: 28rem;
-  }
-
   .proof-band,
   .feature-grid,
   .use-case-list,
-  .deploy-options {
+  .launch-panel {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -757,35 +550,18 @@ pre code {
     width: 100%;
   }
 
-  .hero-visual {
-    min-height: 31rem;
+  .hero-art-caption {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    justify-content: center;
   }
 
-  .memory-file,
-  .memory-file.active {
-    left: 0.5rem;
-    right: 3.85rem;
-    transform: none;
-  }
-
-  .memory-stack {
-    min-height: 24.5rem;
-  }
-
-  .iphone-mockup {
-    right: 0.65rem;
-    top: 8.1rem;
-    width: 8.9rem;
-    opacity: 0.92;
-    transform: rotate(4deg);
-  }
-
-  .agent-grid,
   .proof-band,
   .comparison,
   .feature-grid,
   .use-case-list,
-  .deploy-options {
+  .launch-panel {
     grid-template-columns: 1fr;
   }
 

@@ -15,6 +15,7 @@
     >
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kujto.peterdsp.dev">
+    <meta property="og:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
     <meta name="theme-color" content="#111111">
     <link rel="canonical" href="https://kujto.peterdsp.dev">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -23,14 +24,16 @@
   <body>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Kujto home">
-        <span class="brand-mark" aria-hidden="true">K</span>
+        <span class="brand-mark" aria-hidden="true">
+          <img src="favicon.svg" alt="">
+        </span>
         <span>Kujto</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
         <a href="#why" data-i18n="nav.why">Why</a>
         <a href="#how" data-i18n="nav.how">How</a>
         <a href="#install" data-i18n="nav.install">Install</a>
-        <a href="#deploy" data-i18n="nav.deploy">Deploy</a>
+        <a href="#launch" data-i18n="nav.deploy">Launch</a>
       </nav>
       <a class="header-cta" href="https://github.com/peterdsp/kujto" data-i18n="nav.cta">Star on GitHub</a>
     </header>
@@ -74,46 +77,16 @@
           </div>
         </div>
 
-        <div class="hero-visual" aria-label="Kujto memory flow">
-          <div class="memory-stack">
-            <div class="iphone-mockup" aria-label="iPhone 17 Pro Max">
-              <div class="iphone-screen">
-                <span class="dynamic-island"></span>
-                <span class="screen-label">iPhone 17 Pro Max</span>
-                <span class="screen-line"></span>
-                <span class="screen-line short"></span>
-              </div>
-              <div class="camera-plate" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-                <i></i>
-              </div>
-            </div>
-            <div class="memory-file active">
-              <span class="file-name">AGENTS.md</span>
-              <span class="line wide"></span>
-              <span class="line"></span>
-              <span class="line short"></span>
-              <div class="rule-list">
-                <span data-i18n="visual.rule1">Read memory/MEMORY.md</span>
-                <span data-i18n="visual.rule2">No em-dash</span>
-                <span data-i18n="visual.rule3">Bilingual output</span>
-              </div>
-            </div>
-            <div class="memory-file">
-              <span class="file-name">MEMORY.md</span>
-              <span class="line wide"></span>
-              <span class="line"></span>
-              <span class="line short"></span>
-            </div>
-          </div>
-          <div class="agent-grid" aria-label="Supported agents">
-            <span>Claude</span>
+        <div class="hero-visual hero-art" aria-label="Kujto product preview">
+          <img
+            src="assets/kujto-hero.png"
+            alt="Kujto AI memory cards on a developer desk with Albanian eagle branding, Swift, Codex, Claude, and an iPhone."
+          >
+          <div class="hero-art-caption" aria-label="Supported agents">
+            <span>Swift</span>
             <span>Codex</span>
-            <span>Gemini</span>
-            <span>Copilot</span>
-            <span>Cursor</span>
+            <span>Claude</span>
+            <span>iOS</span>
           </div>
         </div>
       </section>
@@ -223,26 +196,26 @@
         </div>
       </section>
 
-      <section id="deploy" class="section deploy" aria-labelledby="deploy-title">
+      <section id="launch" class="section launch" aria-labelledby="launch-title">
         <div>
-          <p class="eyebrow" data-i18n="deploy.eyebrow">Deployment</p>
-          <h2 id="deploy-title" data-i18n="deploy.title">GitHub Pages is the best first launch.</h2>
+          <p class="eyebrow" data-i18n="deploy.eyebrow">Public launch</p>
+          <h2 id="launch-title" data-i18n="deploy.title">Launch Kujto where people can star it.</h2>
           <p data-i18n="deploy.text">
-            It is free, fast, close to the star button, and simple to connect
-            to <code>kujto.peterdsp.dev</code>. Your Pi is better later if you
-            want full control, analytics, or self-hosting practice.
+            The site is prepared for <code>kujto.peterdsp.dev</code> through
+            GitHub Pages. That keeps the story, install command, and star
+            button in the same place.
           </p>
         </div>
-        <div class="deploy-options">
+        <div class="launch-panel">
           <article>
-            <h3>GitHub Pages</h3>
-            <p data-i18n="deploy.pages.text">Recommended for public launch and GitHub discovery.</p>
-            <span data-i18n="deploy.pages.note">Uses <code>site/</code> and <code>site/CNAME</code>.</span>
+            <h3 data-i18n="deploy.pages.title">Ready for GitHub Pages</h3>
+            <p data-i18n="deploy.pages.text">Push the site, enable Pages with GitHub Actions, and point the domain to GitHub Pages.</p>
+            <a href="https://github.com/peterdsp/kujto" data-i18n="deploy.pages.note">Open the repo</a>
           </article>
           <article>
-            <h3>Raspberry Pi</h3>
-            <p data-i18n="deploy.pi.text">Good for self-hosted control, but needs uptime and TLS care.</p>
-            <span data-i18n="deploy.pi.note">Serve the same static files with Caddy or Nginx.</span>
+            <h3 data-i18n="deploy.pi.title">Pi can wait</h3>
+            <p data-i18n="deploy.pi.text">A Pi is fine for self-hosting later, but first launch should reduce friction and maximize GitHub discovery.</p>
+            <span data-i18n="deploy.pi.note">Use the Pi after the public site has traction.</span>
           </article>
         </div>
       </section>
@@ -267,7 +240,7 @@
           "nav.why": "Why",
           "nav.how": "How",
           "nav.install": "Install",
-          "nav.deploy": "Deploy",
+          "nav.deploy": "Launch",
           "nav.cta": "Star on GitHub",
           "hero.eyebrow": "AI memory for iOS agents",
           "hero.subtitle": "The Albanian first memory base that gives Claude, Codex, Gemini, Copilot, and Cursor the same long-term project truth.",
@@ -312,20 +285,22 @@
           "usecases.ai.text": "One pattern that works across Claude, Codex, Gemini, Copilot, Cursor, and future tools.",
           "usecases.alb.title": "For Albanian builders",
           "usecases.alb.text": "A visible, useful open-source project with Albanian identity at the front, not hidden in a footnote.",
-          "deploy.eyebrow": "Deployment",
-          "deploy.title": "GitHub Pages is the best first launch.",
-          "deploy.text": "It is free, fast, close to the star button, and simple to connect to <code>kujto.peterdsp.dev</code>. Your Pi is better later if you want full control, analytics, or self-hosting practice.",
-          "deploy.pages.text": "Recommended for public launch and GitHub discovery.",
-          "deploy.pages.note": "Uses <code>site/</code> and <code>site/CNAME</code>.",
-          "deploy.pi.text": "Good for self-hosted control, but needs uptime and TLS care.",
-          "deploy.pi.note": "Serve the same static files with Caddy or Nginx.",
+          "deploy.eyebrow": "Public launch",
+          "deploy.title": "Launch Kujto where people can star it.",
+          "deploy.text": "The site is prepared for <code>kujto.peterdsp.dev</code> through GitHub Pages. That keeps the story, install command, and star button in the same place.",
+          "deploy.pages.title": "Ready for GitHub Pages",
+          "deploy.pages.text": "Push the site, enable Pages with GitHub Actions, and point the domain to GitHub Pages.",
+          "deploy.pages.note": "Open the repo",
+          "deploy.pi.title": "Pi can wait",
+          "deploy.pi.text": "A Pi is fine for self-hosting later, but first launch should reduce friction and maximize GitHub discovery.",
+          "deploy.pi.note": "Use the Pi after the public site has traction.",
           "footer.tagline": "Versioned memory for agents. Memorie e versionuar per agjente."
         },
         sq: {
           "nav.why": "Pse",
           "nav.how": "Si",
           "nav.install": "Instalo",
-          "nav.deploy": "Publiko",
+          "nav.deploy": "Nisja",
           "nav.cta": "Ylli ne GitHub",
           "hero.eyebrow": "Memorie AI per agjente iOS",
           "hero.subtitle": "Baza e memories shqip-e-para qe u jep Claude, Codex, Gemini, Copilot dhe Cursor te njejten te vertete afatgjate te projektit.",
@@ -370,13 +345,15 @@
           "usecases.ai.text": "Nje model qe funksionon ne Claude, Codex, Gemini, Copilot, Cursor dhe veglat e se ardhmes.",
           "usecases.alb.title": "Per ndertuesit shqiptare",
           "usecases.alb.text": "Nje projekt open-source i dukshem dhe i dobishem me identitet shqiptar ne balle, jo i fshehur ne nje fushnote.",
-          "deploy.eyebrow": "Publikimi",
-          "deploy.title": "GitHub Pages eshte nisja me e mire e pare.",
-          "deploy.text": "Eshte falas, i shpejte, afer butonit te yllit dhe i thjeshte per t'u lidhur me <code>kujto.peterdsp.dev</code>. Pi-ja juaj eshte me mire me vone nese doni kontroll te plote, analitike ose praktike vete-hostimi.",
-          "deploy.pages.text": "E rekomanduar per publikim publik dhe zbulim ne GitHub.",
-          "deploy.pages.note": "Perdor <code>site/</code> dhe <code>site/CNAME</code>.",
-          "deploy.pi.text": "E mire per kontroll te vete-hostuar, por kerkon kohe funksionimi dhe kujdes TLS.",
-          "deploy.pi.note": "Sherbeni te njejtat skedare statike me Caddy ose Nginx.",
+          "deploy.eyebrow": "Nisje publike",
+          "deploy.title": "Nise Kujto aty ku njerezit mund t'i japin yll.",
+          "deploy.text": "Faqja eshte gati per <code>kujto.peterdsp.dev</code> permes GitHub Pages. Keshtu historia, komanda e instalimit dhe butoni i yllit rrin ne nje vend.",
+          "deploy.pages.title": "Gati per GitHub Pages",
+          "deploy.pages.text": "Shtyje faqen, aktivizo Pages me GitHub Actions dhe drejto domain-in te GitHub Pages.",
+          "deploy.pages.note": "Hap repo-n",
+          "deploy.pi.title": "Pi mund te prese",
+          "deploy.pi.text": "Pi eshte mire per vete-hostim me vone, por nisja e pare duhet te ule ferkimin dhe te rrise zbulimin ne GitHub.",
+          "deploy.pi.note": "Perdore Pi-ne pasi faqja publike te kete terheqje.",
           "footer.tagline": "Memorie e versionuar per agjente. Versioned memory for agents."
         }
       };
