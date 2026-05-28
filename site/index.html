@@ -32,10 +32,6 @@
         <a href="#install" data-i18n="nav.install">Install</a>
         <a href="#deploy" data-i18n="nav.deploy">Deploy</a>
       </nav>
-      <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">
-        <span class="lang-option" data-lang="en">EN</span>
-        <span class="lang-option" data-lang="sq">SQ</span>
-      </button>
       <a class="header-cta" href="https://github.com/peterdsp/kujto" data-i18n="nav.cta">Star on GitHub</a>
     </header>
 
@@ -260,6 +256,11 @@
       <a href="https://github.com/peterdsp/kujto">github.com/peterdsp/kujto</a>
     </footer>
 
+    <button class="lang-fab" id="lang-toggle" aria-label="Switch language">
+      <span class="lang-fab-flag" id="lang-flag"></span>
+      <span class="lang-fab-label" id="lang-label">SQ</span>
+    </button>
+
     <script>
       var T = {
         en: {
@@ -393,13 +394,14 @@
             els[i].innerHTML = T[lang][key];
           }
         }
-        var opts = document.querySelectorAll(".lang-option");
-        for (var j = 0; j < opts.length; j++) {
-          if (opts[j].getAttribute("data-lang") === lang) {
-            opts[j].classList.add("active");
-          } else {
-            opts[j].classList.remove("active");
-          }
+        var flag = document.getElementById("lang-flag");
+        var label = document.getElementById("lang-label");
+        if (lang === "en") {
+          flag.textContent = "🇦🇱";
+          label.textContent = "SQ";
+        } else {
+          flag.textContent = "🇬🇧";
+          label.textContent = "EN";
         }
       }
 

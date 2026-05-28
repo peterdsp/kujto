@@ -9,9 +9,10 @@
 [![Made in Albania](https://img.shields.io/badge/Made%20in-Albania%20🇦🇱-red)](https://github.com/peterdsp/kujto)
 [![Focus](https://img.shields.io/badge/Focus-iOS%20first-blue?logo=apple)](memory/domains/ios/)
 [![Agents](https://img.shields.io/badge/Agents-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Copilot-purple)](AGENTS.md)
+[![Site](https://img.shields.io/badge/Site-kujto.peterdsp.dev-black)](https://kujto.peterdsp.dev)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Memory](#memory) · [Tools](#tools) · [Packages](#packages) · [Roadmap](#roadmap)
+[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Site](#site) · [Memory](#memory) · [Tools](#tools) · [Packages](#packages) · [Roadmap](#roadmap)
 
 </div>
 
@@ -27,8 +28,12 @@ Arkitektura është bërë për t'u zgjeruar (`memory/domains/`), por në fillim
 
 Si bonus, repo-ja sjell **`simulator.sh`**, një skript ultra-portativ që ndez çdo projekt Xcode pa konfigurim. Ai është vegla e parë në një familje që do të rritet bashkë me memorien.
 
+Projekti ka tani edhe **faqen e vet të gjallë** te [kujto.peterdsp.dev](https://kujto.peterdsp.dev), me përkthim të plotë në shqip, ndërrues gjuhe dhe zbulim automatik vendndodhjeje (shqip si parazgjedhje për vizitorë nga Shqipëria, Kosova dhe Maqedonia e Veriut).
+
 ### Çfarë merr sot
 
+- **Faqe statike e gjallë** te [kujto.peterdsp.dev](https://kujto.peterdsp.dev), e publikuar me GitHub Pages.
+- **Dygjuhëshe me zbulim vendndodhjeje** - faqja zbulon automatikisht vendin e vizitorit dhe shfaq shqip ose anglisht. Butoni notues lejon ndërrimin e gjuhës.
 - **Memory framework dygjuhësh** (shqip dhe anglisht në të njëjtin file), me rregulla bërthamë, konventa iOS dhe workflow.
 - **12 guida arkitekture iOS** për modele klasike, UIKit, SwiftUI, reactive dhe unidirectional. Plus një guidë vendimi për të zgjedhur saktë midis tyre.
 - **Adapter për Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** përmes një `AGENTS.md` të vetëm.
@@ -73,8 +78,12 @@ The architecture is built to expand (`memory/domains/`), but we are shipping one
 
 As a bonus, the repo ships **`simulator.sh`**, an ultra-portable script that boots any Xcode project with zero config. It is the first tool in a family that will grow alongside the memory.
 
+The project now has its own **live site** at [kujto.peterdsp.dev](https://kujto.peterdsp.dev), with full Albanian translation, a language switcher, and automatic geo-detection (defaults to Albanian for visitors from Albania, Kosovo, and North Macedonia).
+
 ### What you get today
 
+- **Live static site** at [kujto.peterdsp.dev](https://kujto.peterdsp.dev), deployed via GitHub Pages.
+- **Bilingual with geo-detection** - the site auto-detects the visitor's country and shows Albanian or English. A floating button lets users switch manually.
 - **Bilingual memory framework** (Albanian and English in the same file), with core rules, iOS conventions, and workflows.
 - **12 iOS architecture guides** across classic, UIKit, SwiftUI, reactive, and unidirectional patterns. Plus a decision guide for choosing between them.
 - **Adapter for Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** through a single `AGENTS.md`.
@@ -106,6 +115,27 @@ cd path/to/your/ios/project
 ```
 
 Your agents (Claude, Codex, Gemini, Copilot) now read `AGENTS.md` and follow `memory/MEMORY.md` in every session.
+
+---
+
+## Site
+
+Kujto ka nje faqe statike te gjalle / Kujto has a live static site at **[kujto.peterdsp.dev](https://kujto.peterdsp.dev)**.
+
+- E ndertuar me HTML dhe CSS te paster, pa framework, pa build step.
+- Dygjuheshe me zbulim automatik vendndodhjeje (IP-based) per vizitore nga Shqiperia, Kosova dhe Maqedonia e Veriut.
+- Buton notues (FAB) ne kend te poshtem te djathte per nderrimin manual te gjuhes.
+- E publikuar automatikisht me GitHub Pages nga dosja `site/`.
+
+Built with plain HTML and CSS, no framework, no build step. Bilingual with automatic geo-detection (IP-based) for visitors from Albania, Kosovo, and North Macedonia. A floating action button in the bottom-right corner lets users switch languages manually. Auto-deployed via GitHub Pages from the `site/` directory.
+
+```
+site/
+├── index.html      faqja kryesore me i18n te integruar / main page with inline i18n
+├── styles.css       stilet / styles
+├── favicon.svg      ikona / favicon
+└── CNAME            kujto.peterdsp.dev
+```
 
 ---
 
@@ -268,17 +298,19 @@ Each commit should have clear logical distance from the next:
 ### v0.1 (sot / today)
 
 - [x] Memory framework (core, domains/ios, workflows)
-- [x] AGENTS.md + adapter për Claude, Codex, Gemini, Copilot, Cursor
-- [x] `simulator.sh` me auto-detektim të plotë
-- [x] `wire.sh` për integrim me repo
+- [x] AGENTS.md + adapter per Claude, Codex, Gemini, Copilot, Cursor
+- [x] `simulator.sh` me auto-detektim te plote
+- [x] `wire.sh` per integrim me repo
 - [x] CI me shellcheck, no-em-dash guard, bilingual sections guard
+- [x] Faqe statike e gjalle te [kujto.peterdsp.dev](https://kujto.peterdsp.dev) me GitHub Pages
+- [x] Perkthim i plote ne shqip me zbulim automatik vendndodhjeje dhe ndërrues gjuhe
 
-### v0.2 (per të ardhmen e afërt / near future)
+### v0.2 (per te ardhmen e afert / near future)
 - [ ] Pasurim i `memory/domains/ios/`: SwiftUI patterns, performance, accessibility, testing
-- [ ] `snapshots.sh` për regjistrim batch të snapshot-eve
-- [ ] `xcode-cleanup.sh` për DerivedData dhe simulator hygiene
+- [ ] `snapshots.sh` per regjistrim batch te snapshot-eve
+- [ ] `xcode-cleanup.sh` per DerivedData dhe simulator hygiene
 - [ ] Homebrew formula
-- [ ] CLI i vetëm `kujto` për të gjitha veglat
+- [ ] CLI i vetem `kujto` per te gjitha veglat
 
 ### v1.0 (zgjerimi / expansion)
 - [ ] `memory/domains/android/` (Kotlin, Compose, Gradle)
