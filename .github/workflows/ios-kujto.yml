@@ -1,0 +1,71 @@
+name: iOS (Kujto)
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build, test, archive artifacts
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build Kujto
+        run: |
+          swift build -c release
+          echo "${{ github.workspace }}/.build/release" >> "$GITHUB_PATH"
+
+      - name: Inspect project
+        run: kujto context --json
+
+      - name: Resolve simulator
+        run: kujto simulator list --platform iOS --json | tee simulators.ndjson
+
+      - name: Build
+        run: |
+          kujto build \
+            --config .kujto/ci.json \
+            --json \
+            --timeout-ms 1800000 \
+            | tee build.ndjson
+
+      - name: Test
+        run: |
+          kujto test \
+            --config .kujto/ci.json \
+            --json \
+            --timeout-ms 2400000 \
+            | tee test.ndjson
+
+      - name: Summarise events
+        if: always()
+        run: |
+          echo "## Kujto NDJSON summary" >> "$GITHUB_STEP_SUMMARY"
+          for f in build.ndjson test.ndjson; do
+            [ -f "$f" ] || continue
+            echo "### $f" >> "$GITHUB_STEP_SUMMARY"
+            grep '"type":"build_issue"' "$f" | head -20 >> "$GITHUB_STEP_SUMMARY" || true
+            grep '"type":"test_failure"' "$f" | head -20 >> "$GITHUB_STEP_SUMMARY" || true
+            grep '"type":"error"' "$f" | head -20 >> "$GITHUB_STEP_SUMMARY" || true
+          done
+
+      - name: Upload Kujto artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kujto-artifacts
+          path: |
+            .kujto/artifacts
+            build.ndjson
+            test.ndjson
+            simulators.ndjson
+          if-no-files-found: ignore

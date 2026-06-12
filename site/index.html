@@ -12,7 +12,6 @@
     <meta name="author" content="Petros Dhespollari">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 
-    <!-- Open Graph -->
     <meta property="og:title" content="Kujto - Versioned AI Memory for Your Codebase">
     <meta property="og:description" content="Stop re-teaching AI agents. Kujto keeps your codebase rules versioned in git. Works with Claude, Copilot, Gemini, Codex, and Cursor. Open-source.">
     <meta property="og:type" content="website">
@@ -24,18 +23,15 @@
     <meta property="og:locale" content="en_US">
     <meta property="og:locale:alternate" content="sq_AL">
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Kujto - AI Memory for Your Codebase">
     <meta name="twitter:description" content="Stop re-teaching AI agents. Kujto keeps your codebase rules versioned in git. Works with Claude, Copilot, Gemini, Codex, and Cursor.">
     <meta name="twitter:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
 
-    <!-- Bilingual alternate links -->
     <link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev">
     <link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev">
     <link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev">
 
-    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -45,16 +41,8 @@
       "operatingSystem": "Any (git-based)",
       "url": "https://kujto.peterdsp.dev",
       "description": "Open-source, bilingual AI memory base that gives Claude, Codex, Gemini, Copilot, and Cursor one source of truth, versioned in git.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "Petros Dhespollari",
-        "url": "https://peterdsp.dev"
-      },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Petros Dhespollari", "url": "https://peterdsp.dev" },
       "license": "https://github.com/peterdsp/kujto/blob/main/LICENSE",
       "codeRepository": "https://github.com/peterdsp/kujto",
       "inLanguage": ["en", "sq"],
@@ -69,7 +57,7 @@
     }
     </script>
 
-    <meta name="theme-color" content="#111111">
+    <meta name="theme-color" content="#07070a">
     <link rel="canonical" href="https://kujto.peterdsp.dev">
     <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="favicon-192.png" sizes="192x192" type="image/png">
@@ -105,8 +93,8 @@
             and Cursor share one source of truth.
           </p>
           <p class="hero-shqip" data-i18n="hero.shqip">
-            "Kujto" do te thote "mbaj mend" ne shqip. Memorie e versionuar
-            ne git per cdo agjent AI qe prek kodin tend.
+            "Kujto" means "remember" in Albanian. Versioned memory in git
+            for every AI agent that touches your code.
           </p>
           <div class="hero-actions" aria-label="Hero actions">
             <a class="button primary" href="https://github.com/peterdsp/kujto">
@@ -134,17 +122,17 @@
           </div>
         </div>
 
-        <div class="hero-visual hero-art" aria-label="Kujto product preview">
-          <img
-            src="assets/kujto-hero.png"
-            alt="Kujto AI memory cards on a developer desk with Albanian eagle branding, Swift, Codex, Claude, and an iPhone."
-          >
-          <div class="hero-art-caption" aria-label="Supported agents">
-            <span>Claude</span>
-            <span>Codex</span>
-            <span>Gemini</span>
-            <span>Copilot</span>
-            <span>Cursor</span>
+        <div class="hero-visual" aria-label="Kujto interactive terminal">
+          <div class="terminal" id="terminal" role="region" aria-label="Kujto CLI">
+            <div class="term-bar">
+              <div class="term-dots" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="term-title">~ kujto - zsh</div>
+              <div class="term-hint">try: help</div>
+            </div>
+            <div class="term-body" id="term-body" tabindex="0"></div>
+            <div class="term-suggest" id="term-suggest" aria-label="Quick commands"></div>
           </div>
         </div>
       </section>
@@ -216,16 +204,20 @@
         </div>
       </section>
 
-      <section id="install" class="section install" aria-labelledby="install-title">
-        <div>
+      <section id="install" class="section" aria-labelledby="install-title">
+        <div class="section-heading">
           <p class="eyebrow" data-i18n="install.eyebrow">Get started</p>
-          <h2 id="install-title" data-i18n="install.title">Add Kujto in one command.</h2>
+          <h2 id="install-title" data-i18n="install.title">Type <code>install</code> in the terminal above.</h2>
           <p data-i18n="install.text">
-            Clone the memory base, fork it, and make it yours. Albanian stays
-            first, English stays in sync. MIT licensed.
+            The interactive wizard asks for your language (Shqip or English)
+            and which agents you use, then prints the command tailored for you.
+            Albanian stays first, English stays in sync. MIT licensed.
           </p>
         </div>
-        <pre><code>curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></pre>
+        <div class="glass-card">
+          <p style="color: var(--ink-soft); margin-bottom: 0.6rem;" data-i18n="install.fallback">Prefer one-liner?</p>
+          <pre style="margin: 0; padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--line-strong); overflow-x: auto;"><code style="background: transparent; color: #f5f5f5; padding: 0;">curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></pre>
+        </div>
       </section>
 
       <section class="section" aria-labelledby="use-cases-title">
@@ -333,6 +325,7 @@
     </button>
 
     <script>
+      // ---------- i18n ----------
       var T = {
         en: {
           "nav.why": "Why",
@@ -370,8 +363,9 @@
           "how.f3.title": "Truth stays in git",
           "how.f3.text": "Your project rules evolve through reviewable Markdown diffs, not copy-pasted prompts that disappear into chat history.",
           "install.eyebrow": "Get started",
-          "install.title": "Add Kujto in one command.",
-          "install.text": "Clone the memory base, fork it, and make it yours. Albanian stays first, English stays in sync. MIT licensed.",
+          "install.title": "Type <code>install</code> in the terminal above.",
+          "install.text": "The interactive wizard asks for your language (Shqip or English) and which agents you use, then prints the command tailored for you. Albanian stays first, English stays in sync. MIT licensed.",
+          "install.fallback": "Prefer the one-liner?",
           "usecases.eyebrow": "Who it's for",
           "usecases.title": "Built for developers who work with AI agents every day.",
           "usecases.ios.title": "iOS developers",
@@ -429,8 +423,9 @@
           "how.f3.title": "E verteta qendron ne git",
           "how.f3.text": "Rregullat e projektit zhvillohen permes diff-eve Markdown te rishikueshme, jo prompt-e te kopjuara qe zhduken ne historikun e chat-it.",
           "install.eyebrow": "Fillo",
-          "install.title": "Shto Kujto me nje komande.",
-          "install.text": "Klono bazen e memories, beje fork dhe beje tenden. Shqipja qendron e para, anglishtja ne sinkron. Licensa MIT.",
+          "install.title": "Shkruaj <code>install</code> ne terminalin lart.",
+          "install.text": "Magjistari interaktiv te pyet per gjuhen (Shqip ose English) dhe per agjentet qe perdor, pastaj te printon komanden e pershtatur per ty. Shqipja qendron e para, anglishtja ne sinkron. Licensa MIT.",
+          "install.fallback": "Preferon nje-rresht?",
           "usecases.eyebrow": "Per ke eshte",
           "usecases.title": "Ndertuar per zhvillues qe punojne me agjente AI cdo dite.",
           "usecases.ios.title": "Zhvillues iOS",
@@ -482,25 +477,450 @@
         setLang(currentLang === "en" ? "sq" : "en");
       });
 
-      (function init() {
+      (function initLang() {
         var saved = localStorage.getItem("kujto-lang");
-        if (saved) {
-          setLang(saved);
-          return;
-        }
+        if (saved) { setLang(saved); return; }
         fetch("https://ipapi.co/country_code/")
           .then(function(r) { return r.text(); })
           .then(function(code) {
             var c = code.trim().toUpperCase();
-            if (c === "AL" || c === "XK" || c === "MK") {
-              setLang("sq");
-            } else {
-              setLang("en");
-            }
+            setLang((c === "AL" || c === "XK" || c === "MK") ? "sq" : "en");
           })
-          .catch(function() {
-            setLang("en");
+          .catch(function() { setLang("en"); });
+      })();
+
+      // ---------- Interactive terminal ----------
+      (function terminal() {
+        var body = document.getElementById("term-body");
+        var suggest = document.getElementById("term-suggest");
+        var history = [];
+        var historyIdx = -1;
+        var wizardState = null; // {step, data}
+
+        // Localised strings inside the terminal (independent from site lang)
+        var L = {
+          en: {
+            welcome1: "Kujto v1.0.0  -  Versioned AI memory for your codebase",
+            welcome2: "Type 'help' for commands. Type 'install' to start the wizard.",
+            help_title: "Available commands:",
+            help: [
+              "  help        Show this help",
+              "  install     Interactive installation wizard",
+              "  wire        Explain wire.sh",
+              "  agents      List supported AI agents",
+              "  memory      Show memory file structure",
+              "  about       About Kujto",
+              "  lang sq|en  Switch terminal language",
+              "  gh          Open GitHub repository",
+              "  clear       Clear the terminal"
+            ],
+            unknown: "command not found: ",
+            unknown_hint: "Type 'help' for a list of commands.",
+            ask_lang: "? Choose the language for your memory files:",
+            opt_lang: ["  1) Shqip (Albanian first, English mirrored)", "  2) English only", "  3) Bilingual (both, Shqip first)"],
+            ask_lang_hint: "Enter 1, 2 or 3:",
+            ask_scope: "? Where do you want to install Kujto?",
+            opt_scope: ["  1) Global  (~/.claude, ~/.codex, ~/.gemini)", "  2) Project (./AGENTS.md in current repo)"],
+            ask_scope_hint: "Enter 1 or 2:",
+            ask_agents: "? Which agents do you use? (comma-separated)",
+            opt_agents: "  claude, codex, gemini, copilot, cursor, all",
+            ask_agents_hint: "Example: claude,codex  (or 'all')",
+            confirm: "Ready to install with:",
+            run: "Run this in your shell:",
+            done: "Done. Welcome to Kujto.",
+            cancelled: "Wizard cancelled.",
+            invalid: "Invalid choice, try again.",
+            about: [
+              "Kujto  /  'remember' in Albanian",
+              "Open-source bilingual AI memory base, versioned in git.",
+              "Author: Petros Dhespollari   License: MIT",
+              "Site:   https://kujto.peterdsp.dev"
+            ],
+            wire: [
+              "wire.sh links AGENTS.md, CLAUDE.md, CODEX.md and GEMINI.md",
+              "into any project. One command, every agent reads the same",
+              "source of truth versioned in git."
+            ],
+            agents: [
+              "Supported agents:",
+              "  - Claude Code     (CLAUDE.md)",
+              "  - OpenAI Codex    (AGENTS.md)",
+              "  - Gemini CLI      (GEMINI.md)",
+              "  - GitHub Copilot  (AGENTS.md generic)",
+              "  - Cursor          (AGENTS.md generic)"
+            ],
+            memory: [
+              "memory/",
+              "  MEMORY.md         index",
+              "  core/             writing style, safety, git, handoff",
+              "  domains/ios/      Swift, Xcode, snapshots, architecture",
+              "  workflows/        answer order, PR descriptions, hygiene"
+            ],
+            opening: "Opening github.com/peterdsp/kujto...",
+            lang_switched: "Terminal language switched."
+          },
+          sq: {
+            welcome1: "Kujto v1.0.0  -  Memorie AI e versionuar per kodin tend",
+            welcome2: "Shkruaj 'help' per komandat. Shkruaj 'install' per magjistarin.",
+            help_title: "Komandat e disponueshme:",
+            help: [
+              "  help        Shfaq ndihmen",
+              "  install     Magjistar interaktiv instalimi",
+              "  wire        Shpjego wire.sh",
+              "  agents      Listo agjentet e mbeshtetur",
+              "  memory      Shfaq strukturen e memories",
+              "  about       Per Kujto",
+              "  lang sq|en  Ndrysho gjuhen e terminalit",
+              "  gh          Hape repon ne GitHub",
+              "  clear       Pastro terminalin"
+            ],
+            unknown: "komanda nuk u gjet: ",
+            unknown_hint: "Shkruaj 'help' per listen e komandave.",
+            ask_lang: "? Zgjidh gjuhen per skedaret e memories:",
+            opt_lang: ["  1) Shqip (Shqipja e para, anglishtja pasqyre)", "  2) Anglisht vetem", "  3) Dygjuhesh (te dyja, shqipja e para)"],
+            ask_lang_hint: "Shtyp 1, 2 ose 3:",
+            ask_scope: "? Ku deshiron ta instalosh Kujto?",
+            opt_scope: ["  1) Globalisht (~/.claude, ~/.codex, ~/.gemini)", "  2) Projekti  (./AGENTS.md ne repon aktuale)"],
+            ask_scope_hint: "Shtyp 1 ose 2:",
+            ask_agents: "? Cilet agjente perdor? (ndare me presje)",
+            opt_agents: "  claude, codex, gemini, copilot, cursor, all",
+            ask_agents_hint: "Shembull: claude,codex  (ose 'all')",
+            confirm: "Gati per instalim me:",
+            run: "Ekzekuto kete ne shell:",
+            done: "U krye. Mireserdhe ne Kujto.",
+            cancelled: "Magjistari u anulua.",
+            invalid: "Zgjedhje e pavlefshme, provo perseri.",
+            about: [
+              "Kujto  /  'mbaj mend' ne shqip",
+              "Baze memorie AI dygjuhesh me burim te hapur, e versionuar ne git.",
+              "Autori: Petros Dhespollari   Licensa: MIT",
+              "Faqja: https://kujto.peterdsp.dev"
+            ],
+            wire: [
+              "wire.sh lidh AGENTS.md, CLAUDE.md, CODEX.md dhe GEMINI.md",
+              "ne cdo projekt. Nje komande, cdo agjent lexon te njejtin",
+              "burim te vertete te versionuar ne git."
+            ],
+            agents: [
+              "Agjentet e mbeshtetur:",
+              "  - Claude Code     (CLAUDE.md)",
+              "  - OpenAI Codex    (AGENTS.md)",
+              "  - Gemini CLI      (GEMINI.md)",
+              "  - GitHub Copilot  (AGENTS.md gjeneric)",
+              "  - Cursor          (AGENTS.md gjeneric)"
+            ],
+            memory: [
+              "memory/",
+              "  MEMORY.md         indeksi",
+              "  core/             stili, siguria, git, handoff",
+              "  domains/ios/      Swift, Xcode, snapshots, arkitektura",
+              "  workflows/        rendi, PR, higjiena"
+            ],
+            opening: "Po hap github.com/peterdsp/kujto...",
+            lang_switched: "Gjuha e terminalit u ndryshua."
+          }
+        };
+
+        var termLang = "en";
+
+        var chips = ["help", "install", "wire", "agents", "memory", "about", "gh", "clear"];
+
+        function renderChips() {
+          suggest.innerHTML = "";
+          for (var i = 0; i < chips.length; i++) {
+            var c = document.createElement("button");
+            c.className = "term-chip";
+            c.type = "button";
+            c.textContent = chips[i];
+            (function(cmd) {
+              c.addEventListener("click", function() { runCommand(cmd); });
+            })(chips[i]);
+            suggest.appendChild(c);
+          }
+        }
+
+        function ps() {
+          return '<span class="ps">kujto<span class="at">@</span>memory<span class="at">:</span><span class="path">~</span><span class="at">$</span></span>';
+        }
+
+        function pushLine(text, cls) {
+          var div = document.createElement("div");
+          div.className = "term-line" + (cls ? " " + cls : "");
+          div.innerHTML = text;
+          body.appendChild(div);
+          body.scrollTop = body.scrollHeight;
+        }
+
+        function pushBlank() { pushLine("&nbsp;"); }
+
+        function pushEcho(cmd) {
+          var div = document.createElement("div");
+          div.className = "term-line";
+          div.innerHTML = ps() + " " + escapeHtml(cmd);
+          body.appendChild(div);
+        }
+
+        function escapeHtml(s) {
+          return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function renderPrompt(promptHint) {
+          // Remove any existing live prompt
+          var existing = document.getElementById("term-live-prompt");
+          if (existing) existing.remove();
+
+          var row = document.createElement("div");
+          row.className = "term-prompt";
+          row.id = "term-live-prompt";
+          row.innerHTML = ps() + ' <input class="term-input" id="term-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input">';
+          body.appendChild(row);
+          var input = document.getElementById("term-input");
+          if (promptHint) input.placeholder = promptHint;
+          input.focus();
+          body.scrollTop = body.scrollHeight;
+
+          input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+              var value = input.value;
+              input.disabled = true;
+              row.id = "";
+              row.innerHTML = ps() + " " + escapeHtml(value);
+              handleSubmit(value);
+            } else if (e.key === "ArrowUp") {
+              e.preventDefault();
+              if (history.length === 0) return;
+              if (historyIdx < 0) historyIdx = history.length;
+              historyIdx = Math.max(0, historyIdx - 1);
+              input.value = history[historyIdx] || "";
+            } else if (e.key === "ArrowDown") {
+              e.preventDefault();
+              if (historyIdx < 0) return;
+              historyIdx = Math.min(history.length, historyIdx + 1);
+              input.value = history[historyIdx] || "";
+            } else if (e.key === "Tab") {
+              e.preventDefault();
+              var v = input.value.trim();
+              if (!v) return;
+              var match = chips.filter(function(c) { return c.indexOf(v) === 0; });
+              if (match.length === 1) input.value = match[0];
+            } else if (e.key === "c" && (e.ctrlKey || e.metaKey)) {
+              if (wizardState) {
+                wizardState = null;
+                pushLine("^C " + L[termLang].cancelled, "warn");
+              }
+            }
           });
+        }
+
+        function handleSubmit(raw) {
+          var value = (raw || "").trim();
+          if (wizardState) {
+            handleWizard(value);
+          } else {
+            if (value) history.push(value);
+            historyIdx = -1;
+            execute(value);
+          }
+          renderPrompt();
+        }
+
+        function runCommand(cmd) {
+          // Programmatic execution (used by chips)
+          var existing = document.getElementById("term-live-prompt");
+          if (existing) existing.remove();
+          var row = document.createElement("div");
+          row.className = "term-prompt";
+          row.innerHTML = ps() + " " + escapeHtml(cmd);
+          body.appendChild(row);
+          if (wizardState) {
+            handleWizard(cmd);
+          } else {
+            history.push(cmd);
+            execute(cmd);
+          }
+          renderPrompt();
+        }
+
+        function execute(value) {
+          if (!value) return;
+          var parts = value.split(/\s+/);
+          var cmd = parts[0].toLowerCase();
+          var arg = parts.slice(1).join(" ");
+          var t = L[termLang];
+
+          switch (cmd) {
+            case "help":
+              pushLine(t.help_title, "accent");
+              for (var i = 0; i < t.help.length; i++) pushLine(t.help[i], "dim");
+              break;
+            case "install":
+              startWizard();
+              break;
+            case "wire":
+              for (var w = 0; w < t.wire.length; w++) pushLine(t.wire[w]);
+              break;
+            case "agents":
+              for (var a = 0; a < t.agents.length; a++) pushLine(t.agents[a], a === 0 ? "accent" : "");
+              break;
+            case "memory":
+              for (var m = 0; m < t.memory.length; m++) pushLine(t.memory[m], m === 0 ? "accent" : "dim");
+              break;
+            case "about":
+              for (var b = 0; b < t.about.length; b++) pushLine(t.about[b], b === 0 ? "red" : "");
+              break;
+            case "lang":
+              if (arg === "sq" || arg === "en") {
+                termLang = arg;
+                pushLine(L[termLang].lang_switched, "ok");
+              } else {
+                pushLine("usage: lang sq | lang en", "dim");
+              }
+              break;
+            case "gh":
+            case "github":
+              pushLine(t.opening, "accent");
+              setTimeout(function() {
+                window.open("https://github.com/peterdsp/kujto", "_blank", "noopener");
+              }, 250);
+              break;
+            case "clear":
+            case "cls":
+              body.innerHTML = "";
+              break;
+            case "ls":
+              pushLine("AGENTS.md  CLAUDE.md  CODEX.md  GEMINI.md  memory/  bin/", "dim");
+              break;
+            case "whoami":
+              pushLine("kujto", "dim");
+              break;
+            case "exit":
+            case "quit":
+              pushLine("nope, you're staying here.", "warn");
+              break;
+            default:
+              pushLine(t.unknown + escapeHtml(value), "err");
+              pushLine(t.unknown_hint, "dim");
+          }
+        }
+
+        // ---------- Install wizard ----------
+        function startWizard() {
+          wizardState = { step: "lang", data: {} };
+          askWizard();
+        }
+
+        function askWizard() {
+          var t = L[termLang];
+          if (wizardState.step === "lang") {
+            pushLine(t.ask_lang, "accent");
+            for (var i = 0; i < t.opt_lang.length; i++) pushLine(t.opt_lang[i], "dim");
+            pushLine(t.ask_lang_hint, "dim");
+          } else if (wizardState.step === "scope") {
+            pushLine(t.ask_scope, "accent");
+            for (var j = 0; j < t.opt_scope.length; j++) pushLine(t.opt_scope[j], "dim");
+            pushLine(t.ask_scope_hint, "dim");
+          } else if (wizardState.step === "agents") {
+            pushLine(t.ask_agents, "accent");
+            pushLine(t.opt_agents, "dim");
+            pushLine(t.ask_agents_hint, "dim");
+          }
+        }
+
+        function handleWizard(value) {
+          var t = L[termLang];
+          var v = (value || "").trim().toLowerCase();
+
+          if (v === "cancel" || v === "exit" || v === "q") {
+            pushLine(t.cancelled, "warn");
+            wizardState = null;
+            return;
+          }
+
+          if (wizardState.step === "lang") {
+            var langMap = { "1": "sq", "2": "en", "3": "both", "sq": "sq", "en": "en", "both": "both", "shqip": "sq", "english": "en" };
+            if (!(v in langMap)) { pushLine(t.invalid, "err"); askWizard(); return; }
+            wizardState.data.lang = langMap[v];
+            // Also switch terminal language to match user preference (shqip first)
+            if (wizardState.data.lang === "sq" || wizardState.data.lang === "both") {
+              termLang = "sq";
+            } else {
+              termLang = "en";
+            }
+            wizardState.step = "scope";
+            askWizard();
+          } else if (wizardState.step === "scope") {
+            var scopeMap = { "1": "global", "2": "project", "global": "global", "project": "project" };
+            if (!(v in scopeMap)) { pushLine(t.invalid, "err"); askWizard(); return; }
+            wizardState.data.scope = scopeMap[v];
+            wizardState.step = "agents";
+            askWizard();
+          } else if (wizardState.step === "agents") {
+            if (!v) { pushLine(t.invalid, "err"); askWizard(); return; }
+            var picked;
+            if (v === "all" || v === "te gjithe" || v === "te-gjithe") {
+              picked = ["claude", "codex", "gemini", "copilot", "cursor"];
+            } else {
+              picked = v.split(/[,\s]+/).filter(function(s) {
+                return ["claude", "codex", "gemini", "copilot", "cursor"].indexOf(s) >= 0;
+              });
+            }
+            if (picked.length === 0) { pushLine(t.invalid, "err"); askWizard(); return; }
+            wizardState.data.agents = picked;
+            finishWizard();
+          }
+        }
+
+        function finishWizard() {
+          var t = L[termLang];
+          var d = wizardState.data;
+          wizardState = null;
+
+          pushBlank();
+          pushLine(t.confirm, "accent");
+          pushLine("  language: " + d.lang, "dim");
+          pushLine("  scope:    " + d.scope, "dim");
+          pushLine("  agents:   " + d.agents.join(", "), "dim");
+          pushBlank();
+
+          var envParts = [];
+          envParts.push("KUJTO_LANG=" + d.lang);
+          envParts.push("KUJTO_AGENTS=" + d.agents.join(","));
+          var env = envParts.join(" ");
+          var cmd;
+          if (d.scope === "global") {
+            cmd = env + " curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash";
+          } else {
+            cmd = "git clone https://github.com/peterdsp/kujto.git && cd kujto && " + env + " ./wire.sh";
+          }
+
+          pushLine(t.run, "ok");
+          pushLine("  " + cmd, "accent");
+          pushBlank();
+          pushLine("&#10003; " + t.done, "ok");
+        }
+
+        // Boot the terminal
+        function boot() {
+          var t = L[termLang];
+          pushLine(t.welcome1, "red");
+          pushLine(t.welcome2, "dim");
+          pushBlank();
+          renderChips();
+          renderPrompt();
+        }
+
+        // Match terminal language to site language on first load
+        var savedLang = localStorage.getItem("kujto-lang");
+        if (savedLang === "sq") termLang = "sq";
+
+        // Click anywhere in the terminal to refocus the input
+        document.getElementById("terminal").addEventListener("click", function(e) {
+          if (e.target.tagName === "BUTTON") return;
+          var input = document.getElementById("term-input");
+          if (input) input.focus();
+        });
+
+        boot();
       })();
     </script>
   </body>

@@ -1,0 +1,82 @@
+{
+  "name": "kujto-vscode",
+  "displayName": "Kujto",
+  "description": "Run kujto build / run / test from VS Code or Cursor, surface NDJSON diagnostics inline.",
+  "version": "0.1.0",
+  "publisher": "peterdsp",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:kujto.build",
+    "onCommand:kujto.run",
+    "onCommand:kujto.test",
+    "onCommand:kujto.context",
+    "onCommand:kujto.simulatorList",
+    "onCommand:kujto.uiScreen"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "kujto.build", "title": "Kujto: Build", "category": "Kujto" },
+      { "command": "kujto.run", "title": "Kujto: Run (with logs)", "category": "Kujto" },
+      { "command": "kujto.test", "title": "Kujto: Test", "category": "Kujto" },
+      { "command": "kujto.context", "title": "Kujto: Show Context", "category": "Kujto" },
+      { "command": "kujto.simulatorList", "title": "Kujto: List Simulators", "category": "Kujto" },
+      { "command": "kujto.uiScreen", "title": "Kujto: Capture UI Screen", "category": "Kujto" },
+      { "command": "kujto.stop", "title": "Kujto: Stop Running App", "category": "Kujto" }
+    ],
+    "configuration": {
+      "title": "Kujto",
+      "properties": {
+        "kujto.binaryPath": {
+          "type": "string",
+          "default": "kujto",
+          "description": "Path to the kujto binary."
+        },
+        "kujto.language": {
+          "type": "string",
+          "enum": ["en", "sq"],
+          "default": "en",
+          "description": "Sets KUJTO_LANG for kujto invocations."
+        },
+        "kujto.buildTimeoutMs": {
+          "type": "number",
+          "default": 1800000,
+          "description": "Timeout for kujto build in milliseconds."
+        },
+        "kujto.testTimeoutMs": {
+          "type": "number",
+          "default": 2400000,
+          "description": "Timeout for kujto test in milliseconds."
+        }
+      }
+    },
+    "problemMatchers": [
+      {
+        "name": "kujto-ndjson",
+        "owner": "kujto",
+        "fileLocation": ["autoDetected", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^\\{\"file\":\"([^\"]+)\",\"line\":(\\d+)(?:,\"column\":(\\d+))?.*\"severity\":\"(error|warning)\".*\"message\":\"([^\"]+)\".*\"type\":\"build_issue\".*",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}

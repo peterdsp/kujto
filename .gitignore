@@ -32,5 +32,11 @@ memory/handoff_*.md
 .env.local
 *.local
 
+# Kujto Apple toolchain artifacts (per the orchard CLI case study)
+.kujto/artifacts/
+.kujto/DerivedData/
+.kujto/config.local.json
+.kujto/runtime/
+
 # Node, in case docs add tooling
 node_modules/
