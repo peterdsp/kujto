@@ -2,94 +2,85 @@
 
 # 🦅 Kujto
 
-**AI-ja e parë shqiptare e memories për dev iOS. E versionuar, dygjuhëshe, e gjallë.**
-**The first Albanian AI memory base for iOS developers. Versioned, bilingual, alive.**
+### Stop re-teaching your AI agents every session.
+
+**Versioned, bilingual memory for Claude, Codex, Gemini, Copilot & Cursor.**
+**Memorie e versionuar, dygjuheshe per Claude, Codex, Gemini, Copilot & Cursor.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Made in Albania](https://img.shields.io/badge/Made%20in-Albania%20🇦🇱-red)](https://github.com/peterdsp/kujto)
 [![Focus](https://img.shields.io/badge/Focus-iOS%20first-blue?logo=apple)](memory/domains/ios/)
-[![Agents](https://img.shields.io/badge/Agents-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Copilot-purple)](AGENTS.md)
+[![Mburoja](https://img.shields.io/badge/Security-Mburoja%20🛡️-darkgreen)](memory/domains/web/)
+[![Agents](https://img.shields.io/badge/Agents-Claude%20%7C%20Codex%20%7C%20Gemini%20%7C%20Copilot%20%7C%20Cursor-purple)](AGENTS.md)
 [![Site](https://img.shields.io/badge/Site-kujto.peterdsp.dev-black)](https://kujto.peterdsp.dev)
 [![Version](https://img.shields.io/github/v/release/peterdsp/kujto?label=version)](https://github.com/peterdsp/kujto/releases/latest)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Stars](https://img.shields.io/github/stars/peterdsp/kujto?style=social)](https://github.com/peterdsp/kujto/stargazers)
 
-[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Site](#site) · [Memory](#memory) · [Tools](#tools) · [Packages](#packages) · [Roadmap](#roadmap)
+[🇦🇱 Shqip](#-shqip) · [🇬🇧 English](#-english) · [Mburoja](#mburoja-security-playbook) · [Site](#site) · [Memory](#memory) · [Tools](#tools) · [Roadmap](#roadmap)
 
 </div>
 
 ---
 
+> **Teach your AI once. It remembers forever.**
+> Your coding agents shouldn't need a re-orientation every chat. Kujto is the missing memory layer: a structured, versioned Markdown brain that Claude, Codex, Gemini, Copilot and Cursor all read on every run.
+
+---
+
 ## 🇦🇱 Shqip
 
-**Kujto** ("kujto!" në mënyrën urdhërore) është një **bazë memorie për agjentët AI që punojnë në projekte iOS**. Mban të vërtetën afatgjatë (konventa Swift, modelet kryesore të arkitekturës iOS, rregulla snapshot-esh, higjienë git, stil shkrimi) në Markdown të strukturuar dhe të versionuar, jo në kontekstin e brishtë të një bisede.
+### Pse Kujto ekziston
 
-Fokusi fillestar është **iOS me Claude, Codex, Gemini dhe Copilot**, sepse aty rri vlera më e drejtpërdrejtë: dev iOS i shqipfolur nuk ka pasur kurrë një bazë memorie në gjuhën amtare që agjentët e tij ta lexojnë në çdo sesion.
+Cdo bisede e re me Claude, Codex, Gemini, ose Copilot fillon nga zero. Ti shpenzon kohe duke i ri-mesuar konventat, arkitekturen, stilin, rregullat e git-it. **Kujto** e mban ate dije ne `memory/` te repo-s tende: file Markdown te strukturuar, te versionuar, qe cdo agjent i lexon ne cdo sesion.
 
-Arkitektura është bërë për t'u zgjeruar (`memory/domains/`), por në fillim po e dërgojmë mirë një fushë të vetme.
-
-Si bonus, repo-ja sjell **`simulator.sh`**, një skript ultra-portativ që ndez çdo projekt Xcode pa konfigurim. Ai është vegla e parë në një familje që do të rritet bashkë me memorien.
-
-Projekti ka tani edhe **faqen e vet të gjallë** te [kujto.peterdsp.dev](https://kujto.peterdsp.dev), me përkthim të plotë në shqip, ndërrues gjuhe dhe zbulim automatik vendndodhjeje (shqip si parazgjedhje për vizitorë nga Shqipëria, Kosova dhe Maqedonia e Veriut).
+Pa abonime. Pa lock-in. Pa magji. Vetem markdown.
 
 ### Çfarë merr sot
 
-- **Faqe statike e gjallë** te [kujto.peterdsp.dev](https://kujto.peterdsp.dev), e publikuar me GitHub Pages.
-- **Dygjuhëshe me zbulim vendndodhjeje** - faqja zbulon automatikisht vendin e vizitorit dhe shfaq shqip ose anglisht. Butoni notues lejon ndërrimin e gjuhës.
-- **Memory framework dygjuhësh** (shqip dhe anglisht në të njëjtin file), me rregulla bërthamë, konventa iOS dhe workflow.
-- **12 guida arkitekture iOS** për modele klasike, UIKit, SwiftUI, reactive dhe unidirectional. Plus një guidë vendimi për të zgjedhur saktë midis tyre.
-- **Adapter për Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** përmes një `AGENTS.md` të vetëm.
-- **`simulator.sh` zero-config** për ndërtim, instalim, ndezje dhe streaming log-esh në çdo projekt iOS Xcode.
-- **`wire.sh`** për lidhjen e Kujto-s në çdo repo me dy komanda.
+- 🧠 **Memory framework dygjuhesh** (shqip dhe anglisht ne te njejtin file), me rregulla berthame, konventa iOS, dhe workflow.
+- 🏛 **12 guida arkitekture iOS** per MVC, MVP, MVVM, MVVM-C, VIPER, Clean Swift, Clean Architecture, TCA, Redux, ReactorKit, RIBs, MV + @Observable. Plus nje guide vendimi.
+- 🛡 **[Mburoja](memory/domains/web/)** - playbook i plote sigurie per aplikacionet web (XSS, CSRF, SSRF, SQLi, XXE, JWT, file upload, path traversal, dhe me shume). 15 file, dygjuhesh.
+- 🤝 **Nje burim, pese agjente.** Claude, Codex, Gemini, Copilot, Cursor lexojne te njejtin `AGENTS.md` permes symlink-eve.
+- ⚡ **Vegla zero-config:** `simulator.sh` ndez cdo projekt Xcode pa pyetje. `wire.sh` e lidh Kujto-n ne cdo repo me dy komanda.
+- 🌐 **Faqe e gjalle** te [kujto.peterdsp.dev](https://kujto.peterdsp.dev) me zbulim automatik gjuhe (shqip per Shqiperi, Kosove, Maqedoni e Veriut).
 
-### Instalim me një rresht
+### Instalim me nje rresht
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash
 ```
 
-Ose lokalisht:
+### Quickstart
 
 ```bash
-git clone https://github.com/peterdsp/kujto.git ~/kujto
-cd ~/kujto && ./install.sh
-```
-
-### Quickstart për dev iOS
-
-```bash
-# 1. Lidh memory-në te projekti yt iOS
-cd path/to/your/ios/project
+# 1. Lidh Kujto-n te projekti yt
+cd path/to/your/project
 ~/kujto/wire.sh
 
-# 2. Ndez app-in pa konfigurim
+# 2. (iOS) ndez app pa konfigurim
 ~/kujto/simulator.sh
 ```
 
-Tani agjentët e tu (Claude, Codex, Gemini, Copilot) e lexojnë `AGENTS.md` dhe e ndjekin `memory/MEMORY.md` ne çdo sesion.
+Tani agjentet e tu lexojne `AGENTS.md` dhe ndjekin `memory/MEMORY.md` ne cdo sesion. **Asnje brifing me.**
 
 ---
 
 ## 🇬🇧 English
 
-**Kujto** ("remember!" in Albanian, imperative) is a **memory base for AI agents working on iOS projects**. It stores long-term truth (Swift conventions, the main iOS architecture patterns, snapshot rules, git hygiene, writing style) in structured, versioned Markdown, not in the fragile context of a single chat.
+### Why Kujto exists
 
-The initial focus is **iOS with Claude, Codex, Gemini, and Copilot**, because that is where the most direct value lives: Albanian-speaking iOS devs never had a native-language memory base their agents could pick up in every session.
+Every fresh chat with Claude, Codex, Gemini, or Copilot starts from zero. You burn minutes (and tokens) re-teaching it your conventions, architecture, style, git rules. **Kujto** keeps that knowledge in your repo's `memory/`: structured, versioned Markdown that every agent reads in every session.
 
-The architecture is built to expand (`memory/domains/`), but we are shipping one domain well first.
-
-As a bonus, the repo ships **`simulator.sh`**, an ultra-portable script that boots any Xcode project with zero config. It is the first tool in a family that will grow alongside the memory.
-
-The project now has its own **live site** at [kujto.peterdsp.dev](https://kujto.peterdsp.dev), with full Albanian translation, a language switcher, and automatic geo-detection (defaults to Albanian for visitors from Albania, Kosovo, and North Macedonia).
+No subscriptions. No lock-in. No magic. Just markdown.
 
 ### What you get today
 
-- **Live static site** at [kujto.peterdsp.dev](https://kujto.peterdsp.dev), deployed via GitHub Pages.
-- **Bilingual with geo-detection** - the site auto-detects the visitor's country and shows Albanian or English. A floating button lets users switch manually.
-- **Bilingual memory framework** (Albanian and English in the same file), with core rules, iOS conventions, and workflows.
-- **12 iOS architecture guides** across classic, UIKit, SwiftUI, reactive, and unidirectional patterns. Plus a decision guide for choosing between them.
-- **Adapter for Claude Code, OpenAI Codex CLI, Gemini CLI, GitHub Copilot, Cursor** through a single `AGENTS.md`.
-- **Zero-config `simulator.sh`** for building, installing, launching, and tailing logs on any iOS Xcode project.
-- **`wire.sh`** to attach Kujto to any repo with two commands.
+- 🧠 **Bilingual memory framework** (Albanian and English in the same file), with core rules, iOS conventions, and workflows.
+- 🏛 **12 iOS architecture guides** covering MVC, MVP, MVVM, MVVM-C, VIPER, Clean Swift, Clean Architecture, TCA, Redux, ReactorKit, RIBs, MV + @Observable. Plus a decision guide.
+- 🛡 **[Mburoja](memory/domains/web/)** - a full web-security playbook (XSS, CSRF, SSRF, SQLi, XXE, JWT, file upload, path traversal, and more). 15 files, bilingual.
+- 🤝 **One source, five agents.** Claude, Codex, Gemini, Copilot, Cursor read the same `AGENTS.md` via symlinks.
+- ⚡ **Zero-config tools:** `simulator.sh` boots any Xcode project, no questions asked. `wire.sh` attaches Kujto to any repo in two commands.
+- 🌐 **Live site** at [kujto.peterdsp.dev](https://kujto.peterdsp.dev) with auto-language detection (Albanian for Albania, Kosovo, North Macedonia).
 
 ### One-line install
 
@@ -97,25 +88,41 @@ The project now has its own **live site** at [kujto.peterdsp.dev](https://kujto.
 curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash
 ```
 
-Or locally:
+### Quickstart
 
 ```bash
-git clone https://github.com/peterdsp/kujto.git ~/kujto
-cd ~/kujto && ./install.sh
-```
-
-### Quickstart for iOS devs
-
-```bash
-# 1. Wire memory into your iOS project
-cd path/to/your/ios/project
+# 1. Wire Kujto into your project
+cd path/to/your/project
 ~/kujto/wire.sh
 
-# 2. Boot the app with zero config
+# 2. (iOS) boot the app, no config
 ~/kujto/simulator.sh
 ```
 
-Your agents (Claude, Codex, Gemini, Copilot) now read `AGENTS.md` and follow `memory/MEMORY.md` in every session.
+Your agents now read `AGENTS.md` and follow `memory/MEMORY.md` in every session. **No more briefings.**
+
+---
+
+## Mburoja, security playbook
+
+🛡 **Mburoja** (shqip per *shield*) eshte playbook i sigurise se Kujto-s per aplikacione web. 15 file dygjuhesh qe agjentet i lexojne kur shkruan ose rishikojne kod web, ose kur kerkon nje audit eksplicit.
+
+🛡 **Mburoja** (Albanian for *shield*) is Kujto's web-security playbook. 15 bilingual files your agents read when writing or reviewing web code, or when you explicitly ask for an audit.
+
+**Coverage / Mbulimi:**
+
+| Client-side | Server-side | Tokens & APIs |
+|---|---|---|
+| [Access control](memory/domains/web/access_control.md) | [SSRF](memory/domains/web/ssrf.md) | [JWT](memory/domains/web/jwt.md) |
+| [XSS](memory/domains/web/xss.md) | [File upload](memory/domains/web/file_upload.md) | [API security](memory/domains/web/api_security.md) |
+| [CSRF](memory/domains/web/csrf.md) | [SQL injection](memory/domains/web/sql_injection.md) | [Security headers](memory/domains/web/security_headers.md) |
+| [Secrets exposure](memory/domains/web/secrets_exposure.md) | [XXE](memory/domains/web/xxe.md) | |
+| [Open redirect](memory/domains/web/open_redirect.md) | [Path traversal](memory/domains/web/path_traversal.md) | |
+| [Password security](memory/domains/web/password_security.md) | | |
+
+**Trigger / Aktivizimi:** thuaji agjentit "audit me Mburoja" ose "mburoja review", para shkrimit te kodit te ri ose para merge te PR-ve qe prekin auth, upload, redirect, query string.
+
+Tell your agent "audit with Mburoja" or "mburoja review", before writing new code or before merging PRs that touch auth, upload, redirect, or query strings.
 
 ---
 
@@ -158,14 +165,21 @@ memory/
 │   ├── safety_and_git.md           siguri dhe disipline git
 │   └── handoff.md                  ruajtja e gjendjes ne limit konteksti
 ├── domains/
-│   └── ios/                        FOKUSI I FILLIMIT / INITIAL FOCUS
-│       ├── swift_conventions.md
-│       ├── xcode_workflow.md
-│       ├── snapshot_testing.md
-│       ├── navigation.md
-│       └── architectures/          modele arkitekture / architecture patterns
-│           ├── README.md           si te zgjedhesh / how to choose
-│           └── *.md                guida per modelet kryesore iOS / guides
+│   ├── ios/                        iOS first
+│   │   ├── swift_conventions.md
+│   │   ├── xcode_workflow.md
+│   │   ├── snapshot_testing.md
+│   │   ├── navigation.md
+│   │   └── architectures/          12 modele arkitekture / 12 patterns
+│   └── web/                        🛡 Mburoja, siguria web / web security
+│       ├── README.md
+│       ├── access_control.md
+│       ├── xss.md
+│       ├── csrf.md
+│       ├── ssrf.md
+│       ├── sql_injection.md
+│       ├── jwt.md
+│       └── ... (15 file gjithsej / 15 files total)
 └── workflows/
     ├── answer_order.md
     ├── pr_descriptions.md
@@ -176,7 +190,7 @@ Detaje në [docs/memory-architecture.md](docs/memory-architecture.md).
 
 ## Tools
 
-Vegla e parë qe shoqeron memorien:
+Vegla qe shoqerojne memorien / Tools that ship with the memory:
 
 ### `simulator.sh`
 
@@ -194,6 +208,14 @@ Zero-config për çdo projekt iOS Xcode.
 
 Detaje në [docs/simulator-guide.md](docs/simulator-guide.md).
 
+### `wire.sh`
+
+Lidh Kujto-n ne cdo repo me nje komande / Attach Kujto to any repo in one command:
+
+```bash
+~/kujto/wire.sh
+```
+
 ## Integrations
 
 | Agent | Wires into | Folder |
@@ -204,7 +226,7 @@ Detaje në [docs/simulator-guide.md](docs/simulator-guide.md).
 | GitHub Copilot | `.github/copilot-instructions.md` | [`integrations/copilot/`](integrations/copilot/) |
 | Cursor | `.cursor/rules/kujto.mdc` | [`integrations/cursor/`](integrations/cursor/) |
 
-Të katërt (Claude, Codex, Gemini, Copilot) lexojnë të njëjtin `AGENTS.md` përmes symlink-eve. One source of truth.
+Te peste lexojne te njejtin `AGENTS.md` permes symlink-eve. **One source of truth.**
 
 ## Philosophy
 
@@ -212,31 +234,26 @@ Të katërt (Claude, Codex, Gemini, Copilot) lexojnë të njëjtin `AGENTS.md` p
 2. **iOS pari, ne thelle, jo gjeresisht.** / iOS first, deep before wide.
 3. **Zero config fiton.** / Zero config wins.
 4. **Dygjuhesh eshte identitet.** / Bilingual is identity. Shqipja e para. Albanian first.
+5. **Mburoja qe ne fillim.** / Security from day one. Mburoja covers what most starter kits forget.
 
 ## Releases
 
-Versioni aktual: **v0.1.3**. Shiko te gjitha release-et te
-[GitHub Releases](https://github.com/peterdsp/kujto/releases).
-
-Current version: **v0.1.3**. See all releases at
-[GitHub Releases](https://github.com/peterdsp/kujto/releases).
+Versioni aktual / Current version: **v0.1.3**. Shiko / See [GitHub Releases](https://github.com/peterdsp/kujto/releases).
 
 ## Packages
 
-Kujto ka tani sipërfaqe fillestare package për SwiftPM, KMP/Gradle dhe
-Flutter/Dart. Publikimi lidhet me release-et: kur publikohet një GitHub
-Release, workflow `Packages` ndërton SwiftPM, publikon Gradle plugin në
-GitHub Packages dhe bën dry-run për Flutter.
+Kujto ka siperfaqe fillestare package per SwiftPM, KMP/Gradle dhe Flutter/Dart. Publikimi lidhet me release-et.
 
-Për iOS, rruga praktike është Swift Package Manager me URL të repo-s dhe tag
-versioni:
+Kujto has initial package surfaces for SwiftPM, KMP/Gradle, and Flutter/Dart. Publishing is tied to releases.
+
+### SwiftPM
 
 ```bash
 swift package resolve
 swift run kujto wire --target /path/to/your/repo --memory
 ```
 
-Për KMP/Gradle, GitHub Packages është i dobishëm për plugin-in:
+### KMP / Gradle
 
 ```kotlin
 plugins {
@@ -244,32 +261,9 @@ plugins {
 }
 ```
 
-Për Flutter, package është CLI vegle dhe duhet të shkojë në pub.dev kur të jetë
-gati për publikim publik. Nuk duhet të jetë runtime dependency e app-it.
+### Flutter
 
-Kujto now has initial package surfaces for SwiftPM, KMP/Gradle, and
-Flutter/Dart. Publishing is tied to releases: when a GitHub Release is
-published, the `Packages` workflow builds SwiftPM, publishes the Gradle plugin
-to GitHub Packages, and dry-runs Flutter.
-
-For iOS, the practical path is Swift Package Manager with the repository URL
-and a version tag:
-
-```bash
-swift package resolve
-swift run kujto wire --target /path/to/your/repo --memory
-```
-
-For KMP/Gradle, GitHub Packages is useful for the plugin:
-
-```kotlin
-plugins {
-    id("com.github.peterdsp.kujto") version "0.1.3"
-}
-```
-
-For Flutter, the package is a tooling CLI and should go to pub.dev when it is
-ready for public publishing. It should not be an app runtime dependency.
+Tooling CLI, jo runtime dependency. Tooling CLI, not a runtime dependency.
 
 ### Commit distance
 
@@ -278,18 +272,13 @@ ready for public publishing. It should not be an app runtime dependency.
 - 1 qëllim për commit.
 - 5 deri 200 rreshta diff si rregull praktik.
 - Ndaje commit-in kur prek dy fusha, për shembull README dhe skript runtime.
-- Mos bëj commit vetëm se kaluan 10 minuta. Bëje kur ka një njësi pune që
-  kompilon, lexohet dhe mund të kthehet mbrapsht më vete.
 - Tag release vetëm kur README, install path dhe smoke test janë në sinkron.
 
 Each commit should have clear logical distance from the next:
 
 - 1 intent per commit.
 - 5 to 200 diff lines as a practical default.
-- Split the commit when it touches two concerns, for example README and a
-  runtime script.
-- Do not commit just because 10 minutes passed. Commit when there is a unit of
-  work that builds, reads cleanly, and can be reverted on its own.
+- Split when it touches two concerns (e.g. README and a runtime script).
 - Tag a release only when README, install path, and smoke test are aligned.
 
 ## Roadmap
@@ -301,8 +290,9 @@ Each commit should have clear logical distance from the next:
 - [x] `simulator.sh` me auto-detektim te plote
 - [x] `wire.sh` per integrim me repo
 - [x] CI me shellcheck, no-em-dash guard, bilingual sections guard
-- [x] Faqe statike e gjalle te [kujto.peterdsp.dev](https://kujto.peterdsp.dev) me GitHub Pages
-- [x] Perkthim i plote ne shqip me zbulim automatik vendndodhjeje dhe ndërrues gjuhe
+- [x] Faqe statike e gjalle te [kujto.peterdsp.dev](https://kujto.peterdsp.dev)
+- [x] Perkthim i plote ne shqip me zbulim automatik vendndodhjeje
+- [x] 🛡 **Mburoja**, playbook i plote sigurie web (15 file)
 
 ### v0.2 (ne vijim / next)
 - [ ] Pasurim i `memory/domains/ios/`: SwiftUI patterns, performance, accessibility, testing
@@ -310,16 +300,19 @@ Each commit should have clear logical distance from the next:
 - [ ] `xcode-cleanup.sh` per DerivedData dhe simulator hygiene
 - [ ] Homebrew formula
 - [ ] CLI i vetem `kujto` per te gjitha veglat
+- [ ] Mburoja v2: OAuth flows, GraphQL deep dive, rate limiting, supply-chain
 
 ### Me tej / Later
 - [ ] `memory/domains/android/` (Kotlin, Compose, Gradle)
 - [ ] `memory/domains/backend/` (Vapor, Express, FastAPI)
-- [ ] `memory/domains/web/` (React, Vue, SvelteKit)
+- [ ] `memory/domains/frontend/` (React, Vue, SvelteKit)
 - [ ] Plugin per Xcode dhe VSCode
 
 ## Contributing
 
 PR-të janë të mirëpritura. Lexo [CONTRIBUTING.md](CONTRIBUTING.md) i pari. Të dyja gjuhët duhet të mbeten në sinkron në çdo file.
+
+PRs welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. Both languages must stay in sync in every file.
 
 ## License
 
@@ -329,10 +322,12 @@ PR-të janë të mirëpritura. Lexo [CONTRIBUTING.md](CONTRIBUTING.md) i pari. T
 
 <div align="center">
 
+### Nese Kujto te kurseu nje komande, lere nje ⭐
+### If Kujto saved you a command, drop a ⭐
+
+[![Star History Chart](https://api.star-history.com/svg?repos=peterdsp/kujto&type=Date)](https://star-history.com/#peterdsp/kujto&Date)
+
 Ndertuar me 🦅 ne Tirane dhe Athine nga [@peterdsp](https://github.com/peterdsp).
 Built with 🦅 in Tirana and Athens by [@peterdsp](https://github.com/peterdsp).
-
-Nese Kujto te kurseu nje komande, lere nje ⭐.
-If Kujto saved you a command, drop a ⭐.
 
 </div>

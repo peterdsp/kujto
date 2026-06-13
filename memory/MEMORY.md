@@ -35,6 +35,23 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [RIBs](domains/ios/architectures/ribs.md): arkitekture peme per app shume te medha.
 - [MV + @Observable](domains/ios/architectures/mv_observable.md): Apple-recommended per SwiftUI 17+.
 
+### Mburoja, siguri web
+- [Permbledhje](domains/web/README.md): kur ta perdoresh, parime, indeks temash.
+- [Kontroll aksesi](domains/web/access_control.md): IDOR, escalation, multi-tenancy.
+- [XSS](domains/web/xss.md): cross-site scripting, encoding, CSP.
+- [CSRF](domains/web/csrf.md): token, SameSite, double-submit.
+- [Sekrete ne klient](domains/web/secrets_exposure.md): API keys, PII, info leakage.
+- [Open redirect](domains/web/open_redirect.md): allowlist, bypass-e, IDN homograph.
+- [Password](domains/web/password_security.md): hashing, gjatesi, storage.
+- [SSRF](domains/web/ssrf.md): bypass, DNS rebinding, cloud metadata.
+- [Upload skedaresh](domains/web/file_upload.md): MIME, magic bytes, polyglots.
+- [SQL Injection](domains/web/sql_injection.md): parameterized queries, ORM, ORDER BY.
+- [XXE](domains/web/xxe.md): entity disabling per parser-a.
+- [Path traversal](domains/web/path_traversal.md): canonicalization, allowlist.
+- [JWT](domains/web/jwt.md): algorithm confusion, storage, exp.
+- [API security](domains/web/api_security.md): mass assignment, GraphQL, parime.
+- [Security headers](domains/web/security_headers.md): HSTS, CSP, X-Frame-Options.
+
 ### Workflows
 - [Rendi i pergjigjeve](workflows/answer_order.md): pasqyro saktesisht renditjen e perdoruesit.
 - [Pershkrim PR](workflows/pr_descriptions.md): template minimale, pa mure teksti.
@@ -69,6 +86,23 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [ReactorKit](domains/ios/architectures/reactorkit.md): RxSwift with Action, Mutation, State.
 - [RIBs](domains/ios/architectures/ribs.md): tree architecture for very large apps.
 - [MV + @Observable](domains/ios/architectures/mv_observable.md): Apple-recommended for SwiftUI 17+.
+
+### Mburoja, web security
+- [Overview](domains/web/README.md): when to use, principles, topic index.
+- [Access control](domains/web/access_control.md): IDOR, escalation, multi-tenancy.
+- [XSS](domains/web/xss.md): cross-site scripting, encoding, CSP.
+- [CSRF](domains/web/csrf.md): tokens, SameSite, double-submit.
+- [Client-side secrets](domains/web/secrets_exposure.md): API keys, PII, info leakage.
+- [Open redirect](domains/web/open_redirect.md): allowlist, bypasses, IDN homograph.
+- [Password](domains/web/password_security.md): hashing, length, storage.
+- [SSRF](domains/web/ssrf.md): bypasses, DNS rebinding, cloud metadata.
+- [File upload](domains/web/file_upload.md): MIME, magic bytes, polyglots.
+- [SQL injection](domains/web/sql_injection.md): parameterized queries, ORM, ORDER BY.
+- [XXE](domains/web/xxe.md): entity disabling per parser.
+- [Path traversal](domains/web/path_traversal.md): canonicalization, allowlist.
+- [JWT](domains/web/jwt.md): algorithm confusion, storage, exp.
+- [API security](domains/web/api_security.md): mass assignment, GraphQL, principles.
+- [Security headers](domains/web/security_headers.md): HSTS, CSP, X-Frame-Options.
 
 ### Workflows
 - [Answer order](workflows/answer_order.md): mirror the user's numbering exactly.
