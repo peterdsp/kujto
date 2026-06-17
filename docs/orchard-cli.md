@@ -115,21 +115,21 @@ Set `KUJTO_LANG=sq` or `KUJTO_LANG=en`. Every error carries both forms.
 
 ### Implementation trail
 
-- `Sources/KujtoCore/` — Lang, Errors, NDJSON, ProcessRunner, Config,
+- `Sources/KujtoCore/`: Lang, Errors, NDJSON, ProcessRunner, Config,
   Project, Simulator, BuildSettings, Build, AppLauncher, LogStreamer,
   TestRunner, DeviceController, Runtime (apps.json), Artifacts, Wire.
-- `Sources/KujtoCLI/` — `main.swift` + `Kujto.swift` (root command),
+- `Sources/KujtoCLI/`: `main.swift` + `Kujto.swift` (root command),
   `Commands/` (one file per subcommand).
-- `Tests/KujtoCoreTests/` — NDJSON encoder, build-issue parser, config
+- `Tests/KujtoCoreTests/`: NDJSON encoder, build-issue parser, config
   merge, runtime store round-trip.
 
 ### Phase roadmap
 
-1. CLI skeleton, config, NDJSON, discovery — **done**.
-2. Build runner + issue parser + artifact directory + clean — **done**.
-3. Run + logs + apps + stop — **done**.
-4. Tests + xcresult parser — **done**.
-5. Simulator + device list / install / launch with typed signing errors — **done**.
-6. UI automation via the file-based XCTest runner (`integrations/xctest-runner/KujtoUISession.swift`) — **done**.
-7. CI hardening: `--timeout-ms`, exit code matrix (`docs/ci.md`), `.github/workflows/ios-kujto.yml` — **done**.
-8. Editor extension (`integrations/vscode/`) — **done**.
+1. CLI skeleton, config, NDJSON, discovery: **done**.
+2. Build runner + issue parser + artifact directory + clean: **done**.
+3. Run + logs + apps + stop: **done**.
+4. Tests + xcresult parser: **done**.
+5. Simulator + device list / install / launch with typed signing errors: **done**.
+6. UI automation via the file-based XCTest runner (`integrations/xctest-runner/KujtoUISession.swift`): **done**.
+7. CI hardening: `--timeout-ms`, exit code matrix (`docs/ci.md`), `.github/workflows/ios-kujto.yml`: **done**.
+8. Editor extension (`integrations/vscode/`): **done**.

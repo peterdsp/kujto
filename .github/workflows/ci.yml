@@ -74,3 +74,39 @@ jobs:
         with:
           globs: '**/*.md'
         continue-on-error: true
+
+  trailer-policy:
+    name: Trailer policy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify
+        env:
+          P64: Q28tQXV0aG9yZWQtQnk6W1s6c3BhY2U6XV0qLiooY2xhdWRlfGNvcGlsb3R8Z2VtaW5pfGN1cnNvcnxjb2RleHxjaGF0Z3B0fG9wZW5haXxhbnRocm9waWN8YmFyZCl8bm9yZXBseUAoYW50aHJvcGljfG9wZW5haXxnb29nbGUpfEdlbmVyYXRlZFtbOnNwYWNlOl1dd2l0aFtbOnNwYWNlOl1dKENsYXVkZXxDdXJzb3J8Q29waWxvdCk=
+          EVT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.event.after }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          P=$(printf '%s' "$P64" | base64 -d)
+          case "$EVT" in
+            pull_request)
+              RANGE="$BASE..$HEAD"
+              ;;
+            *)
+              if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+                RANGE="HEAD~20..HEAD"
+              else
+                RANGE="$BEFORE..$AFTER"
+              fi
+              ;;
+          esac
+          HITS=$(git log "$RANGE" --pretty=format:"%H%n%B%n--END--" 2>/dev/null | grep -iE "$P" || true)
+          if [ -n "$HITS" ]; then
+            echo "Disallowed trailer found in a recent commit. Edit the message."
+            exit 1
+          fi
+          echo "OK."

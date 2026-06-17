@@ -70,7 +70,7 @@ public final class BuildSettingsResolver {
                 )
             )
         }
-        // xcodebuild emits an entry per target — pick the first build action
+        // xcodebuild emits an entry per target, pick the first build action
         // entry whose buildSettings actually carry a product (skip test bundles).
         for entry in arr {
             guard

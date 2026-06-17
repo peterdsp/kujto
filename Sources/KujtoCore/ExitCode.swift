@@ -24,7 +24,7 @@ public enum ExitCode {
     public static let timeout: Int32 = 124
 
     /// Maps a typed error code to the matching exit code. The default for
-    /// unmapped codes is `internalError`, never `success` — we never swallow
+    /// unmapped codes is `internalError`, never `success`, we never swallow
     /// errors silently.
     public static func forKujtoError(_ code: KujtoError.Code) -> Int32 {
         switch code {

@@ -93,5 +93,5 @@ code --install-extension .
 ```
 
 The extension only consumes the CLI; the case study's recommendation
-("Delay the editor extension until the CLI contract is stable") holds —
-this code is a thin shell.
+("Delay the editor extension until the CLI contract is stable") still
+holds, this code is a thin shell.
