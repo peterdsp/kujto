@@ -99,6 +99,16 @@ final class RuleIndexTests: XCTestCase {
         XCTAssertFalse(RuleIndex.containsSignal("Reducer", in: "// nothing relevant here"))
     }
 
+    func testConfidenceFromMatchedRisk() {
+        let payment = Rule(path: "memory/checkout.md", title: "Checkout", appliesTo: ["**/*Feature.swift"], risk: ["payment"], kind: .memory)
+        let plain = Rule(path: "memory/tca.md", title: "TCA", appliesTo: ["**/*Reducer.swift"], risk: [], kind: .memory)
+        let index = RuleIndex(rules: [payment, plain])
+
+        XCTAssertEqual(index.confidence(forFile: "CheckoutFeature.swift"), .dangerZone)
+        XCTAssertEqual(index.confidence(forFile: "HomeReducer.swift"), .needsContext)
+        XCTAssertEqual(index.confidence(forFile: "README.md"), .safe)
+    }
+
     func testResolveByContentMatchesBufferText() {
         let tca = Rule(path: "memory/tca.md", title: "TCA", appliesTo: ["**/*Reducer.swift", "**/*Feature.swift"], risk: [], kind: .memory)
         let nav = Rule(path: "memory/nav.md", title: "Navigation", appliesTo: ["**/*Coordinator.swift"], risk: [], kind: .memory)

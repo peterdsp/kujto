@@ -58,6 +58,22 @@ public struct RuleMatch: Sendable, Equatable {
     }
 }
 
+/// The "Before You Touch This File" verdict for a file.
+public enum Confidence: String, Sendable {
+    case safe
+    case needsContext = "needs_context"
+    case dangerZone = "danger_zone"
+
+    /// Short human label for the badge.
+    public var label: String {
+        switch self {
+        case .safe: return "safe"
+        case .needsContext: return "needs context"
+        case .dangerZone: return "danger zone"
+        }
+    }
+}
+
 public final class RuleIndex {
     public let rules: [Rule]
 
@@ -145,6 +161,16 @@ public final class RuleIndex {
             $0.score != $1.score ? $0.score > $1.score : $0.rule.path < $1.rule.path
         }
         return matches
+    }
+
+    /// Confidence for the "Before You Touch This File" badge, derived from the
+    /// rules that match a path. No match means base memory only (safe); a match
+    /// with a risk tag (payment, auth, onboarding) is a danger zone; any other
+    /// match needs context first.
+    public func confidence(forFile relativePath: String) -> Confidence {
+        let matches = resolve(file: relativePath)
+        if matches.isEmpty { return .safe }
+        return matches.contains { !$0.rule.risk.isEmpty } ? .dangerZone : .needsContext
     }
 
     /// True when `token` appears in `text` as a CamelCase component: the same
