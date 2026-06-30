@@ -89,6 +89,9 @@ public final class RuleIndex {
     /// Scans `memory/` and `skills/` under `root` for `.md` files and parses
     /// their frontmatter into rules.
     public static func load(root: URL) throws -> RuleIndex {
+        // macOS firmlinks `/var` to `/private/var`; canonicalize BOTH sides
+        // when computing the relative path, otherwise rule.path stays absolute.
+        let rootPath = root.resolvingSymlinksInPath().path
         let fm = FileManager.default
         var rules: [Rule] = []
 
@@ -98,9 +101,10 @@ public final class RuleIndex {
             guard let enumerator = fm.enumerator(at: base, includingPropertiesForKeys: nil) else { continue }
             for case let url as URL in enumerator where url.pathExtension == "md" {
                 guard let text = try? String(contentsOf: url, encoding: .utf8) else { continue }
-                let relative = url.path.hasPrefix(root.path + "/")
-                    ? String(url.path.dropFirst(root.path.count + 1))
-                    : url.path
+                let urlPath = url.resolvingSymlinksInPath().path
+                let relative = urlPath.hasPrefix(rootPath + "/")
+                    ? String(urlPath.dropFirst(rootPath.count + 1))
+                    : urlPath
                 rules.append(Self.parse(text: text, path: relative, kind: kind))
             }
         }
