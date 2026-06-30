@@ -118,6 +118,7 @@ private struct Inspector: View {
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .background(Theme.canvas)
     }
 
     private func agentContext(_ matches: [RuleMatch]) -> String {
@@ -157,7 +158,7 @@ private struct RuleCard: View {
                             .font(.system(size: 11, weight: .medium))
                             .foregroundStyle(.red)
                             .padding(.vertical, 2).padding(.horizontal, 8)
-                            .background(Color.red.opacity(0.12), in: RoundedRectangle(cornerRadius: 6))
+                            .background(Color.red.opacity(0.12), in: RoundedRectangle(cornerRadius: Theme.chipRadius))
                     }
                 }
             }
@@ -165,17 +166,32 @@ private struct RuleCard: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.controlBackgroundColor), in: RoundedRectangle(cornerRadius: 12))
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .overlay(RoundedRectangle(cornerRadius: Theme.cardRadius).stroke(.black.opacity(0.06)))
     }
 }
 
 private struct EmptyState: View {
     let onPick: () -> Void
     var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "feather").font(.system(size: 32)).foregroundStyle(.secondary)
-            Text("Pick a repo to map its memory.").foregroundStyle(.secondary)
-            Button("Choose repo...", action: onPick)
+        ZStack {
+            Theme.heroGlow.ignoresSafeArea()
+            VStack(spacing: 16) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 34, weight: .light))
+                    .foregroundStyle(Theme.accent)
+                Text("Map your repo's memory")
+                    .font(.system(size: 22, weight: .medium))
+                Text("Drop in a repo and Kujto shows the rules before you touch a file.")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 320)
+                Button("Choose repo...", action: onPick)
+                    .buttonStyle(.borderedProminent)
+                    .tint(Theme.accent)
+            }
+            .padding(40)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
