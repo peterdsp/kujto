@@ -1,58 +1,8 @@
-# Kujto, udhëzime për agjentët AI / Kujto, AI agent instructions
+# Kujto, AI agent instructions
 
-Ky skedar është burimi i së vërtetës për çdo agjent AI (Claude, Codex, Gemini, Copilot, Cursor) që punon në një repo i cili përdor **Kujto** si memorie.
 This file is the source of truth for every AI agent (Claude, Codex, Gemini, Copilot, Cursor) operating in a repo that uses **Kujto** for memory.
 
-[🇦🇱 Shqip](#shqip) · [🇬🇧 English](#english)
-
 ---
-
-## Shqip
-
-### Rendi i leximit
-
-1. Këtë skedar (`AGENTS.md`). Skedarët `CLAUDE.md`, `CODEX.md`, `GEMINI.md` janë symlink drejt këtij.
-2. `memory/MEMORY.md` (indeksi).
-3. Vetëm skedarët e memories që referohen nga indeksi dhe lidhen me detyrën.
-
-### Rregulla të forta
-
-1. **Pa vizë të gjatë.** Asnjë `—` në prozë, kod, commit, PR ose koment. Përdor presje, pikë, kllapa, dy pika ose vizë të zakonshme. Kjo është rregull identiteti.
-2. **Pa veprime autonome të rrezikshme në git.** Pa commit, push, force-push, reset të fortë, rebase shkurtore ose anashkalim hook-esh pa miratim eksplicit nga njeriu.
-3. **Memorie e versionuar, jo memorie chat-i.** E vërteta afatgjatë rri në `memory/`, jo në kontekstin e bisedës.
-4. **Dy gjuhë, gjithmonë.** Çdo ndryshim në një file duhet të ruajë seksionet shqip dhe anglisht në sinkron. Shqipja e para.
-5. **Korrektësia mbi shpejtësinë.** Lexo skedarët fqinjë, ndiq konventat ekzistuese, prefero diff-e minimale.
-6. **Pa sekrete.** Pa kredenciale, token, log produksioni ose të dhëna sensitive të commitohen.
-
-### Çfarë lexon Kujto-ja
-
-```
-memory/
-  MEMORY.md         indeks
-  core/             stil shkrimi, siguri, git, handoff
-  domains/ios/      Swift, Xcode, snapshots, arkitektura, navigim
-  workflows/        rendi i përgjigjeve, përshkrime PR, higjienë git
-```
-
-### Çfarë nuk lexon (deri sa t'i kërkohet)
-
-- File që nuk referohen nga `MEMORY.md`.
-- File që nuk lidhen me detyrën.
-
-### Workflow para çdo ndryshimi kodi
-
-1. Lexo `AGENTS.md`, `README.md`, `memory/MEMORY.md`.
-2. Lexo skedarët fqinjë të kodit që po prek.
-3. Ndiq modelet ekzistuese, jo modelet "ideale" nga jashtë.
-4. Diff minimal. Pa rifaktorime të paftuara.
-
-### Kur afrohet limiti i kontekstit
-
-Shkruaj `memory/handoff_active.md` me gjendjen e tanishme dhe planin për të vazhduar. Detajet te `memory/core/handoff.md`.
-
----
-
-## English
 
 ### Reading order
 
@@ -65,7 +15,7 @@ Shkruaj `memory/handoff_active.md` me gjendjen e tanishme dhe planin për të va
 1. **No em-dash.** No `—` in prose, code, commits, PRs, or comments. Use commas, periods, parens, colons, or a regular hyphen. This is an identity rule.
 2. **No autonomous destructive git actions.** No commit, push, force-push, hard reset, rebase shortcut, or hook bypass without explicit human approval.
 3. **Versioned memory, not chat memory.** Long-term truth lives in `memory/`, not in chat context.
-4. **Two languages, always.** Every file change must keep the Albanian and English sections in sync. Albanian first.
+4. **English is the base language.** Docs, memory, comments, commits, PRs, and governance are written in English. User-facing app strings are localized through the String Catalog (`.xcstrings`), where Albanian is a locale, not inline duplicated prose. Do not reintroduce side-by-side bilingual sections in new files.
 5. **Correctness over speed.** Read neighbouring files, follow existing conventions, prefer minimal diffs.
 6. **No secrets.** No credentials, tokens, production logs, or sensitive data may be committed.
 
@@ -90,6 +40,14 @@ memory/
 2. Read neighbouring files of the code you are touching.
 3. Follow existing patterns, not idealised patterns from outside.
 4. Minimal diff. No unsolicited refactors.
+
+### Localization
+
+App user-facing strings live in a String Catalog (`.xcstrings`), source language English, with Albanian (`sq`) as a locale. Use `String(localized:)` or SwiftUI `Text` with English source keys; do not hardcode translated strings or duplicate prose across languages.
+
+### Migration note
+
+The repo is moving from inline bilingual files to English base plus app localization. Existing bilingual docs and memory files are migrated to English opportunistically as they are touched, not in one sweep.
 
 ### When context budget runs out
 

@@ -1,0 +1,49 @@
+name: KujtoStudio
+options:
+  bundleIdPrefix: dev.peterdsp.kujto
+  deploymentTarget:
+    macOS: "13.0"
+packages:
+  KujtoCore:
+    path: ../..
+targets:
+  KujtoStudio:
+    type: application
+    platform: macOS
+    sources:
+      - App
+      - Shared
+    dependencies:
+      - package: KujtoCore
+        product: KujtoCore
+      - target: KujtoRulesExtension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.peterdsp.kujto.studio
+        ENABLE_APP_SANDBOX: YES
+    entitlements:
+      path: App/KujtoStudio.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.files.user-selected.read-only: true
+        com.apple.security.application-groups:
+          - group.dev.peterdsp.kujto
+  KujtoRulesExtension:
+    type: app-extension
+    platform: macOS
+    sources:
+      - Extension
+      - Shared
+    dependencies:
+      - package: KujtoCore
+        product: KujtoCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.peterdsp.kujto.studio.RulesExtension
+        INFOPLIST_FILE: Extension/Info.plist
+    entitlements:
+      path: Extension/KujtoRulesExtension.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.application-groups:
+          - group.dev.peterdsp.kujto

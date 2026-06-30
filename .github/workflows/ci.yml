@@ -44,26 +44,33 @@ jobs:
           fi
           echo "No em-dash."
 
-  bilingual-check:
-    name: Bilingual sections
+  applies-to-frontmatter:
+    name: applies_to frontmatter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify Albanian and English sections
+      - name: Validate file-scoped rule frontmatter
         run: |
-          MISSING=0
+          # Every memory/skill file that declares `applies_to` must list at
+          # least one glob as a block-list (`  - "..."`). This keeps the
+          # RuleIndex resolver fed with real, parseable patterns.
+          FAIL=0
           while IFS= read -r -d '' f; do
-            if ! grep -q '^## Shqip' "$f"; then
-              echo "::error file=$f::Missing '## Shqip' section"
-              MISSING=1
+            grep -q '^applies_to:' "$f" || continue
+            ITEMS=$(awk '
+              /^applies_to:[[:space:]]*$/ { inlist=1; next }
+              inlist && /^---[[:space:]]*$/ { inlist=0; next }
+              inlist && /^[[:space:]]*-[[:space:]]*[^[:space:]]/ { count++; next }
+              inlist && /^[^[:space:]]/ { inlist=0 }
+              END { print count + 0 }
+            ' "$f")
+            if [ "$ITEMS" -lt 1 ]; then
+              echo "::error file=$f::applies_to present but no glob items found"
+              FAIL=1
             fi
-            if ! grep -q '^## English' "$f"; then
-              echo "::error file=$f::Missing '## English' section"
-              MISSING=1
-            fi
-          done < <(find memory docs integrations -name '*.md' -print0)
-          if [ "$MISSING" -ne 0 ]; then exit 1; fi
-          echo "✓ All memory/docs/integrations files are bilingual."
+          done < <(find memory skills -name '*.md' -print0)
+          if [ "$FAIL" -ne 0 ]; then exit 1; fi
+          echo "All applies_to frontmatter blocks list at least one glob."
 
   markdownlint:
     name: Markdown lint

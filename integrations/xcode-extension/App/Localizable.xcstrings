@@ -1,0 +1,39 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Choose repo..." : {
+      "localizations" : {
+        "sq" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zgjidh repo..."
+          }
+        }
+      }
+    },
+    "In Xcode: Editor > Kujto > Show Rules for This File." : {
+      "localizations" : {
+        "sq" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Në Xcode: Editor > Kujto > Show Rules for This File."
+          }
+        }
+      }
+    },
+    "Kujto" : {
+      "shouldTranslate" : false
+    },
+    "Pick the repo whose memory the Xcode extension should read." : {
+      "localizations" : {
+        "sq" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zgjidh repon, memorien e së cilës duhet ta lexojë ekstensioni i Xcode."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

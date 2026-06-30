@@ -1,56 +1,12 @@
-# Si të kontribuosh / How to contribute
-
-[🇦🇱 Shqip](#shqip) · [🇬🇧 English](#english)
-
----
-
-## Shqip
-
-Faleminderit që po sjell një ndryshim te Kujto. Lexo këto rregulla para hapjes së një PR.
-
-### Rregulla absolute
-
-1. **Pa vizë të gjatë.** As në kod, as në commit, as në PR, as në docs. CI do ta refuzojë.
-2. **Të dyja gjuhët në sinkron.** Çdo ndryshim teksti te një file duhet të prekë seksionin shqip dhe atë anglisht. PR me një gjuhë të vetme refuzohet.
-3. **Shqipja e para.** Në çdo file që ka të dyja gjuhët, shqipja vjen para anglishtes.
-
-### Procesi i PR
-
-1. Bëj fork dhe një branch të ri me emër përshkrues (`feat/`, `fix/`, `docs/`).
-2. Bëj ndryshimet. Mbaji të vogla dhe të fokusuara.
-3. Ekzekuto skriptet e linting lokalisht (`bash bin/ci/check.sh` kur të shtohet).
-4. Hap PR. Përshkrimi duhet të thotë **pse**, jo vetëm **çfarë**.
-5. CI duhet të kalojë.
-
-### Stili
-
-- Markdown me rreshta të shkurtër, headers të qartë.
-- Shell me `#!/usr/bin/env bash`, `set -euo pipefail`, dhe `shellcheck` clean.
-- Mesazhet e commit-it në kohën e tashme imperative (`add`, `fix`, `remove`), shumë e shkurtër në subject.
-
-### Çfarë jemi në kërkim
-
-- Adapter për agjentë të rinj (Aider, Continue, etj.).
-- Snippets memorie për fusha të reja (Android, React Native, backend).
-- Përkthime në gjuhë të treta (italisht, greqisht), por **vetëm** nëse premtohet mirëmbajtja.
-
-### Çfarë nuk pranojmë
-
-- Ndryshime kozmetike pa vlerë.
-- File që e bëjnë repo-n më pak portativ.
-- Përdorimi i vizës së gjatë në çfarëdo forme.
-
----
-
-## English
+# How to contribute
 
 Thanks for bringing a change to Kujto. Read these rules before opening a PR.
 
 ### Absolute rules
 
 1. **No em-dash.** Not in code, not in commits, not in PRs, not in docs. CI will reject it.
-2. **Both languages in sync.** Any text change to a file must touch both the Albanian and the English section. PRs with only one language are rejected.
-3. **Albanian first.** In every file that has both languages, Albanian comes before English.
+2. **English base language.** Docs, memory, comments, commits, and PRs are written in English. Do not add side-by-side bilingual sections to files.
+3. **Localize, do not duplicate.** User-facing app strings go through the String Catalog (`.xcstrings`) with Albanian as a locale, not inline translated prose.
 
 ### PR process
 
@@ -70,7 +26,7 @@ Thanks for bringing a change to Kujto. Read these rules before opening a PR.
 
 - Adapters for new agents (Aider, Continue, etc.).
 - Memory snippets for new domains (Android, React Native, backend).
-- Translations to other languages (Italian, Greek), but **only** if maintenance is promised.
+- App localizations (Italian, Greek) through the String Catalog, but **only** if maintenance is promised.
 
 ### What we do not accept
 

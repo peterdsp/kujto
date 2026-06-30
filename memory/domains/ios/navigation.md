@@ -1,3 +1,10 @@
+---
+applies_to:
+  - "**/*Coordinator.swift"
+  - "**/*Router.swift"
+  - "**/*Navigation*.swift"
+---
+
 # Navigim / Navigation
 
 [🇦🇱 Shqip](#shqip) · [🇬🇧 English](#english)

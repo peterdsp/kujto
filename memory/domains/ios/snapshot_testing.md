@@ -1,3 +1,9 @@
+---
+applies_to:
+  - "**/*SnapshotTests.swift"
+  - "**/__Snapshots__/**"
+---
+
 # Snapshot testing / Snapshot testing
 
 [🇦🇱 Shqip](#shqip) · [🇬🇧 English](#english)

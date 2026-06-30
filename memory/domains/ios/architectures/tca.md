@@ -1,3 +1,10 @@
+---
+applies_to:
+  - "**/*Reducer.swift"
+  - "**/*Feature.swift"
+  - "**/*Store.swift"
+---
+
 # TCA (The Composable Architecture) / TCA (The Composable Architecture)
 
 [🇦🇱 Shqip](#shqip) · [🇬🇧 English](#english)
