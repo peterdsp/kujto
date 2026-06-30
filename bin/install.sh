@@ -7,7 +7,9 @@
 # - Gemini CLI    -> ~/.gemini/GEMINI.md     symlink to AGENTS.md
 # - Generic AGENTS-> ~/AGENTS.md             symlink to AGENTS.md
 #
-# Also makes the root scripts executable and reports next steps.
+# Then installs Kujto skills from skills/ into Claude and Codex (see
+# bin/skills/install-skills.sh), makes the root scripts executable, and
+# reports next steps.
 #
 # Install Kujto globalisht per agjentet qe ke. Ben symlink AGENTS.md per
 # secilin, ben ekzekutues skriptet ne root dhe raporton hapat e radhes.
@@ -59,11 +61,15 @@ else
 fi
 
 banner "Making root scripts executable"
-for f in "$KUJTO_ROOT"/bin/ios/*.sh "$KUJTO_ROOT"/bin/sync/*.sh "$KUJTO_ROOT"/bin/install.sh; do
+for f in "$KUJTO_ROOT"/bin/ios/*.sh "$KUJTO_ROOT"/bin/sync/*.sh "$KUJTO_ROOT"/bin/skills/*.sh "$KUJTO_ROOT"/bin/install.sh; do
   [[ -f "$f" ]] || continue
   chmod +x "$f"
   ok "$(basename "$f")"
 done
+
+if [[ -x "$KUJTO_ROOT/bin/skills/install-skills.sh" ]]; then
+  "$KUJTO_ROOT/bin/skills/install-skills.sh"
+fi
 
 banner "Convenience root symlinks"
 cd "$KUJTO_ROOT"

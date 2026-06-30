@@ -21,6 +21,9 @@ cd path/to/your/repo
 
 Pa konfigurim shtese. Skedaret e Kujto-s i nenshtrohen automatikisht profilit te perdoruesit.
 
+### Skills
+`install.sh` lidh skills-et e Kujto-s te `~/.codex/prompts/kujto-<name>.md`. Thirri si slash-command, psh `/kujto-prototyping`. I njejti `SKILL.md` qe perdor Claude, i njejti memory base. Detaje te [skills/README.md](../../skills/README.md).
+
 ---
 
 ## English
@@ -39,3 +42,6 @@ cd path/to/your/repo
 ```
 
 No further config needed. Kujto's files are picked up by the user's profile automatically.
+
+### Skills
+`install.sh` symlinks Kujto skills into `~/.codex/prompts/kujto-<name>.md`. Invoke them as slash commands, e.g. `/kujto-prototyping`. The same `SKILL.md` Claude uses, the same memory base. Detail in [skills/README.md](../../skills/README.md).

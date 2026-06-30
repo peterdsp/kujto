@@ -19,6 +19,7 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Workflow Xcode](domains/ios/xcode_workflow.md): worktree, scheme, simulator, build.
 - [Snapshots](domains/ios/snapshot_testing.md): regjistrim, rishikim, kufij testimi.
 - [Navigim](domains/ios/navigation.md): NavigationStack, coordinator, router, deep links, modal.
+- [Prototipim me agjente](domains/ios/prototyping_with_agents.md): shko gjeresisht, remix, sample data, tuning panel.
 
 ### iOS, arkitektura
 - [Permbledhje arkitekturash](domains/ios/architectures/README.md): si te zgjedhesh midis tyre.
@@ -56,6 +57,7 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Rendi i pergjigjeve](workflows/answer_order.md): pasqyro saktesisht renditjen e perdoruesit.
 - [Pershkrim PR](workflows/pr_descriptions.md): template minimale, pa mure teksti.
 - [Higjiena git](workflows/git_hygiene.md): commit-e te vegjel, pa noise, pa sekrete.
+- [Loop i prototipimit](workflows/prototyping_loop.md): specifiko, shko gjeresisht, remix, mbushe, stress-test, akordo.
 
 ---
 
@@ -71,6 +73,7 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Xcode workflow](domains/ios/xcode_workflow.md): worktree, scheme, simulator, build.
 - [Snapshots](domains/ios/snapshot_testing.md): recording, review, testing limits.
 - [Navigation](domains/ios/navigation.md): NavigationStack, coordinator, router, deep links, modals.
+- [Prototyping with agents](domains/ios/prototyping_with_agents.md): go wide, remix, sample data, tuning panel.
 
 ### iOS, architectures
 - [Architectures overview](domains/ios/architectures/README.md): how to choose between them.
@@ -108,3 +111,4 @@ Read this file first after `AGENTS.md`. Open only the referenced files relevant 
 - [Answer order](workflows/answer_order.md): mirror the user's numbering exactly.
 - [PR descriptions](workflows/pr_descriptions.md): minimal template, no wall of text.
 - [Git hygiene](workflows/git_hygiene.md): small commits, no noise, no secrets.
+- [Prototyping loop](workflows/prototyping_loop.md): specify, go wide, remix, fill, stress-test, tune.
