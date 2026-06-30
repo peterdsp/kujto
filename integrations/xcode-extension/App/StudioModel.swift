@@ -13,10 +13,18 @@ final class StudioModel: ObservableObject {
         let confidence: Confidence
     }
 
+    /// What the inspector is showing. Files coexist with "Agents" as a
+    /// destination so a sidebar selection can route to either.
+    enum Destination: Hashable {
+        case agents
+        case file(String)
+    }
+
     @Published private(set) var rootPath: String?
     @Published private(set) var map: MemoryMap?
     @Published private(set) var files: [FileEntry] = []
-    @Published var selection: String?
+    @Published private(set) var agents: [WireStatus] = []
+    @Published var destination: Destination?
 
     private var index: RuleIndex?
 
@@ -39,6 +47,12 @@ final class StudioModel: ObservableObject {
         index?.confidence(forFile: path) ?? .safe
     }
 
+    /// Count of agents currently linked to this Kujto root. Drives the "X / Y"
+    /// hint shown next to the sidebar's Agents row.
+    var linkedAgentCount: Int {
+        agents.filter { $0.state == .linked }.count
+    }
+
     private func load(_ root: URL) {
         rootPath = root.path
         let idx = try? RuleIndex.load(root: root)
@@ -57,7 +71,8 @@ final class StudioModel: ObservableObject {
                     ? lhs.confidence.rank > rhs.confidence.rank
                     : lhs.name < rhs.name
             }
-        selection = files.first?.id
+        agents = AgentExport.status(target: root, root: root)
+        destination = files.first.map { .file($0.id) } ?? .agents
     }
 
     private static func swiftFiles(under root: URL) -> [String] {

@@ -13,10 +13,10 @@ struct ContentView: View {
             Sidebar(model: model, onPick: pickRepo)
                 .navigationSplitViewColumnWidth(min: 220, ideal: 240)
         } detail: {
-            if let path = model.selection {
-                Inspector(path: path, model: model)
-            } else {
-                EmptyState(onPick: pickRepo)
+            switch model.destination {
+            case .file(let path): Inspector(path: path, model: model)
+            case .agents:         AgentsPanel(model: model)
+            case .none:           EmptyState(onPick: pickRepo)
             }
         }
         .onAppear { model.loadSavedRoot() }
@@ -48,12 +48,29 @@ private struct Sidebar: View {
                 .padding(12)
             }
             Divider()
-            List(model.files, selection: $model.selection) { file in
-                HStack(spacing: 8) {
-                    Circle().fill(file.confidence.tint).frame(width: 7, height: 7)
-                    Text(file.name).font(.system(size: 13))
+            List(selection: $model.destination) {
+                Section {
+                    Label {
+                        HStack {
+                            Text("Agents").font(.system(size: 13))
+                            Spacer()
+                            Text("\(model.linkedAgentCount) / \(model.agents.count)")
+                                .font(.system(size: 11)).foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        Image(systemName: "person.2")
+                    }
+                    .tag(StudioModel.Destination.agents)
                 }
-                .tag(file.id)
+                Section("Files") {
+                    ForEach(model.files) { file in
+                        HStack(spacing: 8) {
+                            Circle().fill(file.confidence.tint).frame(width: 7, height: 7)
+                            Text(file.name).font(.system(size: 13))
+                        }
+                        .tag(StudioModel.Destination.file(file.id))
+                    }
+                }
             }
             .listStyle(.sidebar)
         }
@@ -168,6 +185,94 @@ private struct RuleCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .overlay(RoundedRectangle(cornerRadius: Theme.cardRadius).stroke(.black.opacity(0.06)))
+    }
+}
+
+private struct AgentsPanel: View {
+    @ObservedObject var model: StudioModel
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Agents wired in this repo")
+                    .font(.system(size: 12)).foregroundStyle(.secondary)
+                HStack(spacing: 10) {
+                    Text("Multi-agent sync")
+                        .font(.system(size: 18, weight: .medium))
+                    Text("\(model.linkedAgentCount) of \(model.agents.count) linked")
+                        .font(.system(size: 12))
+                        .padding(.vertical, 4).padding(.horizontal, 10)
+                        .background(.gray.opacity(0.12), in: Capsule())
+                }
+
+                ForEach(model.agents, id: \.agent) { status in
+                    AgentRow(status: status)
+                }
+
+                Text("Run `kujto wire` in your target repo to add or refresh links.")
+                    .font(.system(size: 12)).foregroundStyle(.tertiary)
+            }
+            .padding(20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .background(Theme.canvas)
+    }
+}
+
+private struct AgentRow: View {
+    let status: WireStatus
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon).foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(status.agent.displayName).font(.system(size: 14, weight: .medium))
+                Text(status.agent.fileName)
+                    .font(.system(size: 12, design: .monospaced))
+                    .foregroundStyle(.secondary)
+                if let dest = status.linkDestination {
+                    Text(dest)
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundStyle(.tertiary)
+                        .lineLimit(1).truncationMode(.middle)
+                }
+            }
+            Spacer()
+            Text(stateLabel)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(stateColor)
+                .padding(.vertical, 4).padding(.horizontal, 10)
+                .background(stateColor.opacity(0.12), in: Capsule())
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .overlay(RoundedRectangle(cornerRadius: Theme.cardRadius).stroke(.black.opacity(0.06)))
+    }
+
+    private var icon: String {
+        switch status.agent {
+        case .agents: return "doc.text"
+        case .claude: return "sparkles"
+        case .codex:  return "chevron.left.slash.chevron.right"
+        case .gemini: return "diamond"
+        }
+    }
+
+    private var stateLabel: String {
+        switch status.state {
+        case .linked:     return "linked"
+        case .foreign:    return "foreign"
+        case .notPresent: return "not present"
+        }
+    }
+
+    private var stateColor: Color {
+        switch status.state {
+        case .linked:     return .green
+        case .foreign:    return .orange
+        case .notPresent: return .gray
+        }
     }
 }
 
