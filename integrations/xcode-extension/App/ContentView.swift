@@ -16,6 +16,7 @@ struct ContentView: View {
             switch model.destination {
             case .file(let path): Inspector(path: path, model: model)
             case .agents:         AgentsPanel(model: model)
+            case .lint:           LintPanel(model: model)
             case .none:           EmptyState(onPick: pickRepo)
             }
         }
@@ -61,6 +62,19 @@ private struct Sidebar: View {
                         Image(systemName: "person.2")
                     }
                     .tag(StudioModel.Destination.agents)
+
+                    Label {
+                        HStack {
+                            Text("Lint").font(.system(size: 13))
+                            Spacer()
+                            Text("\(model.lintIssues.count)")
+                                .font(.system(size: 11))
+                                .foregroundStyle(model.lintErrorCount > 0 ? .red : .secondary)
+                        }
+                    } icon: {
+                        Image(systemName: "checkmark.shield")
+                    }
+                    .tag(StudioModel.Destination.lint)
                 }
                 Section("Files") {
                     ForEach(model.files) { file in
@@ -273,6 +287,82 @@ private struct AgentRow: View {
         case .foreign:    return .orange
         case .notPresent: return .gray
         }
+    }
+}
+
+private struct LintPanel: View {
+    @ObservedObject var model: StudioModel
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Memory health")
+                    .font(.system(size: 12)).foregroundStyle(.secondary)
+                HStack(spacing: 10) {
+                    Text("Lint").font(.system(size: 18, weight: .medium))
+                    HealthChip(label: "\(model.lintErrorCount) errors", color: .red)
+                    HealthChip(label: "\(model.lintWarningCount) warnings", color: .orange)
+                }
+
+                if model.lintIssues.isEmpty {
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark.seal").foregroundStyle(.green)
+                        Text("Lint clean.").font(.system(size: 14))
+                    }
+                    .padding(14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+                    .overlay(RoundedRectangle(cornerRadius: Theme.cardRadius).stroke(.black.opacity(0.06)))
+                } else {
+                    ForEach(model.lintIssues, id: \.self) { issue in
+                        LintRow(issue: issue)
+                    }
+                }
+            }
+            .padding(20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .background(Theme.canvas)
+    }
+}
+
+private struct HealthChip: View {
+    let label: String
+    let color: Color
+    var body: some View {
+        Text(label)
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(color)
+            .padding(.vertical, 4).padding(.horizontal, 10)
+            .background(color.opacity(0.12), in: Capsule())
+    }
+}
+
+private struct LintRow: View {
+    let issue: LintIssue
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: issue.severity == .error ? "xmark.octagon" : "exclamationmark.triangle")
+                .foregroundStyle(issue.severity == .error ? .red : .orange)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(issue.message).font(.system(size: 13))
+                HStack(spacing: 8) {
+                    Text(issue.file).font(.system(size: 11, design: .monospaced)).foregroundStyle(.secondary)
+                    Text(issue.code).font(.system(size: 11, design: .monospaced)).foregroundStyle(.tertiary)
+                }
+            }
+            Spacer()
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .overlay(RoundedRectangle(cornerRadius: Theme.cardRadius).stroke(.black.opacity(0.06)))
+    }
+}
+
+extension LintIssue: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(file); hasher.combine(code); hasher.combine(message)
     }
 }
 

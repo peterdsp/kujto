@@ -17,6 +17,7 @@ final class StudioModel: ObservableObject {
     /// destination so a sidebar selection can route to either.
     enum Destination: Hashable {
         case agents
+        case lint
         case file(String)
     }
 
@@ -24,6 +25,7 @@ final class StudioModel: ObservableObject {
     @Published private(set) var map: MemoryMap?
     @Published private(set) var files: [FileEntry] = []
     @Published private(set) var agents: [WireStatus] = []
+    @Published private(set) var lintIssues: [LintIssue] = []
     @Published var destination: Destination?
 
     private var index: RuleIndex?
@@ -72,8 +74,12 @@ final class StudioModel: ObservableObject {
                     : lhs.name < rhs.name
             }
         agents = AgentExport.status(target: root, root: root)
+        lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
         destination = files.first.map { .file($0.id) } ?? .agents
     }
+
+    var lintErrorCount: Int { lintIssues.filter { $0.severity == .error }.count }
+    var lintWarningCount: Int { lintIssues.filter { $0.severity == .warning }.count }
 
     private static func swiftFiles(under root: URL) -> [String] {
         let fm = FileManager.default
