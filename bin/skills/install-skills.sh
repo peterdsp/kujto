@@ -113,7 +113,7 @@ if [[ -d "$HOME/.claude" ]]; then
     link_into "$SKILLS_SRC/$name" "$CLAUDE_DIR/$PREFIX$name"
   done
 else
-  skip "~/.claude not present, skipping Claude skills"
+  skip "\$HOME/.claude not present, skipping Claude skills"
 fi
 
 # Codex CLI: symlink SKILL.md as a slash-command prompt (/kujto-<name>).
@@ -124,7 +124,7 @@ if [[ -d "$HOME/.codex" ]]; then
     link_into "$SKILLS_SRC/$name/SKILL.md" "$CODEX_DIR/$PREFIX$name.md"
   done
 else
-  skip "~/.codex not present, skipping Codex prompts"
+  skip "\$HOME/.codex not present, skipping Codex prompts"
 fi
 
 banner "Done"
