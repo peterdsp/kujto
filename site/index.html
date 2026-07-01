@@ -1,927 +1,250 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kujto - Versioned AI Memory for Your Codebase | Claude, Copilot, Gemini, Codex</title>
-    <meta
-      name="description"
-      content="Stop re-teaching AI agents your codebase rules. Kujto is an open-source, bilingual memory base that gives Claude, Codex, Gemini, Copilot, and Cursor one source of truth, versioned in git."
-    >
-    <meta name="keywords" content="Kujto, AI memory, Claude, Copilot, Gemini, Codex, Cursor, codebase context, CLAUDE.md, AGENTS.md, versioned memory, git, open source, AI agents, developer tools, iOS development">
-    <meta name="author" content="Petros Dhespollari">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kujto Studio, the local memory layer for AI coding agents</title>
+  <meta name="description" content="Kujto Studio is a local-first Mac app that reads your repo's memory and shows the rules that apply before you touch a file. One engine, four surfaces: standalone Mac app, Xcode Source Editor extension, VS Code and Cursor extension, and CLI.">
+  <meta name="keywords" content="Kujto Studio, Kujto, AI memory, Claude, Codex, Gemini, Copilot, Cursor, AGENTS.md, CLAUDE.md, developer tools, Mac app, Xcode extension, VS Code extension, local-first, codebase rules">
+  <meta name="author" content="Petros Dhespollari">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#0E1424">
 
-    <meta property="og:title" content="Kujto - Versioned AI Memory for Your Codebase">
-    <meta property="og:description" content="Stop re-teaching AI agents. Kujto keeps your codebase rules versioned in git. Works with Claude, Copilot, Gemini, Codex, and Cursor. Open-source.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kujto.peterdsp.dev">
-    <meta property="og:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="Kujto">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="sq_AL">
+  <meta property="og:title" content="Kujto Studio, the local memory layer for AI coding agents">
+  <meta property="og:description" content="Reads your repo's memory and shows the rules that apply before you touch a file. Local-only. Mac app, Xcode, VS Code, Cursor, CLI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kujto.peterdsp.dev">
+  <meta property="og:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta property="og:site_name" content="Kujto Studio">
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Kujto - AI Memory for Your Codebase">
-    <meta name="twitter:description" content="Stop re-teaching AI agents. Kujto keeps your codebase rules versioned in git. Works with Claude, Copilot, Gemini, Codex, and Cursor.">
-    <meta name="twitter:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kujto Studio">
+  <meta name="twitter:description" content="The local memory layer that stops AI agents and developers from breaking your codebase rules.">
+  <meta name="twitter:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
 
-    <link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev">
-    <link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev">
-    <link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Kujto Studio",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS 13 or later",
+    "url": "https://kujto.peterdsp.dev",
+    "description": "Local-first Mac app that surfaces a codebase's hidden rules before an engineer or AI agent edits a file.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Petros Dhespollari", "url": "https://peterdsp.dev" },
+    "license": "https://github.com/peterdsp/kujto/blob/main/LICENSE",
+    "codeRepository": "https://github.com/peterdsp/kujto"
+  }
+  </script>
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Kujto",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Any (git-based)",
-      "url": "https://kujto.peterdsp.dev",
-      "description": "Open-source, bilingual AI memory base that gives Claude, Codex, Gemini, Copilot, and Cursor one source of truth, versioned in git.",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "author": { "@type": "Person", "name": "Petros Dhespollari", "url": "https://peterdsp.dev" },
-      "license": "https://github.com/peterdsp/kujto/blob/main/LICENSE",
-      "codeRepository": "https://github.com/peterdsp/kujto",
-      "inLanguage": ["en", "sq"],
-      "featureList": [
-        "Versioned AI memory in git",
-        "Works with Claude, Copilot, Gemini, Codex, Cursor",
-        "Bilingual support (English and Albanian)",
-        "CLAUDE.md and AGENTS.md compatible",
-        "Domain-specific memory files",
-        "Handoff support between sessions"
-      ]
-    }
-    </script>
+  <link rel="canonical" href="https://kujto.peterdsp.dev">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <meta name="theme-color" content="#07070a">
-    <link rel="canonical" href="https://kujto.peterdsp.dev">
-    <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="favicon-192.png" sizes="192x192" type="image/png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Kujto home">
-        <span class="brand-mark" aria-hidden="true">
-          <img src="favicon-192.png" alt="">
-        </span>
-        <span>Kujto</span>
-      </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="#why" data-i18n="nav.why">Why</a>
-        <a href="#how" data-i18n="nav.how">How</a>
-        <a href="#install" data-i18n="nav.install">Install</a>
-        <a href="#roadmap" data-i18n="nav.roadmap">Roadmap</a>
-      </nav>
-      <a class="header-cta" href="https://github.com/peterdsp/kujto" data-i18n="nav.cta">Star on GitHub</a>
-    </header>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow" data-i18n="hero.eyebrow">Open-source AI memory</p>
-          <h1 id="hero-title">Kujto</h1>
-          <p class="hero-subtitle" data-i18n="hero.subtitle">
-            Your AI agents forget your codebase rules every session. Kujto
-            keeps them versioned in git, so Claude, Codex, Gemini, Copilot,
-            and Cursor share one source of truth.
-          </p>
-          <p class="hero-shqip" data-i18n="hero.shqip">
-            "Kujto" means "remember" in Albanian. Versioned memory in git
-            for every AI agent that touches your code.
-          </p>
-          <div class="hero-actions" aria-label="Hero actions">
-            <a class="button primary" href="https://github.com/peterdsp/kujto">
-              <span aria-hidden="true">&#9733;</span>
-              <span data-i18n="hero.star">Star on GitHub</span>
-            </a>
-            <a class="button secondary" href="#install">
-              <span aria-hidden="true">&#8595;</span>
-              <span data-i18n="hero.installBtn">Install now</span>
-            </a>
-          </div>
-          <div class="metric-row" aria-label="Project highlights">
-            <div>
-              <strong data-i18n="hero.metric1.value">5 agents</strong>
-              <span data-i18n="hero.metric1.label">one source of truth</span>
-            </div>
-            <div>
-              <strong data-i18n="hero.metric2.value">12 guides</strong>
-              <span data-i18n="hero.metric2.label">iOS architecture</span>
-            </div>
-            <div>
-              <strong data-i18n="hero.metric3.value">simulator.sh</strong>
-              <span data-i18n="hero.metric3.label">zero-config tool</span>
-            </div>
-          </div>
-        </div>
+<header class="site-header">
+  <a class="brand" href="#top" aria-label="Kujto Studio home">
+    <img class="brand-mark" src="favicon-192.png" alt="" width="28" height="28">
+    <span class="brand-word">Kujto Studio</span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="#product">Product</a>
+    <a href="#surfaces">Where it lives</a>
+    <a href="#install">Install</a>
+    <a href="#roadmap">Roadmap</a>
+  </nav>
+  <a class="header-cta" href="https://github.com/peterdsp/kujto">Star on GitHub</a>
+</header>
 
-        <div class="hero-visual" aria-label="Kujto interactive terminal">
-          <div class="terminal" id="terminal" role="region" aria-label="Kujto CLI">
-            <div class="term-bar">
-              <div class="term-dots" aria-hidden="true">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="term-title">~ kujto - zsh</div>
-              <div class="term-hint">try: help</div>
-            </div>
-            <div class="term-body" id="term-body" tabindex="0"></div>
-            <div class="term-suggest" id="term-suggest" aria-label="Quick commands"></div>
-          </div>
-        </div>
-      </section>
+<main id="top">
 
-      <section class="proof-band" aria-label="What Kujto ships">
-        <span data-i18n="proof.1">Versioned Markdown memory</span>
-        <span data-i18n="proof.2">12 iOS architecture guides</span>
-        <span data-i18n="proof.3">Zero-config simulator tool</span>
-        <span data-i18n="proof.4">Works with 5 AI agents</span>
-      </section>
-
-      <section id="why" class="section split" aria-labelledby="why-title">
-        <div>
-          <p class="eyebrow" data-i18n="why.eyebrow">The problem</p>
-          <h2 id="why-title" data-i18n="why.title">Every new chat session, your AI agent forgets everything.</h2>
-        </div>
-        <div class="comparison">
-          <article>
-            <h3 data-i18n="why.without.title">Without Kujto</h3>
-            <p data-i18n="why.without.text">
-              Every new session starts from zero. You re-paste architecture
-              rules, coding style, simulator commands, and PR conventions.
-              Context resets, patterns get dropped, and you repeat the same
-              setup prompts over and over.
-            </p>
-          </article>
-          <article>
-            <h3 data-i18n="why.with.title">With Kujto</h3>
-            <p data-i18n="why.with.text">
-              Each agent reads versioned Markdown memory from your repo.
-              Architecture guides, workflow rules, and project conventions
-              survive every session. One AGENTS.md layer that all your tools
-              read instantly.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section id="how" class="section" aria-labelledby="how-title">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="how.eyebrow">How it works</p>
-          <h2 id="how-title" data-i18n="how.title">AI memory belongs where engineering truth lives: in git.</h2>
-        </div>
-        <div class="feature-grid">
-          <article>
-            <span class="feature-index">01</span>
-            <h3 data-i18n="how.f1.title">Wire once</h3>
-            <p data-i18n="how.f1.text">
-              Run <code>wire.sh</code> to link AGENTS.md, CLAUDE.md, CODEX.md,
-              and GEMINI.md into any project. One command, all agents configured.
-            </p>
-          </article>
-          <article>
-            <span class="feature-index">02</span>
-            <h3 data-i18n="how.f2.title">Agents read the index</h3>
-            <p data-i18n="how.f2.text">
-              Every agent starts at <code>memory/MEMORY.md</code>, then opens
-              only the files relevant to the current task. No bloat, no noise.
-            </p>
-          </article>
-          <article>
-            <span class="feature-index">03</span>
-            <h3 data-i18n="how.f3.title">Truth stays in git</h3>
-            <p data-i18n="how.f3.text">
-              Your project rules evolve through reviewable Markdown diffs,
-              not copy-pasted prompts that disappear into chat history.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section id="install" class="section" aria-labelledby="install-title">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="install.eyebrow">Get started</p>
-          <h2 id="install-title" data-i18n="install.title">Type <code>install</code> in the terminal above.</h2>
-          <p data-i18n="install.text">
-            The interactive wizard asks for your language (Shqip or English)
-            and which agents you use, then prints the command tailored for you.
-            Albanian stays first, English stays in sync. MIT licensed.
-          </p>
-        </div>
-        <div class="glass-card">
-          <p style="color: var(--ink-soft); margin-bottom: 0.6rem;" data-i18n="install.fallback">Prefer one-liner?</p>
-          <pre style="margin: 0; padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--line-strong); overflow-x: auto;"><code style="background: transparent; color: #f5f5f5; padding: 0;">curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></pre>
-        </div>
-      </section>
-
-      <section class="section" aria-labelledby="use-cases-title">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="usecases.eyebrow">Who it's for</p>
-          <h2 id="use-cases-title" data-i18n="usecases.title">Built for developers who work with AI agents every day.</h2>
-        </div>
-        <div class="use-case-list">
-          <article>
-            <h3 data-i18n="usecases.ios.title">iOS developers</h3>
-            <p data-i18n="usecases.ios.text">
-              12 ready guides for Swift, SwiftUI, UIKit, TCA, and modular
-              architecture. Plus simulator.sh: build, install, and stream
-              logs from any Xcode project with zero config.
-            </p>
-          </article>
-          <article>
-            <h3 data-i18n="usecases.ai.title">AI-powered teams</h3>
-            <p data-i18n="usecases.ai.text">
-              One unified AGENTS.md layer that Claude, Codex, Gemini,
-              Copilot, and Cursor all read instantly. Stop maintaining
-              separate configs for each tool.
-            </p>
-          </article>
-          <article>
-            <h3 data-i18n="usecases.alb.title">Albanian builders</h3>
-            <p data-i18n="usecases.alb.text">
-              We shouldn't just consume tools, we can build and open-source
-              them globally. Documented cleanly, named in our own language,
-              Albanian identity at the front.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section class="pse-shqip" aria-labelledby="pse-shqip-title">
-        <div class="pse-shqip-inner">
-          <p class="eyebrow">Pse shqip?</p>
-          <h2 id="pse-shqip-title">Sepse gjuha jone meriton te jete ne kod, jo vetem ne poezi.</h2>
-          <div class="pse-shqip-body">
-            <p>
-              "Kujto" nuk eshte vetem nje emer. Eshte nje fjale qe cdo shqiptar e kupton menjehere.
-              Kur agjenti AI lexon <code>AGENTS.md</code>, ai lexon nje skedar te emertuar ne shqip,
-              te ndertuar nga nje zhvillues shqiptar, per nje komunitet qe meriton te ndertoje, jo vetem te konsumoje.
-            </p>
-            <p>
-              Ne boten e teknologjise, shqipja rralle shihet ne kod. Kujto e ndryshon kete.
-              Cdo skedar memorje ka seksionin shqip te parin. Cdo udhezim shkon shqip para anglishtes.
-              Kjo nuk eshte lokalizim, eshte identitet.
-            </p>
-            <p>
-              Nese je zhvillues, student, ose thjesht kurioz, je i mirepritur ketu.
-              Forko, kontribuo, ose thjesht vendos nje yll. Kjo eshte e jona.
-            </p>
-          </div>
-          <a class="button primary" href="https://github.com/peterdsp/kujto">&#9733; Ylli ne GitHub</a>
-        </div>
-      </section>
-
-      <section id="roadmap" class="section" aria-labelledby="roadmap-title">
-        <div class="section-heading">
-          <p class="eyebrow" data-i18n="roadmap.eyebrow">What's next</p>
-          <h2 id="roadmap-title" data-i18n="roadmap.title">The roadmap is open. Your feedback shapes it.</h2>
-        </div>
-        <div class="roadmap-grid">
-          <article>
-            <span class="roadmap-icon" aria-hidden="true">&#9881;</span>
-            <h3 data-i18n="roadmap.android.title">Android domain</h3>
-            <p data-i18n="roadmap.android.text">Kotlin, Compose, and Gradle architecture guides.</p>
-          </article>
-          <article>
-            <span class="roadmap-icon" aria-hidden="true">&#9729;</span>
-            <h3 data-i18n="roadmap.backend.title">Backend domain</h3>
-            <p data-i18n="roadmap.backend.text">Vapor, Express, and server-side workflow memory.</p>
-          </article>
-          <article>
-            <span class="roadmap-icon" aria-hidden="true">&#127866;</span>
-            <h3 data-i18n="roadmap.homebrew.title">Homebrew formula</h3>
-            <p data-i18n="roadmap.homebrew.text">Install with <code>brew install kujto</code> on macOS.</p>
-          </article>
-          <article>
-            <span class="roadmap-icon" aria-hidden="true">&#9889;</span>
-            <h3 data-i18n="roadmap.plugin.title">IDE plugins</h3>
-            <p data-i18n="roadmap.plugin.text">Dedicated extensions for Xcode and VS Code.</p>
-          </article>
-        </div>
-      </section>
-
-    </main>
-
-    <footer class="footer">
-      <div>
-        <strong>Kujto</strong>
-        <span data-i18n="footer.tagline">Open-source, MIT licensed. Memorie e hapur, licensa MIT.</span>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Local memory for AI coding agents</p>
+      <h1 class="hero-title">Stop briefing your AI agent on the same codebase every day.</h1>
+      <p class="hero-lede">
+        Kujto Studio is a local-first Mac app that reads your repo's memory, then
+        shows the rules that apply before you touch a file. Architecture, risks,
+        related tests, the agent context to inject, in one panel.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://github.com/peterdsp/kujto">
+          <span aria-hidden="true">&#9733;</span> Star on GitHub
+        </a>
+        <a class="button ghost" href="#install">Install &rarr;</a>
       </div>
-      <div>
-        <a href="https://github.com/peterdsp/kujto">github.com/peterdsp/kujto</a>
-        <span data-i18n="footer.credit">Made in Greece, named in Albanian.</span>
+      <p class="hero-meta">Free and open source, MIT. macOS 13 and later.</p>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="icon-plate">
+        <img src="assets/kujto-icon-1024.png" alt="" class="app-icon">
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <button class="lang-fab" id="lang-toggle" aria-label="Switch language">
-      <span class="lang-fab-flag" id="lang-flag"></span>
-      <span class="lang-fab-label" id="lang-label">SQ</span>
-    </button>
+  <section class="proof-band" aria-label="One engine, many surfaces">
+    <span>Mac app</span><i>&middot;</i>
+    <span>Xcode extension</span><i>&middot;</i>
+    <span>VS Code and Cursor</span><i>&middot;</i>
+    <span>Command line</span><i>&middot;</i>
+    <span>Local only</span>
+  </section>
 
-    <script>
-      // ---------- i18n ----------
-      var T = {
-        en: {
-          "nav.why": "Why",
-          "nav.how": "How",
-          "nav.install": "Install",
-          "nav.roadmap": "Roadmap",
-          "nav.cta": "Star on GitHub",
-          "hero.eyebrow": "Open-source AI memory",
-          "hero.subtitle": "Your AI agents forget your codebase rules every session. Kujto keeps them versioned in git, so Claude, Codex, Gemini, Copilot, and Cursor share one source of truth.",
-          "hero.shqip": "\"Kujto\" means \"remember\" in Albanian. Versioned memory in git for every AI agent that touches your code.",
-          "hero.star": "Star on GitHub",
-          "hero.installBtn": "Install now",
-          "hero.metric1.value": "5 agents",
-          "hero.metric1.label": "one source of truth",
-          "hero.metric2.value": "12 guides",
-          "hero.metric2.label": "iOS architecture",
-          "hero.metric3.value": "simulator.sh",
-          "hero.metric3.label": "zero-config tool",
-          "proof.1": "Versioned Markdown memory",
-          "proof.2": "12 iOS architecture guides",
-          "proof.3": "Zero-config simulator tool",
-          "proof.4": "Works with 5 AI agents",
-          "why.eyebrow": "The problem",
-          "why.title": "Every new chat session, your AI agent forgets everything.",
-          "why.without.title": "Without Kujto",
-          "why.without.text": "Every new session starts from zero. You re-paste architecture rules, coding style, simulator commands, and PR conventions. Context resets, patterns get dropped, and you repeat the same setup prompts over and over.",
-          "why.with.title": "With Kujto",
-          "why.with.text": "Each agent reads versioned Markdown memory from your repo. Architecture guides, workflow rules, and project conventions survive every session. One AGENTS.md layer that all your tools read instantly.",
-          "how.eyebrow": "How it works",
-          "how.title": "AI memory belongs where engineering truth lives: in git.",
-          "how.f1.title": "Wire once",
-          "how.f1.text": "Run <code>wire.sh</code> to link AGENTS.md, CLAUDE.md, CODEX.md, and GEMINI.md into any project. One command, all agents configured.",
-          "how.f2.title": "Agents read the index",
-          "how.f2.text": "Every agent starts at <code>memory/MEMORY.md</code>, then opens only the files relevant to the current task. No bloat, no noise.",
-          "how.f3.title": "Truth stays in git",
-          "how.f3.text": "Your project rules evolve through reviewable Markdown diffs, not copy-pasted prompts that disappear into chat history.",
-          "install.eyebrow": "Get started",
-          "install.title": "Type <code>install</code> in the terminal above.",
-          "install.text": "The interactive wizard asks for your language (Shqip or English) and which agents you use, then prints the command tailored for you. Albanian stays first, English stays in sync. MIT licensed.",
-          "install.fallback": "Prefer the one-liner?",
-          "usecases.eyebrow": "Who it's for",
-          "usecases.title": "Built for developers who work with AI agents every day.",
-          "usecases.ios.title": "iOS developers",
-          "usecases.ios.text": "12 ready guides for Swift, SwiftUI, UIKit, TCA, and modular architecture. Plus simulator.sh: build, install, and stream logs from any Xcode project with zero config.",
-          "usecases.ai.title": "AI-powered teams",
-          "usecases.ai.text": "One unified AGENTS.md layer that Claude, Codex, Gemini, Copilot, and Cursor all read instantly. Stop maintaining separate configs for each tool.",
-          "usecases.alb.title": "Albanian builders",
-          "usecases.alb.text": "We shouldn't just consume tools, we can build and open-source them globally. Documented cleanly, named in our own language, Albanian identity at the front.",
-          "roadmap.eyebrow": "What's next",
-          "roadmap.title": "The roadmap is open. Your feedback shapes it.",
-          "roadmap.android.title": "Android domain",
-          "roadmap.android.text": "Kotlin, Compose, and Gradle architecture guides.",
-          "roadmap.backend.title": "Backend domain",
-          "roadmap.backend.text": "Vapor, Express, and server-side workflow memory.",
-          "roadmap.homebrew.title": "Homebrew formula",
-          "roadmap.homebrew.text": "Install with <code>brew install kujto</code> on macOS.",
-          "roadmap.plugin.title": "IDE plugins",
-          "roadmap.plugin.text": "Dedicated extensions for Xcode and VS Code.",
-          "footer.tagline": "Open-source, MIT licensed. Memorie e hapur, licensa MIT.",
-          "footer.credit": "Made in Greece, named in Albanian."
-        },
-        sq: {
-          "nav.why": "Pse",
-          "nav.how": "Si",
-          "nav.install": "Instalo",
-          "nav.roadmap": "Udherrefyesi",
-          "nav.cta": "Ylli ne GitHub",
-          "hero.eyebrow": "Memorie AI me burim te hapur",
-          "hero.subtitle": "Agjentet AI i harrojne rregullat e kodit tend ne cdo sesion. Kujto i mban te versionuara ne git, keshtu Claude, Codex, Gemini, Copilot dhe Cursor ndajne nje burim te vetem te vertete.",
-          "hero.shqip": "\"Kujto\" do te thote \"mbaj mend\" ne shqip. Memorie e versionuar ne git per cdo agjent AI qe prek kodin tend.",
-          "hero.star": "Ylli ne GitHub",
-          "hero.installBtn": "Instalo tani",
-          "hero.metric1.value": "5 agjente",
-          "hero.metric1.label": "nje burim i vetem",
-          "hero.metric2.value": "12 udhezues",
-          "hero.metric2.label": "arkitekture iOS",
-          "hero.metric3.value": "simulator.sh",
-          "hero.metric3.label": "vegla pa konfigurim",
-          "proof.1": "Memorie Markdown e versionuar",
-          "proof.2": "12 udhezues arkitekture iOS",
-          "proof.3": "Vegla simulatori pa konfigurim",
-          "proof.4": "Punon me 5 agjente AI",
-          "why.eyebrow": "Problemi",
-          "why.title": "Ne cdo sesion te ri, agjenti AI harron gjithcka.",
-          "why.without.title": "Pa Kujto",
-          "why.without.text": "Cdo sesion i ri fillon nga zeroja. Ringjitni rregullat e arkitektures, stilin e kodimit, komandat e simulatorit dhe konventat e PR-ve. Konteksti rivendoset, modelet humbasin, dhe perseritni te njejtat prompt-e vazhdimisht.",
-          "why.with.title": "Me Kujto",
-          "why.with.text": "Cdo agjent lexon memorie Markdown te versionuar nga repo juaj. Udhezuesit e arkitektures, rregullat e punes dhe konventat e projektit mbijetojne cdo sesion. Nje shtrese AGENTS.md qe te gjitha veglat e lexojne menjehere.",
-          "how.eyebrow": "Si funksionon",
-          "how.title": "Memorja AI i perket aty ku jeton e verteta inxhinierike: ne git.",
-          "how.f1.title": "Lidhe nje here",
-          "how.f1.text": "Ekzekuto <code>wire.sh</code> per te lidhur AGENTS.md, CLAUDE.md, CODEX.md dhe GEMINI.md ne cdo projekt. Nje komande, te gjithe agjentet te konfiguruar.",
-          "how.f2.title": "Agjentet lexojne indeksin",
-          "how.f2.text": "Cdo agjent fillon nga <code>memory/MEMORY.md</code>, pastaj hap vetem skedaret qe lidhen me detyren aktuale. Pa fryrje, pa zhurme.",
-          "how.f3.title": "E verteta qendron ne git",
-          "how.f3.text": "Rregullat e projektit zhvillohen permes diff-eve Markdown te rishikueshme, jo prompt-e te kopjuara qe zhduken ne historikun e chat-it.",
-          "install.eyebrow": "Fillo",
-          "install.title": "Shkruaj <code>install</code> ne terminalin lart.",
-          "install.text": "Magjistari interaktiv te pyet per gjuhen (Shqip ose English) dhe per agjentet qe perdor, pastaj te printon komanden e pershtatur per ty. Shqipja qendron e para, anglishtja ne sinkron. Licensa MIT.",
-          "install.fallback": "Preferon nje-rresht?",
-          "usecases.eyebrow": "Per ke eshte",
-          "usecases.title": "Ndertuar per zhvillues qe punojne me agjente AI cdo dite.",
-          "usecases.ios.title": "Zhvillues iOS",
-          "usecases.ios.text": "12 udhezues te gatshem per Swift, SwiftUI, UIKit, TCA dhe arkitekture modulare. Plus simulator.sh: nderto, instalo dhe ndiq log-et nga cdo projekt Xcode pa konfigurim.",
-          "usecases.ai.title": "Ekipe me AI",
-          "usecases.ai.text": "Nje shtrese e unifikuar AGENTS.md qe Claude, Codex, Gemini, Copilot dhe Cursor e lexojne menjehere. Mos mirembajtni konfigurime te ndara per cdo vegla.",
-          "usecases.alb.title": "Ndertues shqiptare",
-          "usecases.alb.text": "Nuk duhet vetem te konsumojme vegla, mund t'i ndertojme dhe t'i hapim globalisht. Te dokumentuara paster, te emertuara ne gjuhen tone, identiteti shqiptar ne balle.",
-          "roadmap.eyebrow": "Cfare vjen",
-          "roadmap.title": "Udherrefyesi eshte i hapur. Pergjigjet tuaja e formesojne.",
-          "roadmap.android.title": "Fushe Android",
-          "roadmap.android.text": "Udhezues arkitekture per Kotlin, Compose dhe Gradle.",
-          "roadmap.backend.title": "Fushe backend",
-          "roadmap.backend.text": "Memorie per Vapor, Express dhe rrjedha pune server-side.",
-          "roadmap.homebrew.title": "Formula Homebrew",
-          "roadmap.homebrew.text": "Instalo me <code>brew install kujto</code> ne macOS.",
-          "roadmap.plugin.title": "Shtojca IDE",
-          "roadmap.plugin.text": "Zgjerime te dedikuara per Xcode dhe VS Code.",
-          "footer.tagline": "Burim i hapur, licensa MIT. Open-source, MIT licensed.",
-          "footer.credit": "Bere ne Greqi, emeruar ne shqip."
-        }
-      };
+  <section id="product" class="section">
+    <div class="section-head">
+      <p class="eyebrow">The product</p>
+      <h2>Before you touch this file.</h2>
+      <p class="section-lede">
+        Every repo has hidden rules. New agents forget them. New developers miss them.
+        Old decisions live in PRs, READMEs, Slack threads, AGENTS.md, and a dozen scattered docs.
+        Kujto Studio makes that mess visible in the moment you need it.
+      </p>
+    </div>
 
-      var currentLang = "en";
+    <div class="feature-grid">
+      <article class="feature">
+        <h3>File-scoped rules</h3>
+        <p>
+          Memory rules carry <code>applies_to</code> globs and risk tags. Select a file,
+          see the architecture rules that govern it, ranked by specificity.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Confidence verdict</h3>
+        <p>
+          Safe, needs context, or danger zone. A single badge tells you whether the
+          file is calm ground or a place a fresh agent will quietly break.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Memory linter</h3>
+        <p>
+          Catches stale rules, broken links, and missing governance files before
+          they cost you a pull request. Deterministic, no AI.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Agent context injector</h3>
+        <p>
+          One click renders the rules for the current file as a prompt block you
+          can paste into Claude, Codex, Cursor, or any editor with an agent.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Multi-agent wire</h3>
+        <p>
+          One source of truth, symlinked into <code>CLAUDE.md</code>, <code>CODEX.md</code>,
+          <code>GEMINI.md</code>, and <code>AGENTS.md</code>. No duplicated memory.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Local only</h3>
+        <p>
+          Your repo stays on your machine. Nothing is uploaded. Memory is Markdown
+          in your repo, versioned in git, reviewed like any other change.
+        </p>
+      </article>
+    </div>
+  </section>
 
-      function setLang(lang) {
-        currentLang = lang;
-        document.documentElement.lang = lang;
-        localStorage.setItem("kujto-lang", lang);
-        var els = document.querySelectorAll("[data-i18n]");
-        for (var i = 0; i < els.length; i++) {
-          var key = els[i].getAttribute("data-i18n");
-          if (T[lang] && T[lang][key]) {
-            els[i].innerHTML = T[lang][key];
-          }
-        }
-        var flag = document.getElementById("lang-flag");
-        var label = document.getElementById("lang-label");
-        if (lang === "en") {
-          flag.textContent = "\u{1F1E6}\u{1F1F1}";
-          label.textContent = "SQ";
-        } else {
-          flag.textContent = "\u{1F1EC}\u{1F1E7}";
-          label.textContent = "EN";
-        }
-      }
+  <section id="surfaces" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Where it lives</p>
+      <h2>One engine, four surfaces.</h2>
+      <p class="section-lede">
+        The same memory index drives the Mac app, an Xcode Source Editor extension,
+        a VS Code or Cursor extension, and the <code>kujto</code> CLI. Use one, use all four.
+      </p>
+    </div>
 
-      document.getElementById("lang-toggle").addEventListener("click", function() {
-        setLang(currentLang === "en" ? "sq" : "en");
-      });
+    <div class="surface-grid">
+      <article class="surface">
+        <div class="surface-tag">Standalone</div>
+        <h3>Mac app</h3>
+        <p>Sidebar memory map, file inspector, agent panel, lint panel. SwiftUI native.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Extension</div>
+        <h3>Xcode</h3>
+        <p>Editor menu &rsaquo; Kujto &rsaquo; Show Rules for This File. Inserts the rules as a comment.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Extension</div>
+        <h3>VS Code and Cursor</h3>
+        <p>Command palette entry surfaces the rules for the open file, with inline diagnostics.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">CLI</div>
+        <h3>kujto</h3>
+        <p><code>rules</code>, <code>map</code>, <code>lint</code>, <code>agents</code>, <code>wire</code>. Human and JSON output.</p>
+      </article>
+    </div>
+  </section>
 
-      (function initLang() {
-        var saved = localStorage.getItem("kujto-lang");
-        if (saved) { setLang(saved); return; }
-        fetch("https://ipapi.co/country_code/")
-          .then(function(r) { return r.text(); })
-          .then(function(code) {
-            var c = code.trim().toUpperCase();
-            setLang((c === "AL" || c === "XK" || c === "MK") ? "sq" : "en");
-          })
-          .catch(function() { setLang("en"); });
-      })();
+  <section id="install" class="section install-section">
+    <div class="section-head">
+      <p class="eyebrow">Install</p>
+      <h2>One command, all agents configured.</h2>
+      <p class="section-lede">
+        The CLI is the fastest path today. The Mac app is in beta; join the waitlist on GitHub.
+      </p>
+    </div>
 
-      // ---------- Interactive terminal ----------
-      (function terminal() {
-        var body = document.getElementById("term-body");
-        var suggest = document.getElementById("term-suggest");
-        var history = [];
-        var historyIdx = -1;
-        var wizardState = null; // {step, data}
+    <div class="install-card">
+      <div class="install-block">
+        <p class="install-label">Homebrew</p>
+        <pre><code>brew install peterdsp/tap/kujto</code></pre>
+        <p class="install-hint">Coming soon. Star the repo to get pinged when the tap ships.</p>
+      </div>
+      <div class="install-block">
+        <p class="install-label">One line</p>
+        <pre><code>curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></pre>
+        <p class="install-hint">Wires <code>AGENTS.md</code> to every supported agent on your machine.</p>
+      </div>
+    </div>
+  </section>
 
-        // Localised strings inside the terminal (independent from site lang)
-        var L = {
-          en: {
-            welcome1: "Kujto v1.0.0  -  Versioned AI memory for your codebase",
-            welcome2: "Type 'help' for commands. Type 'install' to start the wizard.",
-            help_title: "Available commands:",
-            help: [
-              "  help        Show this help",
-              "  install     Interactive installation wizard",
-              "  wire        Explain wire.sh",
-              "  agents      List supported AI agents",
-              "  memory      Show memory file structure",
-              "  about       About Kujto",
-              "  lang sq|en  Switch terminal language",
-              "  gh          Open GitHub repository",
-              "  clear       Clear the terminal"
-            ],
-            unknown: "command not found: ",
-            unknown_hint: "Type 'help' for a list of commands.",
-            ask_lang: "? Choose the language for your memory files:",
-            opt_lang: ["  1) Shqip (Albanian first, English mirrored)", "  2) English only", "  3) Bilingual (both, Shqip first)"],
-            ask_lang_hint: "Enter 1, 2 or 3:",
-            ask_scope: "? Where do you want to install Kujto?",
-            opt_scope: ["  1) Global  (~/.claude, ~/.codex, ~/.gemini)", "  2) Project (./AGENTS.md in current repo)"],
-            ask_scope_hint: "Enter 1 or 2:",
-            ask_agents: "? Which agents do you use? (comma-separated)",
-            opt_agents: "  claude, codex, gemini, copilot, cursor, all",
-            ask_agents_hint: "Example: claude,codex  (or 'all')",
-            confirm: "Ready to install with:",
-            run: "Run this in your shell:",
-            done: "Done. Welcome to Kujto.",
-            cancelled: "Wizard cancelled.",
-            invalid: "Invalid choice, try again.",
-            about: [
-              "Kujto  /  'remember' in Albanian",
-              "Open-source bilingual AI memory base, versioned in git.",
-              "Author: Petros Dhespollari   License: MIT",
-              "Site:   https://kujto.peterdsp.dev"
-            ],
-            wire: [
-              "wire.sh links AGENTS.md, CLAUDE.md, CODEX.md and GEMINI.md",
-              "into any project. One command, every agent reads the same",
-              "source of truth versioned in git."
-            ],
-            agents: [
-              "Supported agents:",
-              "  - Claude Code     (CLAUDE.md)",
-              "  - OpenAI Codex    (AGENTS.md)",
-              "  - Gemini CLI      (GEMINI.md)",
-              "  - GitHub Copilot  (AGENTS.md generic)",
-              "  - Cursor          (AGENTS.md generic)"
-            ],
-            memory: [
-              "memory/",
-              "  MEMORY.md         index",
-              "  core/             writing style, safety, git, handoff",
-              "  domains/ios/      Swift, Xcode, snapshots, architecture",
-              "  workflows/        answer order, PR descriptions, hygiene"
-            ],
-            opening: "Opening github.com/peterdsp/kujto...",
-            lang_switched: "Terminal language switched."
-          },
-          sq: {
-            welcome1: "Kujto v1.0.0  -  Memorie AI e versionuar per kodin tend",
-            welcome2: "Shkruaj 'help' per komandat. Shkruaj 'install' per magjistarin.",
-            help_title: "Komandat e disponueshme:",
-            help: [
-              "  help        Shfaq ndihmen",
-              "  install     Magjistar interaktiv instalimi",
-              "  wire        Shpjego wire.sh",
-              "  agents      Listo agjentet e mbeshtetur",
-              "  memory      Shfaq strukturen e memories",
-              "  about       Per Kujto",
-              "  lang sq|en  Ndrysho gjuhen e terminalit",
-              "  gh          Hape repon ne GitHub",
-              "  clear       Pastro terminalin"
-            ],
-            unknown: "komanda nuk u gjet: ",
-            unknown_hint: "Shkruaj 'help' per listen e komandave.",
-            ask_lang: "? Zgjidh gjuhen per skedaret e memories:",
-            opt_lang: ["  1) Shqip (Shqipja e para, anglishtja pasqyre)", "  2) Anglisht vetem", "  3) Dygjuhesh (te dyja, shqipja e para)"],
-            ask_lang_hint: "Shtyp 1, 2 ose 3:",
-            ask_scope: "? Ku deshiron ta instalosh Kujto?",
-            opt_scope: ["  1) Globalisht (~/.claude, ~/.codex, ~/.gemini)", "  2) Projekti  (./AGENTS.md ne repon aktuale)"],
-            ask_scope_hint: "Shtyp 1 ose 2:",
-            ask_agents: "? Cilet agjente perdor? (ndare me presje)",
-            opt_agents: "  claude, codex, gemini, copilot, cursor, all",
-            ask_agents_hint: "Shembull: claude,codex  (ose 'all')",
-            confirm: "Gati per instalim me:",
-            run: "Ekzekuto kete ne shell:",
-            done: "U krye. Mireserdhe ne Kujto.",
-            cancelled: "Magjistari u anulua.",
-            invalid: "Zgjedhje e pavlefshme, provo perseri.",
-            about: [
-              "Kujto  /  'mbaj mend' ne shqip",
-              "Baze memorie AI dygjuhesh me burim te hapur, e versionuar ne git.",
-              "Autori: Petros Dhespollari   Licensa: MIT",
-              "Faqja: https://kujto.peterdsp.dev"
-            ],
-            wire: [
-              "wire.sh lidh AGENTS.md, CLAUDE.md, CODEX.md dhe GEMINI.md",
-              "ne cdo projekt. Nje komande, cdo agjent lexon te njejtin",
-              "burim te vertete te versionuar ne git."
-            ],
-            agents: [
-              "Agjentet e mbeshtetur:",
-              "  - Claude Code     (CLAUDE.md)",
-              "  - OpenAI Codex    (AGENTS.md)",
-              "  - Gemini CLI      (GEMINI.md)",
-              "  - GitHub Copilot  (AGENTS.md gjeneric)",
-              "  - Cursor          (AGENTS.md gjeneric)"
-            ],
-            memory: [
-              "memory/",
-              "  MEMORY.md         indeksi",
-              "  core/             stili, siguria, git, handoff",
-              "  domains/ios/      Swift, Xcode, snapshots, arkitektura",
-              "  workflows/        rendi, PR, higjiena"
-            ],
-            opening: "Po hap github.com/peterdsp/kujto...",
-            lang_switched: "Gjuha e terminalit u ndryshua."
-          }
-        };
+  <section id="roadmap" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Roadmap</p>
+      <h2>What's next.</h2>
+    </div>
+    <div class="roadmap-grid">
+      <article><h3>Mac app beta</h3><p>Standalone Kujto Studio with the file inspector and memory map. Sign up on GitHub.</p></article>
+      <article><h3>Xcode extension</h3><p>Show Rules for This File, directly in the editor menu.</p></article>
+      <article><h3>VS Code and Cursor</h3><p>Command palette and inline diagnostics.</p></article>
+      <article><h3>TCA reducer graph</h3><p>SwiftSyntax pass mapping reducers, state, actions, and dependency clients.</p></article>
+      <article><h3>Menu bar and Shortcuts</h3><p>Quick access to repo memory, plus App Intents for automation.</p></article>
+      <article><h3>Team memory templates</h3><p>Share and version conventions across a team without duplicating memory.</p></article>
+    </div>
+  </section>
 
-        var termLang = "en";
+</main>
 
-        var chips = ["help", "install", "wire", "agents", "memory", "about", "gh", "clear"];
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="favicon-192.png" alt="" width="20" height="20">
+      <strong>Kujto Studio</strong>
+      <span>MIT licensed, open source.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/peterdsp/kujto">GitHub</a>
+      <a href="https://github.com/peterdsp/kujto/issues">Issues</a>
+      <a href="https://peterdsp.dev">Made by @peterdsp</a>
+    </div>
+  </div>
+</footer>
 
-        function renderChips() {
-          suggest.innerHTML = "";
-          for (var i = 0; i < chips.length; i++) {
-            var c = document.createElement("button");
-            c.className = "term-chip";
-            c.type = "button";
-            c.textContent = chips[i];
-            (function(cmd) {
-              c.addEventListener("click", function() { runCommand(cmd); });
-            })(chips[i]);
-            suggest.appendChild(c);
-          }
-        }
-
-        function ps() {
-          return '<span class="ps">kujto<span class="at">@</span>memory<span class="at">:</span><span class="path">~</span><span class="at">$</span></span>';
-        }
-
-        function pushLine(text, cls) {
-          var div = document.createElement("div");
-          div.className = "term-line" + (cls ? " " + cls : "");
-          div.innerHTML = text;
-          body.appendChild(div);
-          body.scrollTop = body.scrollHeight;
-        }
-
-        function pushBlank() { pushLine("&nbsp;"); }
-
-        function pushEcho(cmd) {
-          var div = document.createElement("div");
-          div.className = "term-line";
-          div.innerHTML = ps() + " " + escapeHtml(cmd);
-          body.appendChild(div);
-        }
-
-        function escapeHtml(s) {
-          return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        function renderPrompt(promptHint) {
-          // Remove any existing live prompt
-          var existing = document.getElementById("term-live-prompt");
-          if (existing) existing.remove();
-
-          var row = document.createElement("div");
-          row.className = "term-prompt";
-          row.id = "term-live-prompt";
-          row.innerHTML = ps() + ' <input class="term-input" id="term-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal input">';
-          body.appendChild(row);
-          var input = document.getElementById("term-input");
-          if (promptHint) input.placeholder = promptHint;
-          input.focus();
-          body.scrollTop = body.scrollHeight;
-
-          input.addEventListener("keydown", function(e) {
-            if (e.key === "Enter") {
-              var value = input.value;
-              input.disabled = true;
-              row.id = "";
-              row.innerHTML = ps() + " " + escapeHtml(value);
-              handleSubmit(value);
-            } else if (e.key === "ArrowUp") {
-              e.preventDefault();
-              if (history.length === 0) return;
-              if (historyIdx < 0) historyIdx = history.length;
-              historyIdx = Math.max(0, historyIdx - 1);
-              input.value = history[historyIdx] || "";
-            } else if (e.key === "ArrowDown") {
-              e.preventDefault();
-              if (historyIdx < 0) return;
-              historyIdx = Math.min(history.length, historyIdx + 1);
-              input.value = history[historyIdx] || "";
-            } else if (e.key === "Tab") {
-              e.preventDefault();
-              var v = input.value.trim();
-              if (!v) return;
-              var match = chips.filter(function(c) { return c.indexOf(v) === 0; });
-              if (match.length === 1) input.value = match[0];
-            } else if (e.key === "c" && (e.ctrlKey || e.metaKey)) {
-              if (wizardState) {
-                wizardState = null;
-                pushLine("^C " + L[termLang].cancelled, "warn");
-              }
-            }
-          });
-        }
-
-        function handleSubmit(raw) {
-          var value = (raw || "").trim();
-          if (wizardState) {
-            handleWizard(value);
-          } else {
-            if (value) history.push(value);
-            historyIdx = -1;
-            execute(value);
-          }
-          renderPrompt();
-        }
-
-        function runCommand(cmd) {
-          // Programmatic execution (used by chips)
-          var existing = document.getElementById("term-live-prompt");
-          if (existing) existing.remove();
-          var row = document.createElement("div");
-          row.className = "term-prompt";
-          row.innerHTML = ps() + " " + escapeHtml(cmd);
-          body.appendChild(row);
-          if (wizardState) {
-            handleWizard(cmd);
-          } else {
-            history.push(cmd);
-            execute(cmd);
-          }
-          renderPrompt();
-        }
-
-        function execute(value) {
-          if (!value) return;
-          var parts = value.split(/\s+/);
-          var cmd = parts[0].toLowerCase();
-          var arg = parts.slice(1).join(" ");
-          var t = L[termLang];
-
-          switch (cmd) {
-            case "help":
-              pushLine(t.help_title, "accent");
-              for (var i = 0; i < t.help.length; i++) pushLine(t.help[i], "dim");
-              break;
-            case "install":
-              startWizard();
-              break;
-            case "wire":
-              for (var w = 0; w < t.wire.length; w++) pushLine(t.wire[w]);
-              break;
-            case "agents":
-              for (var a = 0; a < t.agents.length; a++) pushLine(t.agents[a], a === 0 ? "accent" : "");
-              break;
-            case "memory":
-              for (var m = 0; m < t.memory.length; m++) pushLine(t.memory[m], m === 0 ? "accent" : "dim");
-              break;
-            case "about":
-              for (var b = 0; b < t.about.length; b++) pushLine(t.about[b], b === 0 ? "red" : "");
-              break;
-            case "lang":
-              if (arg === "sq" || arg === "en") {
-                termLang = arg;
-                pushLine(L[termLang].lang_switched, "ok");
-              } else {
-                pushLine("usage: lang sq | lang en", "dim");
-              }
-              break;
-            case "gh":
-            case "github":
-              pushLine(t.opening, "accent");
-              setTimeout(function() {
-                window.open("https://github.com/peterdsp/kujto", "_blank", "noopener");
-              }, 250);
-              break;
-            case "clear":
-            case "cls":
-              body.innerHTML = "";
-              break;
-            case "ls":
-              pushLine("AGENTS.md  CLAUDE.md  CODEX.md  GEMINI.md  memory/  bin/", "dim");
-              break;
-            case "whoami":
-              pushLine("kujto", "dim");
-              break;
-            case "exit":
-            case "quit":
-              pushLine("nope, you're staying here.", "warn");
-              break;
-            default:
-              pushLine(t.unknown + escapeHtml(value), "err");
-              pushLine(t.unknown_hint, "dim");
-          }
-        }
-
-        // ---------- Install wizard ----------
-        function startWizard() {
-          wizardState = { step: "lang", data: {} };
-          askWizard();
-        }
-
-        function askWizard() {
-          var t = L[termLang];
-          if (wizardState.step === "lang") {
-            pushLine(t.ask_lang, "accent");
-            for (var i = 0; i < t.opt_lang.length; i++) pushLine(t.opt_lang[i], "dim");
-            pushLine(t.ask_lang_hint, "dim");
-          } else if (wizardState.step === "scope") {
-            pushLine(t.ask_scope, "accent");
-            for (var j = 0; j < t.opt_scope.length; j++) pushLine(t.opt_scope[j], "dim");
-            pushLine(t.ask_scope_hint, "dim");
-          } else if (wizardState.step === "agents") {
-            pushLine(t.ask_agents, "accent");
-            pushLine(t.opt_agents, "dim");
-            pushLine(t.ask_agents_hint, "dim");
-          }
-        }
-
-        function handleWizard(value) {
-          var t = L[termLang];
-          var v = (value || "").trim().toLowerCase();
-
-          if (v === "cancel" || v === "exit" || v === "q") {
-            pushLine(t.cancelled, "warn");
-            wizardState = null;
-            return;
-          }
-
-          if (wizardState.step === "lang") {
-            var langMap = { "1": "sq", "2": "en", "3": "both", "sq": "sq", "en": "en", "both": "both", "shqip": "sq", "english": "en" };
-            if (!(v in langMap)) { pushLine(t.invalid, "err"); askWizard(); return; }
-            wizardState.data.lang = langMap[v];
-            // Also switch terminal language to match user preference (shqip first)
-            if (wizardState.data.lang === "sq" || wizardState.data.lang === "both") {
-              termLang = "sq";
-            } else {
-              termLang = "en";
-            }
-            wizardState.step = "scope";
-            askWizard();
-          } else if (wizardState.step === "scope") {
-            var scopeMap = { "1": "global", "2": "project", "global": "global", "project": "project" };
-            if (!(v in scopeMap)) { pushLine(t.invalid, "err"); askWizard(); return; }
-            wizardState.data.scope = scopeMap[v];
-            wizardState.step = "agents";
-            askWizard();
-          } else if (wizardState.step === "agents") {
-            if (!v) { pushLine(t.invalid, "err"); askWizard(); return; }
-            var picked;
-            if (v === "all" || v === "te gjithe" || v === "te-gjithe") {
-              picked = ["claude", "codex", "gemini", "copilot", "cursor"];
-            } else {
-              picked = v.split(/[,\s]+/).filter(function(s) {
-                return ["claude", "codex", "gemini", "copilot", "cursor"].indexOf(s) >= 0;
-              });
-            }
-            if (picked.length === 0) { pushLine(t.invalid, "err"); askWizard(); return; }
-            wizardState.data.agents = picked;
-            finishWizard();
-          }
-        }
-
-        function finishWizard() {
-          var t = L[termLang];
-          var d = wizardState.data;
-          wizardState = null;
-
-          pushBlank();
-          pushLine(t.confirm, "accent");
-          pushLine("  language: " + d.lang, "dim");
-          pushLine("  scope:    " + d.scope, "dim");
-          pushLine("  agents:   " + d.agents.join(", "), "dim");
-          pushBlank();
-
-          var envParts = [];
-          envParts.push("KUJTO_LANG=" + d.lang);
-          envParts.push("KUJTO_AGENTS=" + d.agents.join(","));
-          var env = envParts.join(" ");
-          var cmd;
-          if (d.scope === "global") {
-            cmd = env + " curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash";
-          } else {
-            cmd = "git clone https://github.com/peterdsp/kujto.git && cd kujto && " + env + " ./wire.sh";
-          }
-
-          pushLine(t.run, "ok");
-          pushLine("  " + cmd, "accent");
-          pushBlank();
-          pushLine("&#10003; " + t.done, "ok");
-        }
-
-        // Boot the terminal
-        function boot() {
-          var t = L[termLang];
-          pushLine(t.welcome1, "red");
-          pushLine(t.welcome2, "dim");
-          pushBlank();
-          renderChips();
-          renderPrompt();
-        }
-
-        // Match terminal language to site language on first load
-        var savedLang = localStorage.getItem("kujto-lang");
-        if (savedLang === "sq") termLang = "sq";
-
-        // Click anywhere in the terminal to refocus the input
-        document.getElementById("terminal").addEventListener("click", function(e) {
-          if (e.target.tagName === "BUTTON") return;
-          var input = document.getElementById("term-input");
-          if (input) input.focus();
-        });
-
-        boot();
-      })();
-    </script>
-  </body>
+</body>
 </html>
