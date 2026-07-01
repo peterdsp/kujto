@@ -84,9 +84,11 @@ private struct StatusTab: View {
 private struct GeneralTab: View {
     @Binding var showOnboarding: Bool
     @AppStorage("kujto.hasOnboarded") private var hasOnboarded: Bool = false
+    @AppStorage("kujto.menuBarEnabled") private var menuBarEnabled: Bool = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
+            Toggle("Show Kujto in the menu bar", isOn: $menuBarEnabled)
             LabeledContent("First-run wizard") {
                 HStack {
                     Text(hasOnboarded ? "Completed" : "Not shown yet")

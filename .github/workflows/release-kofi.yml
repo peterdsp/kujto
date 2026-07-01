@@ -9,7 +9,10 @@ name: Release, Ko-fi (Direct)
 #
 #   DEVELOPER_ID_APPLICATION_CERT      base64 of the .p12 (Developer ID Application)
 #   DEVELOPER_ID_APPLICATION_CERT_PWD  password for the .p12
-#   DEVELOPER_ID_APPLICATION_NAME      the identity name, e.g. "Developer ID Application: Petros Dhespollari (TEAMID)"
+#   DEVELOPER_ID_APPLICATION_NAME      the identity, e.g. "Developer ID Application: Petros Dhespollari (TEAMID)"
+#   DEVELOPER_ID_INSTALLER_CERT        base64 of the .p12 (Developer ID Installer)
+#   DEVELOPER_ID_INSTALLER_CERT_PWD    password for the .p12
+#   DEVELOPER_ID_INSTALLER_NAME        the identity, e.g. "Developer ID Installer: Petros Dhespollari (TEAMID)"
 #   APPLE_ID                           Apple ID for notarytool
 #   APPLE_ID_APP_PASSWORD              app-specific password for notarytool
 #   APPLE_TEAM_ID                      Apple Team ID
@@ -46,15 +49,17 @@ jobs:
           fi
           echo "value=$V" >> "$GITHUB_OUTPUT"
       - name: Install dependencies
-        run: brew install xcodegen create-dmg sparkle-project/homebrew-sparkle/sparkle-bin
+        run: brew install xcodegen sparkle-project/homebrew-sparkle/sparkle-bin
       - name: Generate Xcode project
         working-directory: integrations/xcode-extension
         run: xcodegen generate
-      - name: Import signing certificate
+      - name: Import signing certificates (Application + Installer)
         env:
           KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          CERT: ${{ secrets.DEVELOPER_ID_APPLICATION_CERT }}
-          CERT_PWD: ${{ secrets.DEVELOPER_ID_APPLICATION_CERT_PWD }}
+          APP_CERT: ${{ secrets.DEVELOPER_ID_APPLICATION_CERT }}
+          APP_CERT_PWD: ${{ secrets.DEVELOPER_ID_APPLICATION_CERT_PWD }}
+          INST_CERT: ${{ secrets.DEVELOPER_ID_INSTALLER_CERT }}
+          INST_CERT_PWD: ${{ secrets.DEVELOPER_ID_INSTALLER_CERT_PWD }}
         run: |
           set -euo pipefail
           KEYCHAIN=$RUNNER_TEMP/build.keychain-db
@@ -62,8 +67,12 @@ jobs:
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN"
           security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
-          echo "$CERT" | base64 --decode > "$RUNNER_TEMP/cert.p12"
-          security import "$RUNNER_TEMP/cert.p12" -k "$KEYCHAIN" -P "$CERT_PWD" -A -T /usr/bin/codesign
+          for pair in "APP_CERT:APP_CERT_PWD:codesign" "INST_CERT:INST_CERT_PWD:productsign"; do
+            IFS=":" read -r NAME PWD TOOL <<<"$pair"
+            P12="$RUNNER_TEMP/${NAME}.p12"
+            printf '%s' "${!NAME}" | base64 --decode > "$P12"
+            security import "$P12" -k "$KEYCHAIN" -P "${!PWD}" -A -T "/usr/bin/$TOOL"
+          done
           security set-key-partition-list -S "apple-tool:,apple:" -s -k "$KEYCHAIN_PWD" "$KEYCHAIN"
       - name: Set up notarization profile
         env:
@@ -102,21 +111,22 @@ jobs:
             -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
             -exportPath "$RUNNER_TEMP/export"
-      - name: Package DMG, notarize, staple
+      - name: Package PKG, notarize, staple
         env:
           DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION_NAME }}
+          DEVELOPER_ID_INSTALLER: ${{ secrets.DEVELOPER_ID_INSTALLER_NAME }}
           NOTARY_KEYCHAIN_PROFILE: kujto-notary
         run: |
           APP="$RUNNER_TEMP/export/KujtoStudio.app"
-          bash scripts/release/package-dmg.sh "$APP" "$RUNNER_TEMP/artifacts" "${{ steps.version.outputs.value }}"
+          bash scripts/release/package-pkg.sh "$APP" "$RUNNER_TEMP/artifacts" "${{ steps.version.outputs.value }}"
       - name: Sign and append to appcast
         env:
           SPARKLE_ED_PRIVATE_KEY_PATH: ${{ runner.temp }}/sparkle_ed.key
         run: |
           echo "${{ secrets.SPARKLE_ED_PRIVATE_KEY }}" | base64 --decode > "$SPARKLE_ED_PRIVATE_KEY_PATH"
-          DMG=$(ls "$RUNNER_TEMP/artifacts"/*.dmg | head -n1)
-          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/$(basename "$DMG")"
-          bash scripts/release/update-appcast.sh "$DMG" "${{ steps.version.outputs.value }}" "$URL"
+          PKG=$(ls "$RUNNER_TEMP/artifacts"/*.pkg | head -n1)
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/$(basename "$PKG")"
+          bash scripts/release/update-appcast.sh "$PKG" "${{ steps.version.outputs.value }}" "$URL"
       - name: Commit updated appcast
         run: |
           git config user.name  "kujto-bot"
@@ -129,4 +139,4 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: Kujto Studio ${{ steps.version.outputs.value }}
-          files: ${{ runner.temp }}/artifacts/*.dmg
+          files: ${{ runner.temp }}/artifacts/*.pkg

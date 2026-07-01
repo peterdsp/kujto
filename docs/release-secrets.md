@@ -40,9 +40,14 @@ Tag pattern: `v1.0.0-appstore`
 Workflow: [`.github/workflows/release-kofi.yml`](../.github/workflows/release-kofi.yml)
 Tag pattern: `v1.0.0-direct`
 
-### Certificate
+### Certificates
 
-Create one **Developer ID Application** certificate in Apple Developer. Export as a .p12 and note the identity name, which looks like `Developer ID Application: Petros Dhespollari (TEAMID)`.
+Create **two** Developer ID certificates in Apple Developer:
+
+- **Developer ID Application** (signs the .app)
+- **Developer ID Installer** (signs the .pkg)
+
+Export each as a .p12 with a strong password. Note the identity strings; they look like `Developer ID Application: Petros Dhespollari (TEAMID)` and `Developer ID Installer: Petros Dhespollari (TEAMID)`.
 
 ### Notarization
 
@@ -68,13 +73,16 @@ base64 < ~/Library/Application\ Support/Signing\ Keys/ed_priv | pbcopy
 
 | Name | Value |
 | --- | --- |
-| `DEVELOPER_ID_APPLICATION_CERT` | Base64 of the .p12 |
-| `DEVELOPER_ID_APPLICATION_CERT_PWD` | Password for the .p12 |
-| `DEVELOPER_ID_APPLICATION_NAME` | Full identity string |
+| `DEVELOPER_ID_APPLICATION_CERT` | Base64 of the Application .p12 |
+| `DEVELOPER_ID_APPLICATION_CERT_PWD` | Password for the Application .p12 |
+| `DEVELOPER_ID_APPLICATION_NAME` | Application identity string |
+| `DEVELOPER_ID_INSTALLER_CERT` | Base64 of the Installer .p12 |
+| `DEVELOPER_ID_INSTALLER_CERT_PWD` | Password for the Installer .p12 |
+| `DEVELOPER_ID_INSTALLER_NAME` | Installer identity string |
 | `APPLE_ID` | The Apple ID email |
 | `APPLE_ID_APP_PASSWORD` | The app-specific password |
 | `APPLE_TEAM_ID` | Your 10-character Apple Team ID |
-| `SPARKLE_ED_PRIVATE_KEY` | Base64 of the private key |
+| `SPARKLE_ED_PRIVATE_KEY` | Base64 of the ed25519 private key |
 | `KEYCHAIN_PASSWORD` | Any strong password, used only inside the runner |
 
 ## Tagging a release
@@ -88,13 +96,13 @@ Both workflows can also be dispatched manually from the Actions tab with a versi
 
 ## What the Direct workflow does after a build
 
-1. Archives and signs the app with Developer ID
-2. Notarizes via `notarytool submit --wait`
-3. Wraps into a DMG with `create-dmg`
-4. Signs and notarizes the DMG
-5. Signs the DMG bytes with the Sparkle EdDSA key
-6. Appends a new `<item>` to `site/appcast.xml`
+1. Archives and signs the app with Developer ID Application
+2. Notarizes the app via `notarytool submit --wait` and staples the ticket
+3. Wraps it into a signed installer PKG (`pkgbuild` + `productsign` with Developer ID Installer)
+4. Notarizes the PKG and staples the ticket
+5. Signs the PKG bytes with the Sparkle EdDSA key
+6. Appends a new `<item>` to `site/appcast.xml` with `sparkle:installationType="package"`
 7. Commits the appcast update back to `main` so `kujto.peterdsp.dev/appcast.xml` picks it up
-8. Publishes a GitHub Release with the DMG attached
+8. Publishes a GitHub Release with the PKG attached
 
-Sparkle in the shipped app reads `SUFeedURL` (`https://kujto.peterdsp.dev/appcast.xml`), sees the new item, and prompts the user to install.
+Sparkle in the shipped app reads `SUFeedURL` (`https://kujto.peterdsp.dev/appcast.xml`), sees the new item, downloads the PKG, verifies the ed25519 signature, then hands it to `installer(8)` to overwrite `/Applications/Kujto Studio.app`.

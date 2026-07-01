@@ -14,9 +14,9 @@
 # SUPublicEDKey when the app is built.
 set -euo pipefail
 
-DMG_PATH="${1:?Missing dmg path}"
+PKG_PATH="${1:?Missing pkg path}"
 VERSION="${2:?Missing version}"
-DOWNLOAD_URL="${3:?Missing download url, e.g. https://github.com/peterdsp/kujto/releases/download/v1.0.0/KujtoStudio-1.0.0.dmg}"
+DOWNLOAD_URL="${3:?Missing download url, e.g. https://github.com/peterdsp/kujto/releases/download/v1.0.0/KujtoStudio-1.0.0.pkg}"
 APPCAST_PATH="${APPCAST_PATH:-site/appcast.xml}"
 SPARKLE_KEY="${SPARKLE_ED_PRIVATE_KEY_PATH:?SPARKLE_ED_PRIVATE_KEY_PATH is not set}"
 
@@ -25,21 +25,24 @@ if ! command -v sign_update >/dev/null 2>&1; then
     exit 1
 fi
 
-DMG_SIZE=$(stat -f%z "$DMG_PATH")
+PKG_SIZE=$(stat -f%z "$PKG_PATH")
 PUBDATE=$(LC_ALL=en_US.UTF-8 date +"%a, %d %b %Y %H:%M:%S %z")
-SIGNATURE=$(sign_update -f "$SPARKLE_KEY" "$DMG_PATH")
+SIGNATURE=$(sign_update -f "$SPARKLE_KEY" "$PKG_PATH")
 
+# sparkle:installationType="package" tells Sparkle to run `installer` on the
+# downloaded PKG rather than trying to unarchive an .app bundle.
 ENTRY=$(cat <<EOF
     <item>
       <title>Kujto Studio $VERSION</title>
       <sparkle:version>$VERSION</sparkle:version>
       <sparkle:shortVersionString>$VERSION</sparkle:shortVersionString>
+      <sparkle:installationType>package</sparkle:installationType>
       <pubDate>$PUBDATE</pubDate>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
       <enclosure
         url="$DOWNLOAD_URL"
-        length="$DMG_SIZE"
-        type="application/octet-stream"
+        length="$PKG_SIZE"
+        type="application/x-newton-compatible-pkg"
         $SIGNATURE />
     </item>
 EOF

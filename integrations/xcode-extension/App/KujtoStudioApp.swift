@@ -7,6 +7,7 @@ import SwiftUI
 struct KujtoStudioApp: App {
     @StateObject private var model = StudioModel()
     @StateObject private var updater = Updater()
+    @AppStorage("kujto.menuBarEnabled") private var menuBarEnabled: Bool = true
 
     var body: some Scene {
         WindowGroup {
@@ -26,6 +27,11 @@ struct KujtoStudioApp: App {
             }
         }
         Settings { SettingsView(model: model, updater: updater) }
+
+        MenuBarExtra("Kujto", systemImage: "sparkle", isInserted: $menuBarEnabled) {
+            KujtoMenuBar(model: model)
+        }
+        .menuBarExtraStyle(.menu)
     }
 }
 
