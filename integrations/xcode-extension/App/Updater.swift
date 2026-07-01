@@ -33,7 +33,7 @@ final class Updater: ObservableObject {
     init() {}
     func checkForUpdates() {
         // App Store build: point users at the App Store update surface.
-        if let url = URL(string: "macappstore://apps.apple.com/app/id0000000000") {
+        if let url = URL(string: "macappstore://apps.apple.com/app/id6786441748") {
             NSWorkspace.shared.open(url)
         }
     }
