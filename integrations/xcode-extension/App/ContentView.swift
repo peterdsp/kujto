@@ -6,7 +6,9 @@ import KujtoCore
 /// Touch This File" inspector. Standalone home of the app; it also hosts the
 /// Xcode Source Editor extension.
 struct ContentView: View {
-    @StateObject private var model = StudioModel()
+    @EnvironmentObject private var model: StudioModel
+    @AppStorage("kujto.hasOnboarded") private var hasOnboarded: Bool = false
+    @State private var showWelcome = false
 
     var body: some View {
         NavigationSplitView {
@@ -20,7 +22,16 @@ struct ContentView: View {
             case .none:           EmptyState(onPick: pickRepo)
             }
         }
-        .onAppear { model.loadSavedRoot() }
+        .sheet(isPresented: $showWelcome) {
+            WelcomeView(model: model)
+        }
+        .onAppear {
+            model.loadSavedRoot()
+            if !hasOnboarded { showWelcome = true }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .showKujtoWelcome)) { _ in
+            showWelcome = true
+        }
     }
 
     private func pickRepo() {

@@ -1,14 +1,30 @@
 import SwiftUI
 
-/// Minimal container app. Its only job for the extension MVP is to let the
-/// user pick a repo root and share it through the App Group. This is also the
-/// seed of the future Kujto Studio shell.
+/// Kujto Studio, the standalone Mac app. Hosts the SwiftUI shell plus the
+/// first-run welcome wizard and Settings scene. All state lives on a single
+/// StudioModel shared through .environmentObject.
 @main
 struct KujtoStudioApp: App {
+    @StateObject private var model = StudioModel()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .frame(minWidth: 420, minHeight: 240)
+                .environmentObject(model)
+                .frame(minWidth: 820, minHeight: 520)
         }
+        .commands {
+            CommandGroup(after: .appInfo) {
+                Button("Show Welcome...") {
+                    NotificationCenter.default.post(name: .showKujtoWelcome, object: nil)
+                }
+                .keyboardShortcut("W", modifiers: [.command, .shift])
+            }
+        }
+        Settings { SettingsView(model: model) }
     }
+}
+
+extension Notification.Name {
+    static let showKujtoWelcome = Notification.Name("dev.peterdsp.kujto.showWelcome")
 }

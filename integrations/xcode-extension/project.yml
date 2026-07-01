@@ -2,7 +2,7 @@ name: KujtoStudio
 options:
   bundleIdPrefix: dev.peterdsp.kujto
   deploymentTarget:
-    macOS: "13.0"
+    macOS: "14.0"
 packages:
   KujtoCore:
     path: ../..
