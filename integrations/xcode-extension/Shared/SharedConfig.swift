@@ -7,7 +7,7 @@ import Foundation
 /// bookmark. A plain path is kept as a dev fallback (works when the
 /// extension's sandbox is disabled during development).
 enum SharedConfig {
-    static let appGroup = "group.dev.peterdsp.kujto"
+    static let appGroup = "YTS4KJBX3P.dev.peterdsp.kujto"
     private static let bookmarkKey = "ruleRootBookmark"
     private static let pathKey = "ruleRootPath"
 
