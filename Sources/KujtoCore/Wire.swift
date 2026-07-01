@@ -45,13 +45,23 @@ public final class WireService {
 
         try FileManager.default.createDirectory(at: target, withIntermediateDirectories: true)
 
-        for name in ["AGENTS.md", "CLAUDE.md", "CODEX.md", "GEMINI.md"] {
+        for name in ["AGENTS.md", "CLAUDE.md", "CODEX.md", "GEMINI.md", ".cursorrules"] {
             try linkOrCopy(
                 source: agents,
                 destination: target.appendingPathComponent(name),
                 copyFiles: options.copyFiles
             )
         }
+
+        // Copilot reads `.github/copilot-instructions.md`. Ensure the
+        // `.github/` directory exists first so the symlink target is valid.
+        let githubDir = target.appendingPathComponent(".github")
+        try FileManager.default.createDirectory(at: githubDir, withIntermediateDirectories: true)
+        try linkOrCopy(
+            source: agents,
+            destination: githubDir.appendingPathComponent("copilot-instructions.md"),
+            copyFiles: options.copyFiles
+        )
 
         if options.wireMemory {
             try linkOrCopy(
@@ -63,9 +73,10 @@ public final class WireService {
     }
 
     public func unwire(at target: URL) throws {
-        for name in ["AGENTS.md", "CLAUDE.md", "CODEX.md", "GEMINI.md", "memory"] {
+        for name in ["AGENTS.md", "CLAUDE.md", "CODEX.md", "GEMINI.md", ".cursorrules", "memory"] {
             try removeSymlink(named: name, in: target)
         }
+        try removeSymlink(named: ".github/copilot-instructions.md", in: target)
     }
 
     // MARK: - helpers

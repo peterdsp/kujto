@@ -220,6 +220,8 @@ private struct RuleCard: View {
 
 private struct AgentsPanel: View {
     @ObservedObject var model: StudioModel
+    @State private var errorMessage: String?
+    @State private var busy = false
 
     var body: some View {
         ScrollView {
@@ -235,17 +237,56 @@ private struct AgentsPanel: View {
                         .background(.gray.opacity(0.12), in: Capsule())
                 }
 
+                HStack(spacing: 10) {
+                    Button {
+                        run { model.wireCurrentRepo() }
+                    } label: {
+                        Label("Wire this repo", systemImage: "link")
+                    }
+                    .buttonStyle(.borderedProminent).tint(Theme.accent).disabled(busy)
+
+                    Button {
+                        run { model.unwireCurrentRepo() }
+                    } label: {
+                        Label("Unwire", systemImage: "link.badge.minus")
+                    }
+                    .disabled(busy || model.linkedAgentCount == 0)
+
+                    if busy {
+                        ProgressView().scaleEffect(0.7)
+                    }
+                }
+
+                if let errorMessage {
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
+                        Text(errorMessage).font(.system(size: 12)).foregroundStyle(.secondary)
+                    }
+                    .padding(10)
+                    .background(.orange.opacity(0.10), in: RoundedRectangle(cornerRadius: 8))
+                }
+
                 ForEach(model.agents, id: \.agent) { status in
                     AgentRow(status: status)
                 }
 
-                Text("Run `kujto wire` in your target repo to add or refresh links.")
+                Text("Wire also creates .cursorrules and .github/copilot-instructions.md so Cursor and Copilot read the same rules.")
                     .font(.system(size: 12)).foregroundStyle(.tertiary)
             }
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .background(Theme.canvas)
+    }
+
+    private func run(_ action: @escaping () -> String?) {
+        busy = true
+        errorMessage = nil
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let result = action()
+            busy = false
+            errorMessage = result
+        }
     }
 }
 
@@ -282,10 +323,12 @@ private struct AgentRow: View {
 
     private var icon: String {
         switch status.agent {
-        case .agents: return "doc.text"
-        case .claude: return "sparkles"
-        case .codex:  return "chevron.left.slash.chevron.right"
-        case .gemini: return "diamond"
+        case .agents:  return "doc.text"
+        case .claude:  return "sparkles"
+        case .codex:   return "chevron.left.slash.chevron.right"
+        case .gemini:  return "diamond"
+        case .cursor:  return "arrow.up.and.down.and.arrow.left.and.right"
+        case .copilot: return "cursorarrow.rays"
         }
     }
 

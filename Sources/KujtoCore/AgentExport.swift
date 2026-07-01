@@ -9,23 +9,30 @@ public enum AgentKind: String, CaseIterable, Sendable {
     case claude
     case codex
     case gemini
+    case cursor
+    case copilot
 
-    /// File name written into the target directory by `WireService`.
+    /// File path written into the target directory by `WireService`.
+    /// Copilot lives inside `.github/`; the rest sit at the repo root.
     public var fileName: String {
         switch self {
-        case .agents: return "AGENTS.md"
-        case .claude: return "CLAUDE.md"
-        case .codex:  return "CODEX.md"
-        case .gemini: return "GEMINI.md"
+        case .agents:  return "AGENTS.md"
+        case .claude:  return "CLAUDE.md"
+        case .codex:   return "CODEX.md"
+        case .gemini:  return "GEMINI.md"
+        case .cursor:  return ".cursorrules"
+        case .copilot: return ".github/copilot-instructions.md"
         }
     }
 
     public var displayName: String {
         switch self {
-        case .agents: return "Generic (AGENTS.md)"
-        case .claude: return "Claude"
-        case .codex:  return "Codex"
-        case .gemini: return "Gemini"
+        case .agents:  return "Generic (AGENTS.md)"
+        case .claude:  return "Claude"
+        case .codex:   return "Codex"
+        case .gemini:  return "Gemini"
+        case .cursor:  return "Cursor"
+        case .copilot: return "GitHub Copilot"
         }
     }
 }

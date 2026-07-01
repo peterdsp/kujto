@@ -29,6 +29,7 @@ final class StudioModel: ObservableObject {
     @Published var destination: Destination?
 
     private var index: RuleIndex?
+    private let watcher = RepoWatcher()
 
     func open(_ url: URL) {
         SharedConfig.saveRoot(url)
@@ -60,6 +61,54 @@ final class StudioModel: ObservableObject {
         agents.filter { $0.state == .linked }.count
     }
 
+    /// Wire Kujto memory into the currently loaded repo. Uses `KujtoLocator`
+    /// to find the Kujto installation. Idempotent: existing files are left
+    /// alone by `WireService.linkOrCopy`. Returns nil on success, or a short
+    /// error message the UI can surface.
+    func wireCurrentRepo() -> String? {
+        guard let target = rootPath.map({ URL(fileURLWithPath: $0) }) else {
+            return "Choose a repo first."
+        }
+        guard let kujtoRoot = KujtoLocator.locate() else {
+            return "Kujto installation not found. Set KUJTO_ROOT or clone Kujto into ~/kujto."
+        }
+        do {
+            let emitter = EventEmitter(mode: .human)
+            let service = WireService(root: kujtoRoot, emitter: emitter)
+            try service.wire(WireService.Options(target: target))
+            refreshAgents()
+            return nil
+        } catch let error as KujtoError {
+            return error.message.value
+        } catch {
+            return error.localizedDescription
+        }
+    }
+
+    /// Undo `wireCurrentRepo`. Only removes symlinks; foreign files stay.
+    func unwireCurrentRepo() -> String? {
+        guard let target = rootPath.map({ URL(fileURLWithPath: $0) }) else {
+            return "Choose a repo first."
+        }
+        guard let kujtoRoot = KujtoLocator.locate() else {
+            return "Kujto installation not found."
+        }
+        do {
+            let emitter = EventEmitter(mode: .human)
+            let service = WireService(root: kujtoRoot, emitter: emitter)
+            try service.unwire(at: target)
+            refreshAgents()
+            return nil
+        } catch {
+            return error.localizedDescription
+        }
+    }
+
+    func refreshAgents() {
+        guard let root = rootPath.map({ URL(fileURLWithPath: $0) }) else { return }
+        agents = AgentExport.status(target: root, root: root)
+    }
+
     private func load(_ root: URL) {
         rootPath = root.path
         let idx = try? RuleIndex.load(root: root)
@@ -81,6 +130,22 @@ final class StudioModel: ObservableObject {
         agents = AgentExport.status(target: root, root: root)
         lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
         destination = files.first.map { .file($0.id) } ?? .agents
+        watcher.start(at: root.path) { [weak self] in
+            self?.reloadInPlace()
+        }
+    }
+
+    /// Called by the FSEvents watcher when the repo changes on disk. Refreshes
+    /// the memory map, rules, and lint output without disturbing the current
+    /// sidebar destination or selection.
+    private func reloadInPlace() {
+        guard let rootPath else { return }
+        let root = URL(fileURLWithPath: rootPath)
+        let idx = try? RuleIndex.load(root: root)
+        index = idx
+        map = try? MemoryMapScanner.scan(root: root)
+        agents = AgentExport.status(target: root, root: root)
+        lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
     }
 
     var lintErrorCount: Int { lintIssues.filter { $0.severity == .error }.count }
