@@ -78,11 +78,14 @@ jobs:
             -configuration Release \
             -destination "platform=macOS" \
             -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.APP_STORE_CONNECT_KEY_ID }} \
+            -authenticationKeyIssuerID ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }} \
             DEVELOPMENT_TEAM=${{ secrets.APP_STORE_TEAM_ID }} \
             MARKETING_VERSION=${{ steps.version.outputs.value }} \
             CURRENT_PROJECT_VERSION=${{ github.run_number }} \
-            CODE_SIGN_STYLE=Manual \
-            "CODE_SIGN_IDENTITY=Apple Distribution: PETROS DHESPOLLARI (${{ secrets.APP_STORE_TEAM_ID }})"
+            CODE_SIGN_STYLE=Automatic
 
       - name: Export for App Store
         run: |
@@ -94,7 +97,7 @@ jobs:
             <key>method</key><string>app-store</string>
             <key>teamID</key><string>${{ secrets.APP_STORE_TEAM_ID }}</string>
             <key>uploadSymbols</key><true/>
-            <key>signingStyle</key><string>manual</string>
+            <key>signingStyle</key><string>automatic</string>
           </dict>
           </plist>
           PLIST
