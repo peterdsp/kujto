@@ -21,7 +21,7 @@ on:
 jobs:
   archive-and-upload:
     name: Archive and upload to App Store Connect
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - name: Read version

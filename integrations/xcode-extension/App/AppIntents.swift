@@ -29,7 +29,7 @@ struct ShowRulesForFileIntent: AppIntent {
         let matches = index.resolve(file: relative)
         let lines = matches.map { m in
             let risk = m.rule.risk.isEmpty ? "" : "  [risk: \(m.rule.risk.joined(separator: ", "))]"
-            return "\(m.rule.title)\(risk) — \(m.rule.path) (matched \(m.glob))"
+            return "\(m.rule.title)\(risk), \(m.rule.path) (matched \(m.glob))"
         }
         return .result(value: lines.isEmpty ? ["No file-scoped rules match."] : lines)
     }
