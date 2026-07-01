@@ -9,6 +9,16 @@ permissions:
   contents: read
 
 jobs:
+  swift-tests:
+    name: Swift build and tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build KujtoCore and CLI
+        run: xcrun swift build
+      - name: Run KujtoCore tests
+        run: xcrun swift test
+
   shellcheck:
     name: ShellCheck
     runs-on: ubuntu-latest

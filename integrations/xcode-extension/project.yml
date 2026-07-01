@@ -21,6 +21,10 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.peterdsp.kujto.studio
         ENABLE_APP_SANDBOX: YES
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Kujto Studio
+        INFOPLIST_KEY_LSMinimumSystemVersion: "13.0"
+        INFOPLIST_KEY_NSHumanReadableCopyright: "MIT"
     entitlements:
       path: App/KujtoStudio.entitlements
       properties:
@@ -37,10 +41,14 @@ targets:
     dependencies:
       - package: KujtoCore
         product: KujtoCore
+      - framework: XcodeKit.framework
+        embed: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.peterdsp.kujto.studio.RulesExtension
         INFOPLIST_FILE: Extension/Info.plist
+        FRAMEWORK_SEARCH_PATHS:
+          - $(DEVELOPER_DIR)/Library/Frameworks
     entitlements:
       path: Extension/KujtoRulesExtension.entitlements
       properties:
