@@ -1,0 +1,129 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto Studio in VS Code and Cursor</title>
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .vscode-chrome {
+    background: #252526; color: #CCCCCC;
+    padding: 4px 14px; height: 40px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.4);
+  }
+  .vscode-chrome .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .vscode-chrome .r { background: #FF5F57; } .vscode-chrome .y { background: #FEBC2E; } .vscode-chrome .g { background: #28C840; }
+  .vscode-chrome .title { flex: 1; text-align: center; font-size: 12px; color: #B0B0B0; }
+  .vscode-body { flex: 1; display: flex; background: #1E1E1E; color: #D8D8D8; position: relative; }
+  .vscode-nav {
+    width: 48px; background: #333333; border-right: 1px solid #252526;
+    display: flex; flex-direction: column; padding: 8px 0; gap: 12px; align-items: center;
+    color: #858585; font-size: 20px;
+  }
+  .vscode-nav .icn { padding: 6px; }
+  .vscode-nav .icn.active { color: #FFFFFF; border-left: 2px solid #FFFFFF; padding-left: 4px; }
+  .vscode-tree { width: 220px; background: #252526; padding: 8px; font-size: 12px; color: #C0C0C0; }
+  .vscode-tree .group { color: #808080; text-transform: uppercase; letter-spacing: 0.03em; margin: 4px 8px; font-size: 11px; }
+  .vscode-tree .file { padding: 3px 8px; }
+  .vscode-tree .file.sel { background: #37373D; color: white; border-radius: 3px; }
+  .vscode-editor {
+    flex: 1; padding: 20px 24px;
+    font-family: "SF Mono", "JetBrains Mono", monospace; font-size: 13px; line-height: 1.6;
+  }
+  .kw { color: #C586C0; }
+  .type { color: #4EC9B0; }
+  .fn { color: #DCDCAA; }
+  .str { color: #CE9178; }
+  .num { color: #B5CEA8; }
+  .cmt { color: #6A9955; }
+  .ln { display: inline-block; width: 28px; color: #666; text-align: right; margin-right: 12px; user-select: none; }
+  .palette {
+    position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+    width: 640px; background: #252526; border: 1px solid #3F3F3F;
+    border-radius: 8px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.5);
+    font-family: -apple-system, sans-serif; font-size: 13px; color: #E0E0E0;
+    z-index: 10;
+  }
+  .palette .input {
+    padding: 10px 14px; border-bottom: 1px solid #3F3F3F;
+    color: #FFFFFF;
+  }
+  .palette .input .highlight { background: rgba(201, 164, 103, 0.20); color: #FFDEA6; padding: 1px 3px; border-radius: 3px; }
+  .palette .item {
+    padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;
+    border-left: 3px solid transparent;
+  }
+  .palette .item.sel { background: #094771; border-left-color: #007ACC; }
+  .palette .item .lbl { display: flex; gap: 6px; align-items: center; }
+  .palette .item .shortcut { color: #808080; font-size: 12px; font-family: "SF Mono", monospace; }
+  .palette .item .kujto-tag { background: rgba(201,164,103,0.14); color: var(--gold); font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-right: 6px; }
+  .status {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 24px; background: #007ACC; color: white;
+    display: flex; align-items: center; gap: 12px; padding: 0 14px;
+    font-size: 12px; font-family: -apple-system, sans-serif;
+  }
+  .status .kujto { background: rgba(0,0,0,0.15); padding: 2px 8px; border-radius: 3px; }
+</style>
+</head><body>
+<div class="stage" style="display:flex; flex-direction:column; background: #1E1E1E; position: relative;">
+  <div class="vscode-chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">Cursor, checkout-flow, CheckoutFeature.swift</span>
+  </div>
+  <div class="vscode-body">
+    <div class="vscode-nav">
+      <span class="icn active">☰</span>
+      <span class="icn">⌕</span>
+      <span class="icn">⑂</span>
+      <span class="icn">▷</span>
+      <span class="icn">⊞</span>
+    </div>
+    <div class="vscode-tree">
+      <div class="group">Explorer</div>
+      <div class="file">▾ Sources</div>
+      <div class="file" style="padding-left: 20px;">▾ Checkout</div>
+      <div class="file sel" style="padding-left: 36px;">CheckoutFeature.swift</div>
+      <div class="file" style="padding-left: 36px;">PaymentClient.swift</div>
+      <div class="file" style="padding-left: 20px;">▸ Home</div>
+      <div class="file">▾ Tests</div>
+      <div class="file" style="padding-left: 20px;">CheckoutFeatureTests.swift</div>
+      <div class="file" style="padding-left: 20px;">PaymentClientTests.swift</div>
+    </div>
+    <div class="vscode-editor">
+      <div><span class="ln">1</span><span class="kw">import</span> ComposableArchitecture</div>
+      <div><span class="ln">2</span>&nbsp;</div>
+      <div><span class="ln">3</span><span class="kw">@Reducer</span></div>
+      <div><span class="ln">4</span><span class="kw">struct</span> <span class="type">CheckoutFeature</span> {</div>
+      <div><span class="ln">5</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">enum</span> <span class="type">Action</span> {</div>
+      <div><span class="ln">6</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> checkoutTapped</div>
+      <div><span class="ln">7</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> paymentReceived(<span class="type">Result</span>&lt;<span class="type">Receipt</span>, <span class="type">Error</span>&gt;)</div>
+      <div><span class="ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+    </div>
+
+    <div class="palette">
+      <div class="input">&gt; Kujto: Show <span class="highlight">Rules</span> for This File</div>
+      <div class="item sel">
+        <div class="lbl"><span class="kujto-tag">KUJTO</span> Show Rules for This File</div>
+        <div class="shortcut">⌘⇧R</div>
+      </div>
+      <div class="item">
+        <div class="lbl"><span class="kujto-tag">KUJTO</span> Show Memory Map</div>
+        <div class="shortcut"></div>
+      </div>
+      <div class="item">
+        <div class="lbl"><span class="kujto-tag">KUJTO</span> Lint Memory</div>
+        <div class="shortcut"></div>
+      </div>
+      <div class="item">
+        <div class="lbl"><span class="kujto-tag">KUJTO</span> Show Agent Wire Status</div>
+        <div class="shortcut"></div>
+      </div>
+    </div>
+
+    <div class="status">
+      <span>✱ main</span>
+      <span>Swift</span>
+      <span class="kujto">✨ Kujto: 2 rules match · payment</span>
+      <span style="margin-left: auto;">Ln 4, Col 8</span>
+    </div>
+  </div>
+</div>
+</body></html>

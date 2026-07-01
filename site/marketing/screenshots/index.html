@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<title>Kujto Studio, marketing screenshots</title>
+<style>
+  :root {
+    --ink: #0E1424; --paper: #F4EFE6; --gold: #C9A467;
+    --font-serif: "Instrument Serif", Georgia, serif;
+    --font-sans: -apple-system, "Inter", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--font-sans); padding: 60px 40px;
+  }
+  header { max-width: 1200px; margin: 0 auto 40px; }
+  header .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500; margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: 48px; letter-spacing: -0.02em; margin-bottom: 12px;
+  }
+  header p { color: #565A6A; font-size: 16px; max-width: 720px; }
+  .grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .thumb {
+    background: white; border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(14,20,36,0.10);
+    box-shadow: 0 12px 28px -14px rgba(14,20,36,0.20);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+  .thumb:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 36px -14px rgba(14,20,36,0.28);
+  }
+  .thumb a { display: block; color: inherit; text-decoration: none; }
+  .frame {
+    width: 100%; aspect-ratio: 16 / 10;
+    background: #EDE7DA;
+    position: relative; overflow: hidden;
+  }
+  .frame iframe {
+    width: 1440px; height: 900px;
+    transform: scale(0.38); transform-origin: top left;
+    border: 0; pointer-events: none;
+  }
+  .caption { padding: 16px 18px; }
+  .caption h3 {
+    font-family: var(--font-serif); font-weight: 400; font-size: 22px;
+    letter-spacing: -0.01em; margin-bottom: 4px;
+  }
+  .caption p { font-size: 13px; color: #565A6A; }
+  .caption .n { font-size: 11px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; }
+</style>
+</head><body>
+<header>
+  <div class="eyebrow">Marketing material</div>
+  <h1>Kujto Studio screenshots</h1>
+  <p>Six App Store and Ko-fi listing shots. Each renders at 1440x900. Capture at 2880x1800 for App Store retina uploads with <code>scripts/marketing/capture-screenshots.sh</code>.</p>
+</header>
+
+<div class="grid">
+  <div class="thumb"><a href="01-hero.html" target="_blank">
+    <div class="frame"><iframe src="01-hero.html"></iframe></div>
+    <div class="caption"><div class="n">01 · Hero</div><h3>Before you touch this file</h3><p>The file inspector on a payment-risk file. Rules + tests + confidence.</p></div>
+  </a></div>
+  <div class="thumb"><a href="02-linter.html" target="_blank">
+    <div class="frame"><iframe src="02-linter.html"></iframe></div>
+    <div class="caption"><div class="n">02 · Lint</div><h3>Catch stale memory</h3><p>Missing governance files, unmatched globs, broken wiki links.</p></div>
+  </a></div>
+  <div class="thumb"><a href="03-agents.html" target="_blank">
+    <div class="frame"><iframe src="03-agents.html"></iframe></div>
+    <div class="caption"><div class="n">03 · Agents</div><h3>Six agents, one source</h3><p>Claude, Codex, Gemini, Cursor, Copilot, and generic AGENTS.md, wired.</p></div>
+  </a></div>
+  <div class="thumb"><a href="04-xcode.html" target="_blank">
+    <div class="frame"><iframe src="04-xcode.html"></iframe></div>
+    <div class="caption"><div class="n">04 · Xcode</div><h3>Rules inside Xcode</h3><p>Source Editor command inserts the rules as an undoable comment block.</p></div>
+  </a></div>
+  <div class="thumb"><a href="05-vscode.html" target="_blank">
+    <div class="frame"><iframe src="05-vscode.html"></iframe></div>
+    <div class="caption"><div class="n">05 · VS Code</div><h3>Palette command in Cursor</h3><p>Same engine, same rules, in VS Code and every VS Code fork.</p></div>
+  </a></div>
+  <div class="thumb"><a href="06-menubar.html" target="_blank">
+    <div class="frame"><iframe src="06-menubar.html"></iframe></div>
+    <div class="caption"><div class="n">06 · Menu bar</div><h3>Discreet menu bar</h3><p>Lint count, agent status, and jump-into-panel, always visible.</p></div>
+  </a></div>
+</div>
+</body></html>

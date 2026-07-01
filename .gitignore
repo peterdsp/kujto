@@ -4,6 +4,9 @@
 .Spotlight-V100
 .Trashes
 
+# Marketing screenshots are regenerated from the HTML sources
+site/marketing/screenshots/exports/
+
 # Xcode and iOS build artifacts
 build/
 .build/

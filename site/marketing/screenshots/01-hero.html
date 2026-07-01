@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto Studio, before you touch this file</title>
+<link rel="stylesheet" href="_shell.css">
+</head><body>
+<div class="stage" style="display:flex; flex-direction:column;">
+  <div class="chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">Kujto Studio, checkout-flow</span>
+  </div>
+  <div class="pane-body">
+
+    <div class="sidebar">
+      <div class="metric-row">
+        <div class="metric"><div class="num">4</div><div class="lbl">scoped</div></div>
+        <div class="metric"><div class="num">40</div><div class="lbl">base</div></div>
+      </div>
+      <div class="section-label">Agents  6/6</div>
+      <div class="section-label" style="margin-top:14px;">Files</div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">AppFeature.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">HomeView.swift</span></div>
+      <div class="file-row"><span class="dot a"></span><span class="file-name">HomeReducer.swift</span></div>
+      <div class="file-row active"><span class="dot r"></span><span class="file-name">CheckoutFeature.swift</span></div>
+      <div class="file-row"><span class="dot a"></span><span class="file-name">PaymentClient.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">SettingsView.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">OnboardingFeature.swift</span></div>
+    </div>
+
+    <div class="pane">
+      <div class="eyebrow">Before you touch this file</div>
+      <div class="title-row">
+        <div class="title">CheckoutFeature.swift</div>
+        <span class="badge danger">Danger zone</span>
+      </div>
+
+      <div class="risk-strip">
+        Risk <span class="risk-pill">payment</span> ·
+        Ownership <b style="color:var(--ink-2)">Checkout squad</b>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">TCA (The Composable Architecture)</div>
+          <div class="card-sub">matched **/*Feature.swift</div>
+        </div>
+        <ul>
+          <li>Mutate state only through actions, never inside views.</li>
+          <li>Effects must be cancellable on <code>.onDisappear</code>.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Payment audit log</div>
+          <div class="card-sub">matched **/Checkout*/**</div>
+        </div>
+        <ul>
+          <li>Every payment intent needs a shadow log entry, see <code>[[payment_audit_log]]</code>.</li>
+          <li>Never edit generated <code>StripeIntents.swift</code>, it is rebuilt from the schema.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Tests to run</div>
+          <div class="card-sub">3 matches</div>
+        </div>
+        <ul>
+          <li><code>CheckoutFeatureTests.swift</code></li>
+          <li><code>PaymentClientTests.swift</code></li>
+          <li><code>CheckoutSnapshotTests.swift</code></li>
+        </ul>
+      </div>
+
+      <div class="footer-row">
+        <button class="btn primary">✨ Inject agent context</button>
+        <button class="btn">📋 Copy PR checklist</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body></html>

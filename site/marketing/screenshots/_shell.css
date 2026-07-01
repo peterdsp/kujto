@@ -1,0 +1,150 @@
+/* Shared window chrome and typography for every marketing mockup.
+   Each screen renders at 1440x900 by default; wrap with transform: scale(2)
+   to get 2880x1800 for App Store retina uploads. */
+
+:root {
+  --ink: #0E1424;
+  --ink-2: #2A2F3F;
+  --ink-3: #565A6A;
+  --paper: #F4EFE6;
+  --paper-2: #EDE7DA;
+  --card: #FFFFFF;
+  --line: rgba(14, 20, 36, 0.08);
+  --line-2: rgba(14, 20, 36, 0.14);
+  --gold: #C9A467;
+  --danger: #B8272E;
+  --warning: #C57A18;
+  --success: #2E8B57;
+  --accent: #7A63C7;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 1440px; height: 900px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  color: var(--ink);
+  overflow: hidden;
+  background: linear-gradient(135deg, #E8E1D2 0%, #F4EFE6 45%, #E4DBC6 100%);
+}
+body { padding: 60px; display: grid; place-items: center; }
+
+.stage {
+  width: 1320px;
+  height: 780px;
+  background: var(--paper);
+  border-radius: 18px;
+  box-shadow:
+    0 30px 60px -20px rgba(14, 20, 36, 0.35),
+    0 10px 30px -12px rgba(14, 20, 36, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Traffic-light window chrome */
+.chrome {
+  height: 36px;
+  background: linear-gradient(180deg, #F4EFE6, #EAE3D2);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+}
+.chrome .dot { width: 12px; height: 12px; border-radius: 50%; }
+.chrome .dot.r { background: #FF5F57; }
+.chrome .dot.y { background: #FEBC2E; }
+.chrome .dot.g { background: #28C840; }
+.chrome .title {
+  flex: 1; text-align: center;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: -0.01em;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  padding: 16px 12px;
+  background: rgba(237, 231, 218, 0.4);
+  border-right: 1px solid var(--line);
+}
+.metric-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.metric {
+  background: var(--card); border-radius: 8px; padding: 10px 12px;
+  border: 1px solid var(--line);
+}
+.metric .num { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
+.metric .lbl { font-size: 11px; color: var(--ink-3); }
+
+.section-label {
+  font-size: 11px; color: var(--ink-3); letter-spacing: 0.04em;
+  text-transform: uppercase; margin: 12px 0 8px;
+}
+.file-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 8px; border-radius: 6px;
+  font-size: 13px; color: var(--ink-2);
+}
+.file-row.active {
+  background: rgba(184, 39, 46, 0.09);
+  border: 1px solid rgba(184, 39, 46, 0.25);
+  color: var(--danger); font-weight: 500;
+}
+.file-row .dot { width: 7px; height: 7px; border-radius: 50%; }
+.file-row .dot.g { background: var(--success); }
+.file-row .dot.a { background: var(--warning); }
+.file-row .dot.r { background: var(--danger); }
+.file-name { font-family: "SF Mono", "JetBrains Mono", monospace; font-size: 12px; }
+
+/* Content pane */
+.pane { flex: 1; padding: 26px 30px; overflow: hidden; }
+.eyebrow { font-size: 11px; color: var(--ink-3); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+.title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.title { font-size: 22px; font-weight: 500; font-family: "SF Mono", "JetBrains Mono", monospace; letter-spacing: -0.01em; }
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 500;
+  padding: 4px 10px; border-radius: 999px;
+}
+.badge.danger { background: rgba(184, 39, 46, 0.12); color: var(--danger); }
+.badge.warning { background: rgba(197, 122, 24, 0.12); color: var(--warning); }
+.badge.safe { background: rgba(46, 139, 87, 0.14); color: var(--success); }
+
+.card {
+  background: var(--card); border-radius: 12px;
+  border: 1px solid var(--line);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.card .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.card .card-title { font-size: 14px; font-weight: 500; }
+.card .card-sub  { font-size: 11px; color: var(--ink-3); font-family: "SF Mono", monospace; }
+.card ul { list-style: none; }
+.card li { font-size: 13px; color: var(--ink-2); line-height: 1.65; padding-left: 14px; position: relative; }
+.card li::before { content: "•"; position: absolute; left: 0; color: var(--gold); }
+
+.pane-body { display: flex; height: calc(100% - 36px); }
+
+.risk-strip { display: flex; align-items: center; gap: 8px; margin: 6px 0 16px; font-size: 12px; color: var(--ink-3); }
+.risk-strip .risk-pill { background: rgba(184, 39, 46, 0.12); color: var(--danger); font-weight: 500; padding: 3px 9px; border-radius: 6px; }
+
+.footer-row {
+  position: absolute; bottom: 20px; left: 250px; right: 30px;
+  display: flex; gap: 10px;
+}
+.btn {
+  font-size: 13px; padding: 8px 14px; border-radius: 8px;
+  border: 1px solid var(--line-2); background: var(--card);
+  color: var(--ink); display: inline-flex; align-items: center; gap: 6px;
+}
+.btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* Overlay caption used by the App Store screenshot standard */
+.overlay-caption {
+  position: absolute; top: -46px; left: 60px;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 30px; font-weight: 400; color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.overlay-caption em { color: var(--gold); font-style: normal; }

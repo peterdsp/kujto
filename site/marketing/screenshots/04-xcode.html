@@ -1,0 +1,86 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto Studio in Xcode</title>
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .xcode-chrome {
+    background: #1E1E1E; color: #D0D0D0;
+    padding: 4px 14px; height: 40px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.4);
+  }
+  .xcode-chrome .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .xcode-chrome .r { background: #FF5F57; } .xcode-chrome .y { background: #FEBC2E; } .xcode-chrome .g { background: #28C840; }
+  .xcode-chrome .title { flex: 1; text-align: center; font-size: 12px; color: #B0B0B0; }
+  .xcode-body { flex: 1; display: flex; background: #1E1E1E; color: #D8D8D8; }
+  .xcode-nav { width: 220px; padding: 8px; background: #1A1A1A; border-right: 1px solid rgba(0,0,0,0.5); font-size: 12px; }
+  .xcode-nav .group { color: #808080; margin: 6px 0 4px; }
+  .xcode-nav .file { padding: 3px 8px; color: #C0C0C0; }
+  .xcode-nav .file.sel { background: #315081; color: white; border-radius: 4px; }
+  .xcode-editor { flex: 1; padding: 20px 24px; font-family: "SF Mono", "JetBrains Mono", monospace; font-size: 13px; line-height: 1.6; overflow: hidden; }
+  .kw { color: #FF7AB2; }
+  .type { color: #67B7A4; }
+  .cmt { color: #7B9E87; font-style: italic; }
+  .cmt-kujto { color: #C9A467; }
+  .cmt-tag { color: #FFC061; }
+  .str { color: #FF9068; }
+  .num { color: #D0BF69; }
+  .ln { display: inline-block; width: 28px; color: #666; text-align: right; margin-right: 12px; user-select: none; }
+  .menu-tag {
+    position: absolute; top: 46px; right: 24px;
+    background: rgba(255,255,255,0.06);
+    color: #E0E0E0;
+    font-size: 12px; padding: 6px 12px; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-family: -apple-system, sans-serif;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .menu-tag .arrow { color: var(--gold); }
+</style>
+</head><body>
+<div class="stage" style="display:flex; flex-direction:column; background: #1E1E1E; position: relative;">
+  <div class="xcode-chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">Xcode, checkout-flow, CheckoutFeature.swift</span>
+  </div>
+  <div class="menu-tag"><span class="arrow">→</span> Editor › Kujto › Show Rules for This File</div>
+  <div class="xcode-body">
+    <div class="xcode-nav">
+      <div class="group">CHECKOUT-FLOW</div>
+      <div class="file">Sources</div>
+      <div class="file" style="padding-left: 18px;">App</div>
+      <div class="file" style="padding-left: 32px;">AppFeature.swift</div>
+      <div class="file" style="padding-left: 18px;">Home</div>
+      <div class="file" style="padding-left: 32px;">HomeReducer.swift</div>
+      <div class="file" style="padding-left: 18px;">Checkout</div>
+      <div class="file sel" style="padding-left: 32px;">CheckoutFeature.swift</div>
+      <div class="file" style="padding-left: 32px;">PaymentClient.swift</div>
+      <div class="file">Tests</div>
+      <div class="file" style="padding-left: 18px;">CheckoutFeatureTests.swift</div>
+    </div>
+    <div class="xcode-editor">
+      <div><span class="ln">1</span><span class="cmt-kujto">// Kujto: before you touch this file</span></div>
+      <div><span class="ln">2</span><span class="cmt-kujto">//   • TCA (Composable Architecture)  <span class="cmt-tag">[risk: payment]</span></span></div>
+      <div><span class="ln">3</span><span class="cmt-kujto">//       memory/domains/ios/architectures/tca.md  (signal: Feature)</span></div>
+      <div><span class="ln">4</span><span class="cmt-kujto">//   • Payment audit log</span></div>
+      <div><span class="ln">5</span><span class="cmt-kujto">//       memory/domains/checkout.md  (signal: Checkout)</span></div>
+      <div><span class="ln">6</span><span class="cmt-kujto">//   Tests to run: CheckoutFeatureTests, PaymentClientTests</span></div>
+      <div><span class="ln">7</span>&nbsp;</div>
+      <div><span class="ln">8</span><span class="kw">import</span> ComposableArchitecture</div>
+      <div><span class="ln">9</span><span class="kw">import</span> Foundation</div>
+      <div><span class="ln">10</span>&nbsp;</div>
+      <div><span class="ln">11</span><span class="kw">@Reducer</span></div>
+      <div><span class="ln">12</span><span class="kw">struct</span> <span class="type">CheckoutFeature</span> {</div>
+      <div><span class="ln">13</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">@ObservableState</span></div>
+      <div><span class="ln">14</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">struct</span> <span class="type">State</span>: <span class="type">Equatable</span> {</div>
+      <div><span class="ln">15</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">var</span> cart: <span class="type">Cart</span> = .empty</div>
+      <div><span class="ln">16</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">var</span> paymentMethod: <span class="type">PaymentMethod</span>?</div>
+      <div><span class="ln">17</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">var</span> isProcessing = <span class="num">false</span></div>
+      <div><span class="ln">18</span>&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+      <div><span class="ln">19</span>&nbsp;</div>
+      <div><span class="ln">20</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">enum</span> <span class="type">Action</span> {</div>
+      <div><span class="ln">21</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> checkoutTapped</div>
+      <div><span class="ln">22</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> paymentReceived(<span class="type">Result</span>&lt;<span class="type">Receipt</span>, <span class="type">Error</span>&gt;)</div>
+    </div>
+  </div>
+</div>
+</body></html>

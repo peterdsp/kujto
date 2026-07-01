@@ -1,0 +1,85 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto Studio, memory linter</title>
+<link rel="stylesheet" href="_shell.css">
+</head><body>
+<div class="stage" style="display:flex; flex-direction:column;">
+  <div class="chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">Kujto Studio, ios-app-monorepo</span>
+  </div>
+  <div class="pane-body">
+
+    <div class="sidebar">
+      <div class="metric-row">
+        <div class="metric"><div class="num">12</div><div class="lbl">scoped</div></div>
+        <div class="metric"><div class="num">63</div><div class="lbl">base</div></div>
+      </div>
+      <div class="section-label">Navigation</div>
+      <div class="file-row" style="background: rgba(197,122,24,0.10); border:1px solid rgba(197,122,24,0.30); color: var(--warning); font-weight: 500;">
+        <span style="width: 16px; height: 16px; border-radius: 5px; background: var(--warning); color: white; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700;">7</span>
+        <span style="font-size: 13px;">Lint</span>
+      </div>
+      <div class="file-row"><span style="width: 16px; height: 16px; border-radius: 5px; background: rgba(14,20,36,0.08); color: var(--ink-2); font-size: 10px; display: inline-flex; align-items: center; justify-content: center; font-weight: 500;">6</span><span style="font-size: 13px;">Agents</span></div>
+      <div class="section-label" style="margin-top:14px;">Files (46)</div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">AppFeature.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">HomeView.swift</span></div>
+      <div class="file-row"><span class="dot a"></span><span class="file-name">HomeReducer.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">CheckoutFeature.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">PaymentClient.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">SettingsView.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">OnboardingFeature.swift</span></div>
+    </div>
+
+    <div class="pane">
+      <div class="eyebrow">Memory health</div>
+      <div class="title-row">
+        <div style="font-family: -apple-system, sans-serif; font-size: 26px; font-weight: 500; letter-spacing: -0.02em;">Lint</div>
+        <span class="badge danger">1 error</span>
+        <span class="badge warning">6 warnings</span>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--danger);">
+        <div class="card-head">
+          <span style="color: var(--danger); font-size: 16px;">✗</span>
+          <div class="card-title">AGENTS.md is missing at the repo root.</div>
+        </div>
+        <div class="card-sub" style="margin-top: 4px;">AGENTS.md · missing_agents_file</div>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--warning);">
+        <div class="card-head">
+          <span style="color: var(--warning); font-size: 16px;">!</span>
+          <div class="card-title">applies_to glob <code>**/*Coordinator.swift</code> matches no file in the repo.</div>
+        </div>
+        <div class="card-sub" style="margin-top: 4px;">memory/domains/ios/navigation.md · unmatched_glob</div>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--warning);">
+        <div class="card-head">
+          <span style="color: var(--warning); font-size: 16px;">!</span>
+          <div class="card-title"><code>[[payment_audit_log]]</code> references an unknown memory slug.</div>
+        </div>
+        <div class="card-sub" style="margin-top: 4px;">memory/domains/checkout.md · broken_link</div>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--warning);">
+        <div class="card-head">
+          <span style="color: var(--warning); font-size: 16px;">!</span>
+          <div class="card-title">applies_to glob <code>**/*SnapshotTests.swift</code> matches no file in the repo.</div>
+        </div>
+        <div class="card-sub" style="margin-top: 4px;">memory/domains/ios/snapshot_testing.md · unmatched_glob</div>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--warning);">
+        <div class="card-head">
+          <span style="color: var(--warning); font-size: 16px;">!</span>
+          <div class="card-title"><code>[[stale_dep_note]]</code> references an unknown memory slug.</div>
+        </div>
+        <div class="card-sub" style="margin-top: 4px;">memory/domains/ios/architectures/tca.md · broken_link</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</body></html>
