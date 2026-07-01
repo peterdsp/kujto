@@ -87,40 +87,33 @@ jobs:
             CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             CODE_SIGN_STYLE=Automatic
 
-      - name: Export for App Store
+      - name: Re-sign for distribution, package, and upload
+        env:
+          TEAM_ID: ${{ secrets.APP_STORE_TEAM_ID }}
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ISSUER: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         run: |
-          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key><string>app-store-connect</string>
-            <key>teamID</key><string>${{ secrets.APP_STORE_TEAM_ID }}</string>
-            <key>uploadSymbols</key><true/>
-            <key>signingStyle</key><string>manual</string>
-            <key>signingCertificate</key><string>Apple Distribution</string>
-            <key>provisioningProfiles</key>
-            <dict>
-              <key>dev.peterdsp.kujto.studio</key>
-              <string>Mac Team Provisioning Profile: dev.peterdsp.kujto.studio</string>
-              <key>dev.peterdsp.kujto.studio.RulesExtension</key>
-              <string>Mac Team Provisioning Profile: dev.peterdsp.kujto.studio.RulesExtension</string>
-            </dict>
-          </dict>
-          </plist>
-          PLIST
-          xcodebuild -exportArchive \
-            -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
-            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-            -exportPath "$RUNNER_TEMP/export" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8 \
-            -authenticationKeyID ${{ secrets.APP_STORE_CONNECT_KEY_ID }} \
-            -authenticationKeyIssuerID ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          set -euo pipefail
+          APP_CERT="Apple Distribution: PETROS DHESPOLLARI ($TEAM_ID)"
+          INSTALLER_CERT="3rd Party Mac Developer Installer: PETROS DHESPOLLARI ($TEAM_ID)"
 
-      - name: Upload to App Store Connect
-        run: |
-          PKG=$(ls "$RUNNER_TEMP/export"/*.pkg | head -n1)
+          STAGE="$RUNNER_TEMP/stage"
+          APP="$STAGE/KujtoStudio.app"
+          mkdir -p "$STAGE"
+          cp -R "$RUNNER_TEMP/KujtoStudio.xcarchive/Products/Applications/KujtoStudio.app" "$APP"
+
+          # Strip archive-time embedded provisioning profiles and old signatures.
+          find "$APP" -name embedded.provisionprofile -delete
+          # Re-sign every embedded bundle from inside out.
+          find "$APP" -type d \( -name '*.appex' -o -name '*.framework' -o -name '*.xpc' \) \
+            -exec codesign --force --options runtime --timestamp --sign "$APP_CERT" {} \;
+          codesign --force --deep --options runtime --timestamp --sign "$APP_CERT" "$APP"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+
+          # Package as .pkg for the Mac App Store.
+          PKG="$RUNNER_TEMP/KujtoStudio.pkg"
+          productbuild --component "$APP" /Applications --sign "$INSTALLER_CERT" "$PKG"
+
+          # Upload to App Store Connect.
           xcrun altool --upload-app --type macos --file "$PKG" \
-            --apiKey "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
-            --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"
+            --apiKey "$KEY_ID" --apiIssuer "$ISSUER"

@@ -104,35 +104,17 @@ jobs:
             CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             CODE_SIGN_STYLE=Automatic
 
-      - name: Export .app
+      - name: Stage .app from archive and strip old profiles
+        env:
+          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key><string>developer-id</string>
-            <key>teamID</key><string>${{ secrets.APPLE_TEAM_ID }}</string>
-            <key>signingStyle</key><string>manual</string>
-            <key>signingCertificate</key><string>Developer ID Application</string>
-            <key>provisioningProfiles</key>
-            <dict>
-              <key>dev.peterdsp.kujto.studio</key>
-              <string>Mac Team Provisioning Profile: dev.peterdsp.kujto.studio</string>
-              <key>dev.peterdsp.kujto.studio.RulesExtension</key>
-              <string>Mac Team Provisioning Profile: dev.peterdsp.kujto.studio.RulesExtension</string>
-            </dict>
-          </dict>
-          </plist>
-          PLIST
-          xcodebuild -exportArchive \
-            -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
-            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-            -exportPath "$RUNNER_TEMP/export" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8 \
-            -authenticationKeyID ${{ secrets.APP_STORE_CONNECT_KEY_ID }} \
-            -authenticationKeyIssuerID ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          set -euo pipefail
+          STAGE="$RUNNER_TEMP/export"
+          mkdir -p "$STAGE"
+          cp -R "$RUNNER_TEMP/KujtoStudio.xcarchive/Products/Applications/KujtoStudio.app" "$STAGE/"
+          # Archive-time embedded profiles reference Xcode-managed development
+          # certs; strip them so package-pkg.sh can re-sign for Developer ID.
+          find "$STAGE/KujtoStudio.app" -name embedded.provisionprofile -delete
 
       - name: Package PKG, notarize, staple
         env:
