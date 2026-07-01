@@ -108,10 +108,28 @@ jobs:
           # in the Direct build; remove the linked framework so validation
           # does not fail on the non-sandboxed Sparkle helpers.
           rm -rf "$APP/Contents/Frameworks/Sparkle.framework"
-          # Re-sign every embedded bundle from inside out.
-          find "$APP" -type d \( -name '*.appex' -o -name '*.framework' -o -name '*.xpc' \) \
-            -exec codesign --force --options runtime --timestamp --sign "$APP_CERT" {} \;
-          codesign --force --deep --options runtime --timestamp --sign "$APP_CERT" "$APP"
+
+          # Re-sign the extension first with its own entitlements (sandbox +
+          # App Group), then any remaining embedded frameworks (no
+          # entitlements), then the outer app with its entitlements. Without
+          # --entitlements, codesign drops the sandbox flag and App Store
+          # validation rejects the pkg.
+          ENT_APP="integrations/xcode-extension/App/KujtoStudio.entitlements"
+          ENT_EXT="integrations/xcode-extension/Extension/KujtoRulesExtension.entitlements"
+
+          codesign --force --options runtime --timestamp \
+            --entitlements "$ENT_EXT" \
+            --sign "$APP_CERT" \
+            "$APP/Contents/PlugIns/KujtoRulesExtension.appex"
+
+          find "$APP/Contents/Frameworks" -maxdepth 2 -type d -name '*.framework' \
+            -exec codesign --force --options runtime --timestamp --sign "$APP_CERT" {} \; 2>/dev/null || true
+
+          codesign --force --options runtime --timestamp \
+            --entitlements "$ENT_APP" \
+            --sign "$APP_CERT" \
+            "$APP"
+
           codesign --verify --deep --strict --verbose=2 "$APP"
 
           # Package as .pkg for the Mac App Store.
