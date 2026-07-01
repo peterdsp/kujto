@@ -102,8 +102,12 @@ jobs:
           mkdir -p "$STAGE"
           cp -R "$RUNNER_TEMP/KujtoStudio.xcarchive/Products/Applications/KujtoStudio.app" "$APP"
 
-          # Strip archive-time embedded provisioning profiles and old signatures.
+          # Strip archive-time embedded provisioning profiles.
           find "$APP" -name embedded.provisionprofile -delete
+          # App Store forbids third-party auto-updaters. Sparkle is only used
+          # in the Direct build; remove the linked framework so validation
+          # does not fail on the non-sandboxed Sparkle helpers.
+          rm -rf "$APP/Contents/Frameworks/Sparkle.framework"
           # Re-sign every embedded bundle from inside out.
           find "$APP" -type d \( -name '*.appex' -o -name '*.framework' -o -name '*.xpc' \) \
             -exec codesign --force --options runtime --timestamp --sign "$APP_CERT" {} \;
