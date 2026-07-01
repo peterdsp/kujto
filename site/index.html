@@ -4,25 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kujto Studio, the local memory layer for AI coding agents</title>
-  <meta name="description" content="Kujto Studio is a local-first Mac app that reads your repo's memory and shows the rules that apply before you touch a file. One engine, four surfaces: standalone Mac app, Xcode Source Editor extension, VS Code and Cursor extension, and CLI.">
-  <meta name="keywords" content="Kujto Studio, Kujto, AI memory, Claude, Codex, Gemini, Copilot, Cursor, AGENTS.md, CLAUDE.md, developer tools, Mac app, Xcode extension, VS Code extension, local-first, codebase rules">
+  <meta name="description" content="Kujto Studio is a local-first Mac app that reads your repo's memory and shows the rules that apply before you touch a file. Now on the Mac App Store and Ko-fi. One engine, four surfaces: Mac app, Xcode extension, VS Code / Cursor extension, and CLI.">
+  <meta name="keywords" content="Kujto Studio, Kujto, AI memory, Claude, Codex, Gemini, Copilot, Cursor, AGENTS.md, CLAUDE.md, developer tools, Mac App Store, Xcode extension, VS Code extension, local-first, codebase rules, Ko-fi">
   <meta name="author" content="Petros Dhespollari">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#0E1424">
 
-  <meta property="og:title" content="Kujto Studio, the local memory layer for AI coding agents">
-  <meta property="og:description" content="Reads your repo's memory and shows the rules that apply before you touch a file. Local-only. Mac app, Xcode, VS Code, Cursor, CLI.">
+  <meta property="og:title" content="Kujto Studio, now on the Mac App Store">
+  <meta property="og:description" content="The local memory layer for AI coding agents. Reads your repo's memory and shows the rules that apply before you touch a file. Available on the Mac App Store and Ko-fi.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kujto.peterdsp.dev">
-  <meta property="og:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
-  <meta property="og:image:width" content="1024">
-  <meta property="og:image:height" content="1024">
+  <meta property="og:image" content="https://kujto.peterdsp.dev/marketing/screenshots/exports/standard/01-hero.png">
+  <meta property="og:image:width" content="1440">
+  <meta property="og:image:height" content="900">
   <meta property="og:site_name" content="Kujto Studio">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Kujto Studio">
+  <meta name="twitter:title" content="Kujto Studio, now on the Mac App Store">
   <meta name="twitter:description" content="The local memory layer that stops AI agents and developers from breaking your codebase rules.">
-  <meta name="twitter:image" content="https://kujto.peterdsp.dev/assets/kujto-hero.png">
+  <meta name="twitter:image" content="https://kujto.peterdsp.dev/marketing/screenshots/exports/standard/01-hero.png">
 
   <script type="application/ld+json">
   {
@@ -32,8 +32,13 @@
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS 14 or later",
     "url": "https://kujto.peterdsp.dev",
+    "downloadUrl": "https://apps.apple.com/app/id6786441748",
     "description": "Local-first Mac app that surfaces a codebase's hidden rules before an engineer or AI agent edits a file.",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "offers": [
+      { "@type": "Offer", "name": "Kujto Studio (Mac App Store)", "price": "19.99", "priceCurrency": "EUR", "url": "https://apps.apple.com/app/id6786441748" },
+      { "@type": "Offer", "name": "Kujto Studio Pro (Ko-fi)", "price": "39.00", "priceCurrency": "EUR", "url": "https://ko-fi.com/s/826e2c8d19" },
+      { "@type": "Offer", "name": "Kujto CLI (open source)", "price": "0", "priceCurrency": "USD", "url": "https://github.com/peterdsp/kujto" }
+    ],
     "author": { "@type": "Person", "name": "Petros Dhespollari", "url": "https://peterdsp.dev" },
     "license": "https://github.com/peterdsp/kujto/blob/main/LICENSE",
     "codeRepository": "https://github.com/peterdsp/kujto"
@@ -60,18 +65,18 @@
   <nav class="nav" aria-label="Primary">
     <a href="#product">Product</a>
     <a href="#surfaces">Where it lives</a>
-    <a href="#install">Install</a>
+    <a href="#download">Download</a>
     <a href="#pricing">Pricing</a>
     <a href="#roadmap">Roadmap</a>
   </nav>
-  <a class="header-cta" href="https://github.com/peterdsp/kujto">Star on GitHub</a>
+  <a class="header-cta" href="https://apps.apple.com/app/id6786441748">Get on the App Store</a>
 </header>
 
 <main id="top">
 
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">Local memory for AI coding agents</p>
+      <p class="eyebrow">Now shipping on the Mac App Store</p>
       <h1 class="hero-title">Stop briefing your AI agent on the same codebase every day.</h1>
       <p class="hero-lede">
         Kujto Studio is a local-first Mac app that reads your repo's memory, then
@@ -79,12 +84,12 @@
         related tests, the agent context to inject, in one panel.
       </p>
       <div class="hero-actions">
-        <a class="button primary" href="https://github.com/peterdsp/kujto">
-          <span aria-hidden="true">&#9733;</span> Star on GitHub
+        <a class="button primary" href="https://apps.apple.com/app/id6786441748">
+          <span aria-hidden="true">&#63743;</span> Download on the Mac App Store
         </a>
-        <a class="button ghost" href="#install">Install &rarr;</a>
+        <a class="button ghost" href="https://ko-fi.com/s/826e2c8d19">Get Pro on Ko-fi &rarr;</a>
       </div>
-      <p class="hero-meta">Free and open source, MIT. macOS 13 and later.</p>
+      <p class="hero-meta">macOS 14 and later. CLI stays free and open source, MIT.</p>
     </div>
     <div class="hero-visual" aria-hidden="true">
       <div class="icon-plate">
@@ -94,9 +99,10 @@
   </section>
 
   <section class="proof-band" aria-label="One engine, many surfaces">
-    <span>Mac app</span><i>&middot;</i>
+    <span>Mac App Store</span><i>&middot;</i>
     <span>Xcode extension</span><i>&middot;</i>
     <span>VS Code and Cursor</span><i>&middot;</i>
+    <span>Menu bar and Shortcuts</span><i>&middot;</i>
     <span>Command line</span><i>&middot;</i>
     <span>Local only</span>
   </section>
@@ -161,56 +167,70 @@
   <section id="surfaces" class="section">
     <div class="section-head">
       <p class="eyebrow">Where it lives</p>
-      <h2>One engine, four surfaces.</h2>
+      <h2>One engine, five surfaces.</h2>
       <p class="section-lede">
         The same memory index drives the Mac app, an Xcode Source Editor extension,
-        a VS Code or Cursor extension, and the <code>kujto</code> CLI. Use one, use all four.
+        a VS Code or Cursor extension, a menu bar helper with Shortcuts, and the
+        <code>kujto</code> CLI. Use one, use them all.
       </p>
     </div>
 
     <div class="surface-grid">
       <article class="surface">
-        <div class="surface-tag">Standalone</div>
+        <div class="surface-tag">Shipped</div>
         <h3>Mac app</h3>
-        <p>Sidebar memory map, file inspector, agent panel, lint panel. SwiftUI native.</p>
+        <p>Sidebar memory map, file inspector, agent panel, lint panel. SwiftUI native, sandboxed on the App Store.</p>
       </article>
       <article class="surface">
-        <div class="surface-tag">Extension</div>
+        <div class="surface-tag">Shipped</div>
         <h3>Xcode</h3>
-        <p>Editor menu &rsaquo; Kujto &rsaquo; Show Rules for This File. Inserts the rules as a comment.</p>
+        <p>Editor menu &rsaquo; Kujto &rsaquo; Show Rules for This File. Inserts the rules as a comment header.</p>
       </article>
       <article class="surface">
-        <div class="surface-tag">Extension</div>
+        <div class="surface-tag">Shipped</div>
         <h3>VS Code and Cursor</h3>
         <p>Command palette entry surfaces the rules for the open file, with inline diagnostics.</p>
       </article>
       <article class="surface">
-        <div class="surface-tag">CLI</div>
-        <h3>kujto</h3>
+        <div class="surface-tag">Shipped</div>
+        <h3>Menu bar and Shortcuts</h3>
+        <p>Always-visible dropdown, plus App Intents so Siri and Shortcuts can summarize repo rules and prepare agent context.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Open source</div>
+        <h3>kujto CLI</h3>
         <p><code>rules</code>, <code>map</code>, <code>lint</code>, <code>agents</code>, <code>wire</code>. Human and JSON output.</p>
       </article>
     </div>
   </section>
 
-  <section id="install" class="section install-section">
+  <section id="download" class="section install-section">
     <div class="section-head">
-      <p class="eyebrow">Install</p>
-      <h2>One command, all agents configured.</h2>
+      <p class="eyebrow">Download</p>
+      <h2>Two ways to buy, one way to install the CLI.</h2>
       <p class="section-lede">
-        The CLI is the fastest path today. The Mac app is in beta; join the waitlist on GitHub.
+        Kujto Studio ships from the Mac App Store and from Ko-fi. The <code>kujto</code>
+        CLI stays free forever.
       </p>
     </div>
 
-    <div class="install-card">
+    <div class="install-card install-card-3">
       <div class="install-block">
-        <p class="install-label">Homebrew</p>
-        <pre><code>brew install peterdsp/tap/kujto</code></pre>
-        <p class="install-hint">Formula lives at <code>packages/homebrew/kujto.rb</code>. Point Homebrew at the tap once we publish <code>peterdsp/homebrew-tap</code>.</p>
+        <p class="install-label">Mac App Store</p>
+        <p class="install-block-lede">Sandboxed, auto-updates through the App Store, one-time <strong>&euro;19.99</strong>.</p>
+        <a class="button primary install-cta" href="https://apps.apple.com/app/id6786441748">Download on the Mac App Store</a>
+        <p class="install-hint">Bundle: Kujto Studio, Xcode extension, VS Code / Cursor extension.</p>
       </div>
       <div class="install-block">
-        <p class="install-label">One line</p>
+        <p class="install-label">Ko-fi, Pro</p>
+        <p class="install-block-lede">Direct build with early-access features and Sparkle auto-update, one-time <strong>&euro;39</strong>.</p>
+        <a class="button primary install-cta" href="https://ko-fi.com/s/826e2c8d19">Get Kujto Studio Pro</a>
+        <p class="install-hint">Signed and notarized PKG. Same app, plus menu bar helper, App Intents, and priority triage.</p>
+      </div>
+      <div class="install-block">
+        <p class="install-label">CLI, one line</p>
         <pre><code>curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></pre>
-        <p class="install-hint">Wires <code>AGENTS.md</code> to every supported agent on your machine.</p>
+        <p class="install-hint">Wires <code>AGENTS.md</code> into <code>CLAUDE.md</code>, <code>CODEX.md</code>, <code>GEMINI.md</code>, and every other supported agent. Free, MIT.</p>
       </div>
     </div>
   </section>
@@ -226,16 +246,19 @@
         <div class="surface-tag">Open source</div>
         <h3>CLI</h3>
         <p><strong>Free.</strong> The full <code>kujto</code> command line: rules, map, lint, agents, wire. MIT licensed. All the memory logic.</p>
+        <a class="surface-cta" href="https://github.com/peterdsp/kujto">View on GitHub &rarr;</a>
       </article>
       <article class="surface">
         <div class="surface-tag">Mac App Store</div>
         <h3>Kujto Studio</h3>
         <p><strong>&euro;19.99, one time.</strong> The Mac app + Xcode extension + VS Code / Cursor extension. Sandboxed, auto-updates via App Store.</p>
+        <a class="surface-cta" href="https://apps.apple.com/app/id6786441748">Get on the App Store &rarr;</a>
       </article>
       <article class="surface">
         <div class="surface-tag">Ko-fi, Pro</div>
         <h3>Kujto Studio Pro</h3>
-        <p><strong>&euro;39, one time.</strong> Everything in Studio, plus early-access features, Sparkle auto-update, priority triage, and you back an indie developer.</p>
+        <p><strong>&euro;39, one time.</strong> Everything in Studio, plus menu bar helper, App Intents / Shortcuts, Sparkle auto-update, priority triage, and you back an indie developer.</p>
+        <a class="surface-cta" href="https://ko-fi.com/s/826e2c8d19">Buy on Ko-fi &rarr;</a>
       </article>
     </div>
   </section>
@@ -243,15 +266,19 @@
   <section id="roadmap" class="section">
     <div class="section-head">
       <p class="eyebrow">Roadmap</p>
-      <h2>What's next.</h2>
+      <h2>Already shipped, and what's next.</h2>
+      <p class="section-lede">
+        The Mac app, both editor extensions, the menu bar helper, and App Intents
+        are live in v1. Here's what's queued after launch.
+      </p>
     </div>
     <div class="roadmap-grid">
-      <article><h3>Mac app beta</h3><p>Standalone Kujto Studio with the file inspector and memory map. Sign up on GitHub.</p></article>
-      <article><h3>Xcode extension</h3><p>Show Rules for This File, directly in the editor menu.</p></article>
-      <article><h3>VS Code and Cursor</h3><p>Command palette and inline diagnostics.</p></article>
-      <article><h3>TCA reducer graph</h3><p>SwiftSyntax pass mapping reducers, state, actions, and dependency clients.</p></article>
-      <article><h3>Menu bar and Shortcuts</h3><p>Quick access to repo memory, plus App Intents for automation.</p></article>
-      <article><h3>Team memory templates</h3><p>Share and version conventions across a team without duplicating memory.</p></article>
+      <article><h3>TCA reducer graph</h3><p>SwiftSyntax pass mapping reducers, state, actions, and dependency clients into an inspectable graph.</p></article>
+      <article><h3>Spotlight indexing</h3><p>Search your repo's memory and rules directly from Spotlight, offline.</p></article>
+      <article><h3>Team memory templates</h3><p>Share and version conventions across a team without duplicating memory files.</p></article>
+      <article><h3>Cursor / Copilot deep links</h3><p>One click to open the current rule set inside an agent chat pre-loaded with the file context.</p></article>
+      <article><h3>Repo watcher improvements</h3><p>Live re-index on <code>memory/</code> changes with sub-second updates in the sidebar.</p></article>
+      <article><h3>Localization</h3><p>Bring the UI to Albanian, French, German, and Spanish through the String Catalog.</p></article>
     </div>
   </section>
 
@@ -265,6 +292,8 @@
       <span>MIT licensed, open source.</span>
     </div>
     <div class="footer-links">
+      <a href="https://apps.apple.com/app/id6786441748">Mac App Store</a>
+      <a href="https://ko-fi.com/s/826e2c8d19">Ko-fi</a>
       <a href="https://github.com/peterdsp/kujto">GitHub</a>
       <a href="https://github.com/peterdsp/kujto/issues">Issues</a>
       <a href="https://peterdsp.dev">Made by @peterdsp</a>

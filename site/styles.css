@@ -329,6 +329,17 @@ pre code { background: transparent; padding: 0; border-radius: 0; }
   background: rgba(255,255,255,0.08);
   color: var(--paper);
 }
+.surface-cta {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold-soft);
+  border-bottom: 1px solid rgba(227, 200, 138, 0.3);
+  padding-bottom: 2px;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.surface-cta:hover { color: var(--paper); border-color: var(--paper); }
 
 /* -------- Install -------- */
 
@@ -341,11 +352,27 @@ pre code { background: transparent; padding: 0; border-radius: 0; }
   max-width: 920px;
   margin: 0 auto;
 }
+.install-card-3 {
+  max-width: 1080px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
 .install-block {
   background: rgba(255, 253, 247, 0.75);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+.install-block-lede {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.install-cta {
+  align-self: flex-start;
+  margin-bottom: 12px;
 }
 .install-label {
   font-size: 12px;
