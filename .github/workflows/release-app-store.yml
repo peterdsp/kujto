@@ -4,17 +4,9 @@ name: Release, App Store
 # vX.Y.Z-appstore. Archives with the Release configuration, exports for the
 # App Store, and uploads to App Store Connect via altool.
 #
-# Required repository secrets (Settings > Secrets and variables > Actions):
-#
-#   APP_STORE_TEAM_ID                Apple Team ID
-#   APP_STORE_CONNECT_ISSUER_ID      App Store Connect API issuer
-#   APP_STORE_CONNECT_KEY_ID         App Store Connect API key id
-#   APP_STORE_CONNECT_PRIVATE_KEY    contents of the .p8 file
-#   MAC_APP_STORE_CERTIFICATE        base64 of the .p12 (3rd Party Mac Developer Application)
-#   MAC_APP_STORE_CERTIFICATE_PWD    password for the .p12
-#   MAC_INSTALLER_CERTIFICATE        base64 of the .p12 (3rd Party Mac Developer Installer)
-#   MAC_INSTALLER_CERTIFICATE_PWD    password for the .p12
-#   KEYCHAIN_PASSWORD                any strong password, used only inside the runner
+# All signing identities live in the SIGNING_CERTIFICATES bundle.
+# Authentication to App Store Connect is via the App Store Connect API key,
+# so no Apple ID password is needed.
 
 on:
   push:
@@ -42,33 +34,41 @@ jobs:
             V="${{ inputs.version }}"
           fi
           echo "value=$V" >> "$GITHUB_OUTPUT"
+
       - name: Install XcodeGen
         run: brew install xcodegen
+
       - name: Generate Xcode project
         working-directory: integrations/xcode-extension
         run: xcodegen generate
-      - name: Import signing certificates
+
+      - name: Import signing certificate bundle
         env:
           KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          APP_CERT: ${{ secrets.MAC_APP_STORE_CERTIFICATE }}
-          APP_CERT_PWD: ${{ secrets.MAC_APP_STORE_CERTIFICATE_PWD }}
-          PKG_CERT: ${{ secrets.MAC_INSTALLER_CERTIFICATE }}
-          PKG_CERT_PWD: ${{ secrets.MAC_INSTALLER_CERTIFICATE_PWD }}
+          CERTS_B64: ${{ secrets.SIGNING_CERTIFICATES }}
+          CERTS_PWD: ${{ secrets.SIGNING_CERTIFICATES_PWD }}
         run: |
           set -euo pipefail
           KEYCHAIN=$RUNNER_TEMP/build.keychain-db
+          P12=$RUNNER_TEMP/certs.p12
           security create-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN"
           security set-keychain-settings -lut 21600 "$KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN"
           security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
-          for pair in "APP_CERT:APP_CERT_PWD" "PKG_CERT:PKG_CERT_PWD"; do
-            NAME="${pair%%:*}"
-            PWD="${pair##*:}"
-            P12="$RUNNER_TEMP/${NAME}.p12"
-            echo "${!NAME}" | base64 --decode > "$P12"
-            security import "$P12" -k "$KEYCHAIN" -P "${!PWD}" -A -T /usr/bin/codesign -T /usr/bin/productsign
-          done
+          echo "$CERTS_B64" | base64 --decode > "$P12"
+          security import "$P12" -k "$KEYCHAIN" -P "$CERTS_PWD" -A \
+              -T /usr/bin/codesign -T /usr/bin/productsign -T /usr/bin/xcodebuild
           security set-key-partition-list -S "apple-tool:,apple:" -s -k "$KEYCHAIN_PWD" "$KEYCHAIN"
+          security find-identity -v -p codesigning "$KEYCHAIN"
+
+      - name: Write App Store Connect API key to disk
+        env:
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          printf '%s' "$KEY" > ~/.appstoreconnect/private_keys/AuthKey_$KEY_ID.p8
+
       - name: Archive
         working-directory: integrations/xcode-extension
         run: |
@@ -80,7 +80,10 @@ jobs:
             -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
             DEVELOPMENT_TEAM=${{ secrets.APP_STORE_TEAM_ID }} \
             MARKETING_VERSION=${{ steps.version.outputs.value }} \
-            CURRENT_PROJECT_VERSION=${{ github.run_number }}
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            CODE_SIGN_STYLE=Manual \
+            "CODE_SIGN_IDENTITY=Apple Distribution: PETROS DHESPOLLARI (${{ secrets.APP_STORE_TEAM_ID }})"
+
       - name: Export for App Store
         run: |
           cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
@@ -98,15 +101,14 @@ jobs:
           xcodebuild -exportArchive \
             -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-            -exportPath "$RUNNER_TEMP/export"
+            -exportPath "$RUNNER_TEMP/export" \
+            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.APP_STORE_CONNECT_KEY_ID }} \
+            -authenticationKeyIssuerID ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+
       - name: Upload to App Store Connect
-        env:
-          ISSUER: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
         run: |
-          mkdir -p ~/.appstoreconnect/private_keys
-          echo "$KEY" > ~/.appstoreconnect/private_keys/AuthKey_$KEY_ID.p8
           PKG=$(ls "$RUNNER_TEMP/export"/*.pkg | head -n1)
           xcrun altool --upload-app --type macos --file "$PKG" \
-            --apiKey "$KEY_ID" --apiIssuer "$ISSUER"
+            --apiKey "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
+            --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"

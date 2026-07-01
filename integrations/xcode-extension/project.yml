@@ -40,7 +40,7 @@ targets:
         Release-Direct:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: DIRECT_BUILD
           INFOPLIST_KEY_SUFeedURL: https://kujto.peterdsp.dev/appcast.xml
-          INFOPLIST_KEY_SUPublicEDKey: REPLACE_WITH_SPARKLE_ED_PUBLIC_KEY
+          INFOPLIST_KEY_SUPublicEDKey: VXr6caNYzxLPSrRlZoDbOE0ny4X7SxWSUth3jf5QTyU=
           INFOPLIST_KEY_SUEnableAutomaticChecks: "YES"
     entitlements:
       path: App/KujtoStudio.entitlements
