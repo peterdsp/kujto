@@ -40,7 +40,11 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("kujto.context", () => runOp("context")),
         vscode.commands.registerCommand("kujto.simulatorList", () => runOp("simulator", undefined, ["list"])),
         vscode.commands.registerCommand("kujto.uiScreen", () => runOp("ui", undefined, ["screen"])),
-        vscode.commands.registerCommand("kujto.stop", stopActiveOperation)
+        vscode.commands.registerCommand("kujto.stop", stopActiveOperation),
+        vscode.commands.registerCommand("kujto.showRules", showRulesForActiveFile),
+        vscode.commands.registerCommand("kujto.showMap", () => runSnapshot("map")),
+        vscode.commands.registerCommand("kujto.showLint", () => runSnapshot("lint")),
+        vscode.commands.registerCommand("kujto.showAgents", () => runSnapshot("agents"))
     );
 }
 
@@ -195,6 +199,68 @@ function publishDiagnostics(byFile: Map<string, vscode.Diagnostic[]>) {
     diagnostics?.clear();
     for (const [filePath, diags] of byFile.entries()) {
         diagnostics?.set(vscode.Uri.file(filePath), diags);
+    }
+}
+
+/// Captures the full stdout of `kujto <args>` into a promise. Used by the
+/// snapshot commands (rules, map, lint, agents) that consume a single JSON
+/// event rather than a stream.
+function runCapturing(args: string[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const cwd = workspaceCwd();
+        if (!cwd) return reject(new Error("Open a workspace folder before running Kujto."));
+        const bin = getConfig<string>("binaryPath", "kujto");
+        const proc = spawn(bin, [...args, "--json"], { cwd, env: { ...process.env } });
+        let out = "", err = "";
+        proc.stdout.on("data", (d) => out += d.toString("utf8"));
+        proc.stderr.on("data", (d) => err += d.toString("utf8"));
+        proc.on("error", reject);
+        proc.on("close", (code) => code === 0 ? resolve(out.trim()) : reject(new Error(err || `kujto exited ${code}`)));
+    });
+}
+
+async function showRulesForActiveFile() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) { vscode.window.showInformationMessage("Open a file first."); return; }
+    const cwd = workspaceCwd();
+    if (!cwd) return;
+    const relPath = path.relative(cwd, editor.document.uri.fsPath);
+    try {
+        const raw = await runCapturing(["rules", relPath]);
+        const parsed = JSON.parse(raw);
+        const matches: Array<{ title: string; path: string; glob: string; risk: string[] }> = parsed.matches ?? [];
+        output?.show(true);
+        output?.appendLine(`Rules for ${relPath}:`);
+        if (matches.length === 0) {
+            output?.appendLine("  No file-scoped rules match. Base memory still applies.");
+            return;
+        }
+        for (const m of matches) {
+            const risk = m.risk && m.risk.length ? `  [risk: ${m.risk.join(", ")}]` : "";
+            output?.appendLine(`  • ${m.title}${risk}`);
+            output?.appendLine(`      ${m.path}  (matched ${m.glob})`);
+        }
+        const pick = await vscode.window.showQuickPick(
+            matches.map((m) => ({ label: m.title, description: m.glob, detail: m.path })),
+            { placeHolder: "Open the memory rule..." }
+        );
+        if (pick) {
+            const doc = await vscode.workspace.openTextDocument(path.join(cwd, pick.detail));
+            await vscode.window.showTextDocument(doc);
+        }
+    } catch (e: any) {
+        vscode.window.showErrorMessage(`Kujto: ${e.message}`);
+    }
+}
+
+async function runSnapshot(op: "map" | "lint" | "agents") {
+    try {
+        const raw = await runCapturing([op]);
+        output?.show(true);
+        output?.appendLine(`kujto ${op}:`);
+        output?.appendLine(JSON.stringify(JSON.parse(raw), null, 2));
+    } catch (e: any) {
+        vscode.window.showErrorMessage(`Kujto: ${e.message}`);
     }
 }
 

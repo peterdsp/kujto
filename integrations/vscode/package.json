@@ -14,7 +14,11 @@
     "onCommand:kujto.test",
     "onCommand:kujto.context",
     "onCommand:kujto.simulatorList",
-    "onCommand:kujto.uiScreen"
+    "onCommand:kujto.uiScreen",
+    "onCommand:kujto.showRules",
+    "onCommand:kujto.showMap",
+    "onCommand:kujto.showLint",
+    "onCommand:kujto.showAgents"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -25,7 +29,11 @@
       { "command": "kujto.context", "title": "Kujto: Show Context", "category": "Kujto" },
       { "command": "kujto.simulatorList", "title": "Kujto: List Simulators", "category": "Kujto" },
       { "command": "kujto.uiScreen", "title": "Kujto: Capture UI Screen", "category": "Kujto" },
-      { "command": "kujto.stop", "title": "Kujto: Stop Running App", "category": "Kujto" }
+      { "command": "kujto.stop", "title": "Kujto: Stop Running App", "category": "Kujto" },
+      { "command": "kujto.showRules", "title": "Kujto: Show Rules for This File", "category": "Kujto" },
+      { "command": "kujto.showMap", "title": "Kujto: Show Memory Map", "category": "Kujto" },
+      { "command": "kujto.showLint", "title": "Kujto: Lint Memory", "category": "Kujto" },
+      { "command": "kujto.showAgents", "title": "Kujto: Show Agent Wire Status", "category": "Kujto" }
     ],
     "configuration": {
       "title": "Kujto",

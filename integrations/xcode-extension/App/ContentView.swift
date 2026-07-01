@@ -150,6 +150,11 @@ private struct Inspector: View {
                     }
                 }
 
+                let tests = model.relatedTests(for: path)
+                if !tests.isEmpty {
+                    TestsToRunCard(tests: tests)
+                }
+
                 Button {
                     NSPasteboard.general.clearContents()
                     NSPasteboard.general.setString(agentContext(matches), forType: .string)
@@ -374,6 +379,41 @@ private struct LintRow: View {
 extension LintIssue: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(file); hasher.combine(code); hasher.combine(message)
+    }
+}
+
+private struct TestsToRunCard: View {
+    let tests: [String]
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: "flask").foregroundStyle(.secondary)
+                Text("Tests to run").font(.system(size: 14, weight: .medium))
+                Text("\(tests.count)").font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                    .padding(.vertical, 2).padding(.horizontal, 7)
+                    .background(.gray.opacity(0.12), in: Capsule())
+            }
+            ForEach(tests, id: \.self) { path in
+                HStack {
+                    Text(path).font(.system(size: 12, design: .monospaced))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Button {
+                        NSWorkspace.shared.activateFileViewerSelecting([
+                            URL(fileURLWithPath: path)
+                        ])
+                    } label: {
+                        Image(systemName: "arrow.up.forward.square").font(.system(size: 11))
+                    }
+                    .buttonStyle(.plain).foregroundStyle(.tertiary)
+                }
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .overlay(RoundedRectangle(cornerRadius: Theme.cardRadius).stroke(.black.opacity(0.06)))
     }
 }
 

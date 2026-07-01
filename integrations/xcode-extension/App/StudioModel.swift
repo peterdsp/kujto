@@ -45,6 +45,11 @@ final class StudioModel: ObservableObject {
         index?.resolve(file: path) ?? []
     }
 
+    func relatedTests(for path: String) -> [String] {
+        guard let rootPath else { return [] }
+        return RelatedTests.testsFor(file: path, in: URL(fileURLWithPath: rootPath))
+    }
+
     func confidence(for path: String) -> Confidence {
         index?.confidence(forFile: path) ?? .safe
     }
