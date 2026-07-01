@@ -115,6 +115,13 @@ jobs:
             <key>teamID</key><string>${{ secrets.APPLE_TEAM_ID }}</string>
             <key>signingStyle</key><string>manual</string>
             <key>signingCertificate</key><string>Developer ID Application</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>dev.peterdsp.kujto.studio</key>
+              <string>Mac Team Provisioning Profile: dev.peterdsp.kujto.studio</string>
+              <key>dev.peterdsp.kujto.studio.RulesExtension</key>
+              <string>Mac Team Provisioning Profile: dev.peterdsp.kujto.studio.RulesExtension</string>
+            </dict>
           </dict>
           </plist>
           PLIST
