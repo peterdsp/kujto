@@ -6,6 +6,7 @@ import SwiftUI
 @main
 struct KujtoStudioApp: App {
     @StateObject private var model = StudioModel()
+    @StateObject private var updater = Updater()
 
     var body: some Scene {
         WindowGroup {
@@ -15,13 +16,16 @@ struct KujtoStudioApp: App {
         }
         .commands {
             CommandGroup(after: .appInfo) {
+                Button("Check for Updates...") { updater.checkForUpdates() }
+                    .disabled(!updater.canCheck)
+                Divider()
                 Button("Show Welcome...") {
                     NotificationCenter.default.post(name: .showKujtoWelcome, object: nil)
                 }
                 .keyboardShortcut("W", modifiers: [.command, .shift])
             }
         }
-        Settings { SettingsView(model: model) }
+        Settings { SettingsView(model: model, updater: updater) }
     }
 }
 

@@ -1,0 +1,132 @@
+name: Release, Ko-fi (Direct)
+
+# Ships the direct-distribution flavor of Kujto Studio. Triggered by tags of
+# the form vX.Y.Z-direct. Archives with the Release-Direct configuration,
+# signs with Developer ID, notarizes, packages as a DMG, appends a signed
+# Sparkle appcast entry, and publishes a GitHub Release.
+#
+# Required repository secrets:
+#
+#   DEVELOPER_ID_APPLICATION_CERT      base64 of the .p12 (Developer ID Application)
+#   DEVELOPER_ID_APPLICATION_CERT_PWD  password for the .p12
+#   DEVELOPER_ID_APPLICATION_NAME      the identity name, e.g. "Developer ID Application: Petros Dhespollari (TEAMID)"
+#   APPLE_ID                           Apple ID for notarytool
+#   APPLE_ID_APP_PASSWORD              app-specific password for notarytool
+#   APPLE_TEAM_ID                      Apple Team ID
+#   SPARKLE_ED_PRIVATE_KEY             the ed25519 private key, single-line base64
+#   KEYCHAIN_PASSWORD                  any strong password, used only inside the runner
+
+on:
+  push:
+    tags:
+      - "v*-direct"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Marketing version (e.g. 1.0.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build, notarize, package, release
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read version
+        id: version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            V="${GITHUB_REF_NAME#v}"
+            V="${V%-direct}"
+          else
+            V="${{ inputs.version }}"
+          fi
+          echo "value=$V" >> "$GITHUB_OUTPUT"
+      - name: Install dependencies
+        run: brew install xcodegen create-dmg sparkle-project/homebrew-sparkle/sparkle-bin
+      - name: Generate Xcode project
+        working-directory: integrations/xcode-extension
+        run: xcodegen generate
+      - name: Import signing certificate
+        env:
+          KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          CERT: ${{ secrets.DEVELOPER_ID_APPLICATION_CERT }}
+          CERT_PWD: ${{ secrets.DEVELOPER_ID_APPLICATION_CERT_PWD }}
+        run: |
+          set -euo pipefail
+          KEYCHAIN=$RUNNER_TEMP/build.keychain-db
+          security create-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
+          echo "$CERT" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security import "$RUNNER_TEMP/cert.p12" -k "$KEYCHAIN" -P "$CERT_PWD" -A -T /usr/bin/codesign
+          security set-key-partition-list -S "apple-tool:,apple:" -s -k "$KEYCHAIN_PWD" "$KEYCHAIN"
+      - name: Set up notarization profile
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          PWD: ${{ secrets.APPLE_ID_APP_PASSWORD }}
+          TEAM: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          xcrun notarytool store-credentials kujto-notary \
+            --apple-id "$APPLE_ID" --team-id "$TEAM" --password "$PWD"
+      - name: Archive
+        working-directory: integrations/xcode-extension
+        run: |
+          xcodebuild archive \
+            -project KujtoStudio.xcodeproj \
+            -scheme KujtoStudio-Direct \
+            -configuration Release-Direct \
+            -destination "platform=macOS" \
+            -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
+            DEVELOPMENT_TEAM=${{ secrets.APPLE_TEAM_ID }} \
+            MARKETING_VERSION=${{ steps.version.outputs.value }} \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }}
+      - name: Export .app
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>developer-id</string>
+            <key>teamID</key><string>${{ secrets.APPLE_TEAM_ID }}</string>
+            <key>signingStyle</key><string>manual</string>
+          </dict>
+          </plist>
+          PLIST
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/KujtoStudio.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+      - name: Package DMG, notarize, staple
+        env:
+          DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION_NAME }}
+          NOTARY_KEYCHAIN_PROFILE: kujto-notary
+        run: |
+          APP="$RUNNER_TEMP/export/KujtoStudio.app"
+          bash scripts/release/package-dmg.sh "$APP" "$RUNNER_TEMP/artifacts" "${{ steps.version.outputs.value }}"
+      - name: Sign and append to appcast
+        env:
+          SPARKLE_ED_PRIVATE_KEY_PATH: ${{ runner.temp }}/sparkle_ed.key
+        run: |
+          echo "${{ secrets.SPARKLE_ED_PRIVATE_KEY }}" | base64 --decode > "$SPARKLE_ED_PRIVATE_KEY_PATH"
+          DMG=$(ls "$RUNNER_TEMP/artifacts"/*.dmg | head -n1)
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/$(basename "$DMG")"
+          bash scripts/release/update-appcast.sh "$DMG" "${{ steps.version.outputs.value }}" "$URL"
+      - name: Commit updated appcast
+        run: |
+          git config user.name  "kujto-bot"
+          git config user.email "bot@kujto.peterdsp.dev"
+          git add site/appcast.xml
+          git commit -m "Publish Kujto Studio ${{ steps.version.outputs.value }} to appcast"
+          git push origin HEAD:main
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Kujto Studio ${{ steps.version.outputs.value }}
+          files: ${{ runner.temp }}/artifacts/*.dmg

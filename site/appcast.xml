@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+  <channel>
+    <title>Kujto Studio</title>
+    <link>https://kujto.peterdsp.dev/appcast.xml</link>
+    <description>Direct-distribution updates for Kujto Studio (Ko-fi channel).</description>
+    <language>en</language>
+  </channel>
+</rss>

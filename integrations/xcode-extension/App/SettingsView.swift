@@ -4,6 +4,7 @@ import SwiftUI
 /// onboarding, reset). The onboarding wizard is reused verbatim from Welcome.
 struct SettingsView: View {
     @ObservedObject var model: StudioModel
+    @ObservedObject var updater: Updater
     @State private var showOnboarding = false
 
     var body: some View {
@@ -12,11 +13,36 @@ struct SettingsView: View {
                 .tabItem { Label("Status", systemImage: "waveform.path.ecg") }
             GeneralTab(showOnboarding: $showOnboarding)
                 .tabItem { Label("General", systemImage: "gearshape") }
+            UpdatesTab(updater: updater)
+                .tabItem { Label("Updates", systemImage: "arrow.down.circle") }
         }
         .frame(width: 520, height: 460)
         .sheet(isPresented: $showOnboarding) {
             WelcomeView(model: model)
         }
+    }
+}
+
+private struct UpdatesTab: View {
+    @ObservedObject var updater: Updater
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            LabeledContent("Channel") { Text(updater.channelLabel).foregroundStyle(.secondary) }
+            LabeledContent("Last check") {
+                Text(updater.lastUpdateCheck.map(Self.format) ?? "never")
+                    .foregroundStyle(.secondary)
+            }
+            Button("Check for updates now...") { updater.checkForUpdates() }
+                .disabled(!updater.canCheck)
+            Divider().padding(.vertical, 4)
+            Text("The Direct build receives updates through Sparkle. The App Store build receives them through the system Software Update surface.")
+                .font(.system(size: 12)).foregroundStyle(.secondary)
+            Spacer()
+        }
+        .padding(20)
+    }
+    private static func format(_ date: Date) -> String {
+        let f = DateFormatter(); f.dateStyle = .medium; f.timeStyle = .short; return f.string(from: date)
     }
 }
 
