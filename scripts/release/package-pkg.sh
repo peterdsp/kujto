@@ -29,6 +29,15 @@ UNSIGNED_PKG="${OUT_DIR}/${APP_NAME}-${VERSION}-unsigned.pkg"
 mkdir -p "$OUT_DIR"
 
 echo "==> Signing $APP_PATH with $APP_IDENTITY"
+# The direct build bundles the kujto CLI as a bare Mach-O in Resources. codesign
+# --deep does not reliably sign standalone (non-bundle) executables, and
+# notarization rejects any unsigned code, so sign it explicitly with a hardened
+# runtime before sealing the app.
+CLI="$APP_PATH/Contents/Resources/kujto"
+if [ -f "$CLI" ]; then
+    echo "==> Signing bundled kujto CLI"
+    codesign --force --options runtime --timestamp --sign "$APP_IDENTITY" "$CLI"
+fi
 codesign --force --deep --options runtime --sign "$APP_IDENTITY" "$APP_PATH"
 codesign --verify --deep --strict --verbose=2 "$APP_PATH"
 
