@@ -20,12 +20,55 @@ targets:
     sources:
       - App
       - Shared
+      - path: App/EditorExtensionBundle
+        buildPhase: resources
+        type: folder
+      - path: ../../skills
+        buildPhase: resources
+        type: folder
+        name: SkillsCatalog
     dependencies:
       - package: KujtoCore
         product: KujtoCore
       - target: KujtoRulesExtension
+      - target: KujtoRuntimeHelper
+      # link:false keeps Sparkle out of the App Store (Release) binary: it is
+      # linked only via Swift autolink where `import Sparkle` compiles, which
+      # is gated behind DIRECT_BUILD (Release-Direct only). A strong link would
+      # bake an LC_LOAD_DYLIB into every config; the App Store pipeline strips
+      # the framework, and dyld would then abort at launch. The framework is
+      # embedded for the Direct build in the post-build script below.
       - package: Sparkle
         product: Sparkle
+        link: false
+    postBuildScripts:
+      - name: Embed runtime helper
+        script: |
+          mkdir -p "$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/MacOS"
+          mkdir -p "$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/Library/LaunchDaemons"
+          if [ -f "$BUILT_PRODUCTS_DIR/kujto-runtime-helper" ]; then
+            cp -f "$BUILT_PRODUCTS_DIR/kujto-runtime-helper" \
+                  "$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/MacOS/kujto-runtime-helper"
+          fi
+          cp -f "$SRCROOT/App/LaunchDaemons/dev.peterdsp.kujto.runtime.plist" \
+                "$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/Library/LaunchDaemons/"
+      - name: Embed Sparkle (Direct build only)
+        script: |
+          # The Direct build links Sparkle via autolink but link:false means
+          # Xcode does not add it to the Embed Frameworks phase. Copy it in so
+          # the @rpath load resolves at launch. The App Store (Release) build
+          # never links Sparkle, so this is intentionally skipped there.
+          if [ "$CONFIGURATION" = "Release-Direct" ]; then
+            SRC="$BUILT_PRODUCTS_DIR/Sparkle.framework"
+            DEST="$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/Frameworks"
+            if [ -d "$SRC" ]; then
+              mkdir -p "$DEST"
+              rsync -a --delete "$SRC" "$DEST/"
+            else
+              echo "error: Sparkle.framework not found at $SRC" >&2
+              exit 1
+            fi
+          fi
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.peterdsp.kujto.studio
@@ -47,7 +90,9 @@ targets:
       path: App/KujtoStudio.entitlements
       properties:
         com.apple.security.app-sandbox: true
-        com.apple.security.files.user-selected.read-only: true
+        # read-write so we can install editor extensions into
+        # user-granted ~/.vscode/extensions and ~/.cursor/extensions folders
+        com.apple.security.files.user-selected.read-write: true
         com.apple.security.network.client: true
         com.apple.security.application-groups:
           - YTS4KJBX3P.dev.peterdsp.kujto
@@ -74,6 +119,21 @@ targets:
         com.apple.security.app-sandbox: true
         com.apple.security.application-groups:
           - YTS4KJBX3P.dev.peterdsp.kujto
+
+  # Phase D2: privileged helper daemon that runs xcrun simctl outside the
+  # app's sandbox. Registered via SMAppService.daemon from the main app.
+  # The helper is bundled at Contents/MacOS/kujto-runtime-helper and its
+  # launch plist at Contents/Library/LaunchDaemons/…plist.
+  KujtoRuntimeHelper:
+    type: tool
+    platform: macOS
+    sources:
+      - Helper
+    settings:
+      base:
+        PRODUCT_NAME: kujto-runtime-helper
+        PRODUCT_BUNDLE_IDENTIFIER: dev.peterdsp.kujto.runtime
+        SKIP_INSTALL: YES
 schemes:
   KujtoStudio:
     build:

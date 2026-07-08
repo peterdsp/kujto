@@ -104,9 +104,11 @@ jobs:
 
           # Strip archive-time embedded provisioning profiles.
           find "$APP" -name embedded.provisionprofile -delete
-          # App Store forbids third-party auto-updaters. Sparkle is only used
-          # in the Direct build; remove the linked framework so validation
-          # does not fail on the non-sandboxed Sparkle helpers.
+          # App Store forbids third-party auto-updaters. Sparkle is linked and
+          # embedded only in the Direct build (project.yml uses link:false, so
+          # the Release binary has no Sparkle load command and does not embed
+          # it). This removal is a defensive no-op for the Release archive; it
+          # guards against a future change re-introducing the framework.
           rm -rf "$APP/Contents/Frameworks/Sparkle.framework"
 
           # Re-sign the extension first with its own entitlements (sandbox +

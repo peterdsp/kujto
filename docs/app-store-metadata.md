@@ -111,7 +111,7 @@ Kujto Studio is a developer tool. It reads local Markdown files from a folder th
 
 The Agents panel calls WireService to symlink AGENTS.md into ~/Applications/kujto or the user-picked target repo. Symlink creation only happens when the user clicks Wire in the panel.
 
-The Sparkle framework is linked in this build but gated behind a compilation condition (DIRECT_BUILD) that is off for the App Store configuration. No third-party update mechanism executes in this build. Updates flow through the App Store.
+The Sparkle update framework is used only by the direct-download build. It is not linked into or embedded in this App Store build: the update code is gated behind a DIRECT_BUILD compilation condition that is off for the App Store configuration, so Sparkle is never referenced and never linked here. No third-party update mechanism ships in this build. Updates flow through the App Store.
 
 Test account: not applicable, no login.
 ```

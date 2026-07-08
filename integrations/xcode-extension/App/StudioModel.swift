@@ -17,6 +17,7 @@ final class StudioModel: ObservableObject {
     /// destination so a sidebar selection can route to either.
     enum Destination: Hashable {
         case agents
+        case skills
         case lint
         case file(String)
     }
@@ -28,18 +29,55 @@ final class StudioModel: ObservableObject {
     @Published private(set) var lintIssues: [LintIssue] = []
     @Published var destination: Destination?
 
+    /// Parent folder the user pointed Kujto at (e.g. `~/git`). Everything
+    /// under it is scanned once for git repos so the user can pick from a
+    /// list instead of navigating a file panel.
+    @Published private(set) var scanParent: URL?
+    @Published private(set) var discoveredRepos: [RepoEntry] = []
+
+    /// Kujto's own skill catalog, loaded from the writable workspace.
+    /// Call `reloadSkills()` after editing a skill's markdown.
+    @Published private(set) var skills: [SkillEntry] = SkillsCatalog.load()
+
+    /// Refresh the catalog after the user edits a skill in the inline editor.
+    func reloadSkills() { skills = SkillsCatalog.load() }
+
     private var index: RuleIndex?
     private let watcher = RepoWatcher()
 
     func open(_ url: URL) {
         SharedConfig.saveRoot(url)
         load(url)
+        PromptBarBridge.shared.repoRoot = url
     }
 
     func loadSavedRoot() {
+        loadSavedScanParent()
         guard let url = SharedConfig.resolveRoot() else { return }
         defer { url.stopAccessingSecurityScopedResource() }
         load(url)
+    }
+
+    /// Set (or replace) the folder we scan for git repos, and refresh the
+    /// discovered list. Persists so subsequent launches skip the picker.
+    func setScanParent(_ url: URL) {
+        SharedConfig.saveScanParent(url)
+        scanParent = url
+        discoveredRepos = RepoScanner.scan(parent: url)
+    }
+
+    /// Re-runs the scan against the current parent. No-op if none is set.
+    func rescan() {
+        guard let scanParent else { return }
+        discoveredRepos = RepoScanner.scan(parent: scanParent)
+    }
+
+    private func loadSavedScanParent() {
+        guard let url = SharedConfig.resolveScanParent() else { return }
+        // Parent stays access-open for the app lifetime so descendant repo
+        // URLs remain readable for the initial scan and for the load path.
+        scanParent = url
+        discoveredRepos = RepoScanner.scan(parent: url)
     }
 
     func matches(for path: String) -> [RuleMatch] {

@@ -7,7 +7,6 @@ import SwiftUI
 struct KujtoStudioApp: App {
     @StateObject private var model = StudioModel()
     @StateObject private var updater = Updater()
-    @AppStorage("kujto.menuBarEnabled") private var menuBarEnabled: Bool = true
 
     var body: some Scene {
         WindowGroup {
@@ -28,7 +27,11 @@ struct KujtoStudioApp: App {
         }
         Settings { SettingsView(model: model, updater: updater) }
 
-        MenuBarExtra("Kujto", systemImage: "sparkle", isInserted: $menuBarEnabled) {
+        // NOTE: `MenuBarExtra`'s `isInserted:` overload is intentionally NOT
+        // used. On macOS 26.5, coupling it to an `@AppStorage`-backed binding
+        // drives an infinite main-menu invalidation loop that pins CPU and
+        // balloons memory until the OS kills the app.
+        MenuBarExtra("Kujto", image: "QeleshMenubar") {
             KujtoMenuBar(model: model)
         }
         .menuBarExtraStyle(.menu)
