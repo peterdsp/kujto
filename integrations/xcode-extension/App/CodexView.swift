@@ -2,7 +2,7 @@ import SwiftUI
 import AppKit
 import KujtoCore
 
-/// Kujto Studio's primary surface — the Codex.
+/// Kujto Studio's primary surface - the Codex.
 ///
 /// A single scrolling editorial document that IS the app. There is no sidebar
 /// and no detail pane. Repo memory (AGENTS.md, memory/, skills/, agent files)
@@ -11,7 +11,7 @@ import KujtoCore
 /// `⌘K` opens a command palette that floats over the document.
 ///
 /// Design intent is "the document is the product". Everything a user does
-/// happens against the same continuous page — no panel switching, no modal
+/// happens against the same continuous page - no panel switching, no modal
 /// context loss.
 struct CodexView: View {
     @ObservedObject var model: StudioModel
@@ -284,7 +284,7 @@ struct CodexView: View {
         chapterSpread(
             mark: "IV",
             title: "Techniques your agents can call on",
-            subtitle: "Each skill is a reusable procedure — a 'how' the model reads before it acts. Install into a single repo or globally so every session sees it."
+            subtitle: "Each skill is a reusable procedure - a 'how' the model reads before it acts. Install into a single repo or globally so every session sees it."
         ) {
             if model.skills.isEmpty {
                 emptyChapterNote("No skills shipped in this build.")
@@ -344,7 +344,7 @@ struct CodexView: View {
                let trace = try? MemoryTracer.trace(file: focusFile, in: root) {
                 MemoryTraceView(trace: trace)
             } else {
-                emptyChapterNote("Trace unavailable — no repo selected.")
+                emptyChapterNote("Trace unavailable - no repo selected.")
             }
         } marginalia: {
             marginaliaHeader("Trace target", value: (focusFile as NSString).lastPathComponent)
@@ -357,7 +357,7 @@ struct CodexView: View {
         chapterSpread(
             mark: "V",
             title: "Where the memory disagrees with itself",
-            subtitle: "Kujto found structural disagreements — duplicated titles or overlapping scopes with divergent risk. It doesn't judge the meaning; the fix is yours to make."
+            subtitle: "Kujto found structural disagreements - duplicated titles or overlapping scopes with divergent risk. It doesn't judge the meaning; the fix is yours to make."
         ) {
             VStack(spacing: 12) {
                 ForEach(Array(conflicts.enumerated()), id: \.offset) { _, conflict in
@@ -374,7 +374,7 @@ struct CodexView: View {
     private var runtimeChapter: some View {
         chapterSpread(
             mark: "◈",
-            title: "Runtime — Simulator Trace",
+            title: "Runtime - Simulator Trace",
             subtitle: "The bridge between rules and behavior. Detection is real today; capture is real once the helper daemon is registered."
         ) {
             VStack(alignment: .leading, spacing: 20) {
@@ -527,7 +527,7 @@ private struct CountPill: View {
 // MARK: - Rule paragraph
 
 /// A single rule rendered as a paragraph in the Codex. Title, path, glob
-/// list, and — when a focus file is set and this rule matches — a small
+/// list, and - when a focus file is set and this rule matches - a small
 /// "applies to focused file" note in the gutter.
 private struct RuleParagraph: View {
     let rule: Rule
@@ -752,7 +752,7 @@ private struct MemoryTraceView: View {
                 ForEach(Array(trace.matches.enumerated()), id: \.offset) { idx, match in
                     step(
                         role: idx == 0 ? "SCOPED MATCHES" : nil,
-                        text: "\(match.ruleTitle) — matched by \(match.matchedGlob)",
+                        text: "\(match.ruleTitle) - matched by \(match.matchedGlob)",
                         detail: match.rulePath,
                         risk: match.risk
                     )
@@ -761,7 +761,7 @@ private struct MemoryTraceView: View {
             ForEach(Array(trace.receivers.enumerated()), id: \.offset) { idx, receiver in
                 step(
                     role: idx == 0 ? "AGENTS" : nil,
-                    text: "\(receiver.agent.displayName) \(receiver.state == .receiving ? "✓" : "✗") — \(receiver.note)",
+                    text: "\(receiver.agent.displayName) \(receiver.state == .receiving ? "✓" : "✗") - \(receiver.note)",
                     isLast: idx == trace.receivers.count - 1,
                     isReceiving: receiver.state == .receiving
                 )
@@ -1045,7 +1045,7 @@ private struct RuntimeMarginalia: View {
 /// Live detection of the local iOS runtime tooling. Shows real Xcode state,
 /// prompts once for CoreSimulator access, then lists installed simulators
 /// with a "Copy simctl command" affordance per device. Never launches the
-/// simulator itself — that's the helper-daemon story.
+/// simulator itself - that's the helper-daemon story.
 private struct RuntimeReadout: View {
     @State private var snapshot: RuntimeDetector.Snapshot = RuntimeDetector.snapshot()
     @State private var copiedCommand: String?
@@ -1229,7 +1229,7 @@ private struct SimulatorRow: View {
 /// The composition surface. Given a picked simulator, an optional deep link,
 /// and the currently-focused file, capture what Kujto can (a screenshot and
 /// a log excerpt) and cite the memory rules that apply to the file. Kujto
-/// does not interpret the runtime — that's the LLM's job. Kujto stages the
+/// does not interpret the runtime - that's the LLM's job. Kujto stages the
 /// evidence and points at the rules that should govern it.
 private struct SimulatorTraceLab: View {
     @ObservedObject private var helper = RuntimeHelperClient.shared
@@ -1326,7 +1326,7 @@ private struct SimulatorTraceLab: View {
                     .font(.system(size: 9, weight: .medium))
                     .tracking(1.2)
                     .foregroundStyle(Theme.inkTertiary)
-                TextField("Optional — yourapp://…", text: $deeplink)
+                TextField("Optional - yourapp://…", text: $deeplink)
                     .textFieldStyle(.roundedBorder)
                     .font(.system(size: 12, design: .monospaced))
             }
@@ -1453,7 +1453,7 @@ private struct SimulatorTraceLab: View {
             return
         }
 
-        // 3. Last minute of log output — enough to see what the app just did.
+        // 3. Last minute of log output - enough to see what the app just did.
         let log = await helper.logShow(udid: selectedUDID, predicate: "", lastMinutes: 1)
         switch log {
         case .success(let data):
@@ -1507,7 +1507,7 @@ private struct LintParagraph: View {
 
 // MARK: - Command palette overlay
 
-/// Floating command surface. Not a real NLP layer yet — a curated list of
+/// Floating command surface. Not a real NLP layer yet - a curated list of
 /// commands the user can navigate with ↑↓ and invoke with ⏎. The primary
 /// input doubles as the file-focus set-command.
 private struct CommandPaletteOverlay: View {
@@ -1529,7 +1529,7 @@ private struct CommandPaletteOverlay: View {
                     Image(systemName: "command")
                         .font(.system(size: 15, weight: .medium))
                         .foregroundStyle(Theme.inkTertiary)
-                    TextField("Ask Kujto — a file path, a command, or a question…", text: $query)
+                    TextField("Ask Kujto - a file path, a command, or a question…", text: $query)
                         .textFieldStyle(.plain)
                         .font(.system(size: 17))
                         .foregroundStyle(Theme.ink)
@@ -1662,7 +1662,7 @@ private struct CommandPaletteOverlay: View {
     }
 
     /// Called on Enter with no command selected. Treats the query as a file
-    /// path to focus on — the most common power-user shortcut.
+    /// path to focus on - the most common power-user shortcut.
     private func commit() {
         if !query.isEmpty {
             focusFile = query

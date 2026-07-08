@@ -8,7 +8,7 @@ import KujtoCore
 /// (`/Applications/Xcode.app`) or a folder the user has explicitly granted
 /// via `NSOpenPanel` (`~/Library/Developer/CoreSimulator/Devices`).
 ///
-/// Real automated control needs the Kujto helper daemon (SMAppService) —
+/// Real automated control needs the Kujto helper daemon (SMAppService) -
 /// coming in Phase D2. This file only reports what's installed; it never
 /// launches or manipulates the simulator itself.
 enum RuntimeDetector {

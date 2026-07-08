@@ -28,7 +28,7 @@ struct ContentView: View {
     }
 
     /// The SwiftUI colour scheme to force. OLED counts as dark for the
-    /// system controls (buttons, text fields) — Kujto's own colours provide
+    /// system controls (buttons, text fields) - Kujto's own colours provide
     /// the true-black variant on top.
     private var forcedScheme: ColorScheme? {
         switch preference {
@@ -69,7 +69,7 @@ struct ContentView: View {
     }
 }
 
-// LintIssue needs to stay Hashable for the Codex's ForEach — the conformance
+// LintIssue needs to stay Hashable for the Codex's ForEach - the conformance
 // was originally added when the panel first shipped and is still needed.
 extension LintIssue: Hashable {
     public func hash(into hasher: inout Hasher) {

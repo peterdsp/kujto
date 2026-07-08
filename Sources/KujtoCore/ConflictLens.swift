@@ -1,7 +1,7 @@
 import Foundation
 
 /// A structural disagreement between two Kujto rules. Deterministic detection
-/// only — we never ask a model whether two English paragraphs contradict.
+/// only - we never ask a model whether two English paragraphs contradict.
 ///
 /// The heuristics err on the side of surfacing likely conflicts and letting
 /// the user judge: overlapping globs with divergent risk tags, duplicated
@@ -77,7 +77,7 @@ public enum ConflictLens {
     }
 
     /// True when at least one glob in `a` equals a glob in `b`. Simple string
-    /// equality is intentional — a full glob-intersection algorithm would
+    /// equality is intentional - a full glob-intersection algorithm would
     /// spend a lot of code on very few false negatives.
     private static func overlaps(_ a: [String], _ b: [String]) -> Bool {
         let set = Set(a)

@@ -4,7 +4,7 @@ import Foundation
 ///
 /// Parsed from `~/Library/Developer/CoreSimulator/Devices/<UDID>/device.plist`.
 /// Kujto reads these directly rather than shelling out to `simctl` so we can
-/// list simulators without leaving the sandbox — provided the user has
+/// list simulators without leaving the sandbox - provided the user has
 /// granted access to the CoreSimulator devices folder.
 public struct LocalSimulator: Sendable, Hashable, Identifiable {
     public enum State: Sendable, Hashable {

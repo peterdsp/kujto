@@ -117,7 +117,7 @@ enum InstallStatus {
             key: key,
             name: "\(displayName) extension",
             purpose: purpose,
-            skippedCost: "\(displayName) isn't installed on this Mac — nothing to add here.",
+            skippedCost: "\(displayName) isn't installed on this Mac - nothing to add here.",
             detail: "\(displayName) not installed",
             state: .unknown
         )

@@ -9,7 +9,7 @@ import PackageDescription
 // a wrapping no-op in Release.
 //
 // Kujto never scrapes production data. The kit's providers are user
-// controlled — you decide what to expose, and there's a hard deny-list
+// controlled - you decide what to expose, and there's a hard deny-list
 // for anything that looks like a token / secret / keychain payload.
 let package = Package(
     name: "KujtoRuntimeKit",

@@ -9,7 +9,7 @@ import Network
 /// payloads on request. Kujto's host-side helper opens
 /// `http://127.0.0.1:7378/state` to read.
 ///
-/// - Debug only. In Release builds every entry point is a no-op — the
+/// - Debug only. In Release builds every entry point is a no-op - the
 ///   kit will not accept `register` calls when `#if DEBUG` is not set.
 /// - Local only. The listener refuses any non-loopback client.
 /// - Redacted. A built-in deny-list drops keys that look like `token`,
@@ -49,7 +49,7 @@ public final class KujtoRuntime: @unchecked Sendable {
         #endif
     }
 
-    /// Starts the loopback listener. Idempotent — safe to call more than
+    /// Starts the loopback listener. Idempotent - safe to call more than
     /// once. Returns silently in Release.
     public func start(_ configuration: Configuration = Configuration()) {
         #if DEBUG
@@ -64,7 +64,7 @@ public final class KujtoRuntime: @unchecked Sendable {
                 l.start(queue: queue)
                 listener = l
             } catch {
-                // Silent failure — host apps should not crash if the port is
+                // Silent failure - host apps should not crash if the port is
                 // busy. Kujto's host side will just report the endpoint down.
             }
         }

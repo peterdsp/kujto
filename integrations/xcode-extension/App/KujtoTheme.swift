@@ -19,7 +19,7 @@ enum Theme {
 
     /// Which palette every colour resolves against. Updated by ContentView's
     /// appearance resolver. Colours are computed properties, so each SwiftUI
-    /// read returns a fresh `Color` based on the current mode — no NSColor
+    /// read returns a fresh `Color` based on the current mode - no NSColor
     /// dynamic-provider caching pitfalls.
     static var currentMode: Mode = .light
 

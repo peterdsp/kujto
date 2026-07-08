@@ -14,7 +14,7 @@ import Security
 //   3. Refuses if the caller's granted capability is lower than required.
 //   4. Only THEN dispatches to `xcrun`.
 //
-// This is defence in depth — the client double-checks the same rules before
+// This is defence in depth - the client double-checks the same rules before
 // sending. Either side alone can catch a mistake or bug.
 
 // MARK: - Shared safety types (mirrored from KujtoCore/RuntimeSafety.swift)
@@ -53,7 +53,7 @@ enum HelperNeverTouch {
 
 // MARK: - XPC protocol
 
-/// Every reply signature is `(Data?, String?)` — response data on success,
+/// Every reply signature is `(Data?, String?)` - response data on success,
 /// error message on failure. String errors keep the XPC surface simple
 /// (`Error` would need `NSSecureCoding` shenanigans).
 @objc protocol KujtoRuntimeXPC {
@@ -268,7 +268,7 @@ final class HelperDelegate: NSObject, NSXPCListenerDelegate {
     /// and whose anchor is Apple's Developer ID.
     ///
     /// In dev ("Sign to Run Locally" ad-hoc signing) `SecCode` validation
-    /// fails — the ad-hoc chain has no anchor. To keep local development
+    /// fails - the ad-hoc chain has no anchor. To keep local development
     /// unblocked we relax to team-ID-only in that case; production ships
     /// with the strict `anchor apple generic` requirement above.
     private static let clientRequirement =
@@ -289,7 +289,7 @@ final class HelperDelegate: NSObject, NSXPCListenerDelegate {
 
     /// Uses SecCode to check the calling process against a code requirement.
     /// Returns true only if the caller matches Kujto Studio's designated
-    /// requirement — this is the sole line of defence against another
+    /// requirement - this is the sole line of defence against another
     /// binary talking to the daemon.
     private func isTrustedClient(pid: pid_t) -> Bool {
         let attrs = [kSecGuestAttributePid: NSNumber(value: pid)] as CFDictionary

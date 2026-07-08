@@ -27,7 +27,7 @@ final class RedactionTests: XCTestCase {
 
     func testWholeSubtreeRedactedWhenParentKeyMatches() {
         // When a parent key itself is on the deny list ("session"), the
-        // entire subtree is scrubbed. Defence in depth — we never trust
+        // entire subtree is scrubbed. Defence in depth - we never trust
         // a "session" dictionary's contents.
         let out = KujtoRuntime.debugRedact(["session": ["password": "hunter2", "id": "42"]])
         XCTAssertEqual(out["session"] as? String, "<redacted>")
@@ -47,7 +47,7 @@ final class RedactionTests: XCTestCase {
     }
 
     func testArraysAreTraversed() {
-        // Deliberately not using "sessions" as the outer key — that would
+        // Deliberately not using "sessions" as the outer key - that would
         // hit the deny list ("session") and scrub the whole subtree.
         let payload: [String: Any] = [
             "events": [

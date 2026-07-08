@@ -8,7 +8,7 @@ import Foundation
 /// is a discrete cause: a matched glob, a rule read from a source file,
 /// which agents receive that rule through their wired path. The final steps
 /// are the receivers: agents that will see this memory (Claude via
-/// CLAUDE.md, Cursor via .cursorrules, etc.) and — critically — agents that
+/// CLAUDE.md, Cursor via .cursorrules, etc.) and - critically - agents that
 /// will NOT, because their wire target is missing or diverged.
 public struct MemoryTrace: Sendable, Equatable {
     public struct Match: Sendable, Equatable {
@@ -86,7 +86,7 @@ public enum MemoryTracer {
 
         // An agent "receives" this memory when its wire-target file exists
         // in the repo. It says nothing about whether that file's contents
-        // actually route to the matched rule — Kujto keeps a single source
+        // actually route to the matched rule - Kujto keeps a single source
         // of truth, so if the wire is up, the receiver sees it.
         let fm = FileManager.default
         let receivers = AgentKind.allCases.map { agent -> MemoryTrace.Receiver in

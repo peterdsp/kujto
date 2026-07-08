@@ -11,7 +11,7 @@ import KujtoCore
 ///   - Handles POST /v1/chat/completions with a JSON body.
 ///   - Extracts the last user message.
 ///   - Answers by searching the current repo's memory (via RuleIndex) and
-///     assembling a cited response. No upstream model call — the response
+///     assembling a cited response. No upstream model call - the response
 ///     is Kujto's own knowledge.
 ///   - Non-streaming for now. PromptBar accepts non-streaming responses.
 ///
@@ -201,7 +201,7 @@ final class PromptBarBridge: ObservableObject {
             var lines = ["Rules for \(file):"]
             for m in matches.prefix(8) {
                 let risk = m.rule.risk.isEmpty ? "" : " [risk: \(m.rule.risk.joined(separator: ", "))]"
-                lines.append("- \(m.rule.title)\(risk) — \(m.rule.path) (matched \(m.glob))")
+                lines.append("- \(m.rule.title)\(risk) - \(m.rule.path) (matched \(m.glob))")
             }
             return lines.joined(separator: "\n")
         }
@@ -216,7 +216,7 @@ final class PromptBarBridge: ObservableObject {
         }
         var lines = ["Rules matching \"\(question)\":"]
         for rule in candidates.prefix(8) {
-            lines.append("- \(rule.title) — \(rule.path)")
+            lines.append("- \(rule.title) - \(rule.path)")
         }
         return lines.joined(separator: "\n")
     }
