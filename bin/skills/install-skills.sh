@@ -10,18 +10,14 @@
 #
 # Each SKILL.md reads from the same memory base that AGENTS.md loads.
 #
-# Install skills nga burimi i vetem ne skills/ per çdo agjent te pranishem, me
-# symlink, qe te kete nje burim te vetem te se vertetes. Skills jane procedura
-# (si); njohuria (çfarë) rri ne memory/.
-#
-# Usage / Perdorimi:
-#   ~/kujto/bin/skills/install-skills.sh             # install into present agents
-#   ~/kujto/bin/skills/install-skills.sh --uninstall # remove Kujto skill symlinks
-#   ~/kujto/bin/skills/install-skills.sh --list      # list source skills
+# Usage:
+#   ~/.kujto/bin/skills/install-skills.sh             # install into present agents
+#   ~/.kujto/bin/skills/install-skills.sh --uninstall # remove Kujto skill symlinks
+#   ~/.kujto/bin/skills/install-skills.sh --list      # list source skills
 
 set -euo pipefail
 
-KUJTO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+KUJTO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/../.." && pwd)"
 SKILLS_SRC="$KUJTO_ROOT/skills"
 
 CLAUDE_DIR="$HOME/.claude/skills"
@@ -40,7 +36,12 @@ while (( "$#" )); do
     --uninstall) UNINSTALL=1; shift ;;
     --list) LIST=1; shift ;;
     -h|--help)
-      sed -n '15,18p' "$0" | sed 's/^# \{0,1\}//'
+      cat <<'USAGE'
+Kujto skills installer
+  install-skills.sh             install skills into the agents you have
+  install-skills.sh --uninstall remove Kujto skill symlinks
+  install-skills.sh --list      list source skills
+USAGE
       exit 0
       ;;
     *) echo "Unknown flag: $1"; exit 1 ;;
@@ -134,10 +135,5 @@ Installed skills: ${skills[*]}
 
 Use in Claude Code: the skill triggers by its description, or name it directly.
 Use in Codex CLI:   type /${PREFIX}${skills[0]} to invoke it.
-
-Skills te instaluara: ${skills[*]}
-
-Perdor ne Claude Code: skill-i aktivizohet nga pershkrimi, ose emertoje direkt.
-Perdor ne Codex CLI:   shkruaj /${PREFIX}${skills[0]} per ta thirrur.
 
 NEXT
