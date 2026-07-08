@@ -138,6 +138,11 @@ jobs:
           PKG="$RUNNER_TEMP/KujtoStudio.pkg"
           productbuild --component "$APP" /Applications --sign "$INSTALLER_CERT" "$PKG"
 
+          # Validate before upload so packaging/signing problems fail here
+          # rather than after a slow upload and processing round-trip.
+          xcrun altool --validate-app --type macos --file "$PKG" \
+            --apiKey "$KEY_ID" --apiIssuer "$ISSUER"
+
           # Upload to App Store Connect.
           xcrun altool --upload-app --type macos --file "$PKG" \
             --apiKey "$KEY_ID" --apiIssuer "$ISSUER"

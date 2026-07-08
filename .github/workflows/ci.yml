@@ -19,6 +19,59 @@ jobs:
       - name: Run KujtoCore tests
         run: xcrun swift test
 
+  # The App Store (Release) and direct (Release-Direct) builds compile
+  # different code and link differently: Sparkle is linked only where
+  # DIRECT_BUILD is set, so a config-gated regression can pass the default
+  # package build yet break the store build. Exercise both variants here so
+  # it surfaces on the PR instead of at App Store submission time.
+  studio-app:
+    name: Build macOS Studio app (both variants)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        working-directory: integrations/xcode-extension
+        run: xcodegen generate
+      - name: Build Release (App Store)
+        working-directory: integrations/xcode-extension
+        run: |
+          xcodebuild -scheme KujtoStudio -configuration Release \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/dd-release" \
+            build CODE_SIGNING_ALLOWED=NO
+      - name: Guard against Sparkle in the App Store binary
+        run: |
+          # Regression test for the 1.0(9) launch crash: the App Store
+          # pipeline strips Sparkle.framework, so a strong link would leave a
+          # dangling @rpath load command and dyld would abort at launch. The
+          # Release binary must carry no Sparkle reference at all.
+          BIN="$RUNNER_TEMP/dd-release/Build/Products/Release/KujtoStudio.app/Contents/MacOS/KujtoStudio"
+          if otool -L "$BIN" | grep -qi sparkle; then
+            echo "::error::Sparkle is linked into the Release (App Store) binary; it must be link:false so only the Direct build links it."
+            otool -L "$BIN" | grep -i sparkle
+            exit 1
+          fi
+          echo "No Sparkle load command in the App Store binary."
+      - name: Build Release-Direct (Ko-fi, links + embeds Sparkle)
+        working-directory: integrations/xcode-extension
+        run: |
+          xcodebuild -scheme KujtoStudio-Direct -configuration Release-Direct \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/dd-direct" \
+            build CODE_SIGNING_ALLOWED=NO
+      - name: Verify the Direct build embeds Sparkle
+        run: |
+          # The direct build must both link and embed Sparkle, or it would hit
+          # the same dyld-missing crash the App Store build was rejected for.
+          APP="$RUNNER_TEMP/dd-direct/Build/Products/Release-Direct/KujtoStudio.app"
+          if [ ! -f "$APP/Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle" ]; then
+            echo "::error::Direct build links Sparkle but does not embed Sparkle.framework; the @rpath load would fail at launch."
+            exit 1
+          fi
+          echo "Direct build embeds Sparkle.framework."
+
   shellcheck:
     name: ShellCheck
     runs-on: ubuntu-latest
