@@ -887,19 +887,27 @@ private struct ConflictParagraph: View {
 /// dropping it here immediately narrows what any Codex or PromptBar
 /// request can do.
 private struct RuntimeMarginalia: View {
+    // The privileged helper daemon ships only in the direct build. The App
+    // Store build bundles no helper, so its controls and capability tier are
+    // compiled out entirely rather than shown as non-functional affordances.
+    #if DIRECT_BUILD
     @ObservedObject private var helper = RuntimeHelperClient.shared
-    @ObservedObject private var bridge = PromptBarBridge.shared
     @State private var pingResult: String?
     @State private var registerError: String?
+    #endif
+    @ObservedObject private var bridge = PromptBarBridge.shared
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
+            #if DIRECT_BUILD
             daemonSection
             capabilitySection
+            #endif
             promptbarSection
         }
     }
 
+    #if DIRECT_BUILD
     // MARK: Daemon
 
     private var daemonSection: some View {
@@ -955,6 +963,7 @@ private struct RuntimeMarginalia: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
+    #endif
 
     // MARK: PromptBar bridge
 
@@ -999,6 +1008,7 @@ private struct RuntimeMarginalia: View {
         }
     }
 
+    #if DIRECT_BUILD
     private func register() {
         registerError = nil
         do {
@@ -1027,6 +1037,7 @@ private struct RuntimeMarginalia: View {
             }
         }
     }
+    #endif
 }
 
 // MARK: - Runtime readout
@@ -1246,10 +1257,17 @@ private struct SimulatorTraceLab: View {
                         .font(.system(size: 15, weight: .medium, design: .serif))
                         .foregroundStyle(Theme.ink)
                     if helper.status != .enabled {
+                        #if DIRECT_BUILD
                         Text("Enable the helper daemon in the margin to unlock capture. Detection above works without it.")
                             .font(.system(size: 13))
                             .foregroundStyle(Theme.inkSecondary)
                             .fixedSize(horizontal: false, vertical: true)
+                        #else
+                        Text("Simulator capture ships in the direct build of Kujto Studio. Detection above works here.")
+                            .font(.system(size: 13))
+                            .foregroundStyle(Theme.inkSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        #endif
                     } else {
                         Text("Pick a booted simulator, optionally hit it with a deep link, and Kujto captures screenshot + log excerpt. Cited against the focused file's memory.")
                             .font(.system(size: 13))

@@ -95,7 +95,9 @@ final class PromptBarBridge: ObservableObject {
 
     /// Reads until we've consumed both headers and the declared Content-Length
     /// body. Naive but sufficient for PromptBar's request shape (small JSON).
-    private func readFullRequest(from connection: NWConnection, done: @escaping (Data) -> Void) {
+    /// nonisolated: runs entirely on the NWConnection's queue and touches no
+    /// main-actor state, so it must not hop back to the main actor per read.
+    private nonisolated func readFullRequest(from connection: NWConnection, done: @escaping @Sendable (Data) -> Void) {
         var buffer = Data()
         func loop() {
             connection.receive(minimumIncompleteLength: 1, maximumLength: 32_768) { data, _, isDone, _ in
@@ -115,7 +117,7 @@ final class PromptBarBridge: ObservableObject {
         loop()
     }
 
-    private func contentLength(from headers: String) -> Int {
+    private nonisolated func contentLength(from headers: String) -> Int {
         for line in headers.split(separator: "\r\n") {
             if line.lowercased().hasPrefix("content-length:") {
                 return Int(line.split(separator: ":", maxSplits: 1).last?.trimmingCharacters(in: .whitespaces) ?? "0") ?? 0
