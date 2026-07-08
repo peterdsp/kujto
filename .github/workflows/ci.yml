@@ -54,6 +54,20 @@ jobs:
             exit 1
           fi
           echo "No Sparkle load command in the App Store binary."
+      - name: Guard against the privileged helper in the App Store bundle
+        run: |
+          # Regression test for the 1.0 App Store validation failure ("App
+          # sandbox not enabled"): the non-sandboxed kujto-runtime-helper
+          # daemon must never ship in the App Store build. It is embedded only
+          # in the Direct build.
+          APP="$RUNNER_TEMP/dd-release/Build/Products/Release/KujtoStudio.app"
+          HITS=$(find "$APP" -name 'kujto-runtime-helper' 2>/dev/null || true)
+          if [ -n "$HITS" ]; then
+            echo "::error::kujto-runtime-helper is bundled in the Release (App Store) app; it must be Direct-build only."
+            echo "$HITS"
+            exit 1
+          fi
+          echo "No runtime helper executable in the App Store bundle."
       - name: Build Release-Direct (Ko-fi, links + embeds Sparkle)
         working-directory: integrations/xcode-extension
         run: |

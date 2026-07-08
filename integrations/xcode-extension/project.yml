@@ -31,7 +31,16 @@ targets:
       - package: KujtoCore
         product: KujtoCore
       - target: KujtoRulesExtension
+      # embed:false keeps the privileged runtime helper out of the app bundle.
+      # It is a non-sandboxed daemon (runs xcrun simctl outside the sandbox),
+      # which the Mac App Store forbids: every bundled executable must carry
+      # com.apple.security.app-sandbox=true, and this one by design cannot. The
+      # target still builds so the Direct build can embed it via the post-build
+      # script below (Release-Direct only). Without embed:false Xcode also
+      # copies the tool into Contents/Resources, which tripped App Store
+      # validation ("App sandbox not enabled").
       - target: KujtoRuntimeHelper
+        embed: false
       # link:false keeps Sparkle out of the App Store (Release) binary: it is
       # linked only via Swift autolink where `import Sparkle` compiles, which
       # is gated behind DIRECT_BUILD (Release-Direct only). A strong link would
@@ -42,8 +51,15 @@ targets:
         product: Sparkle
         link: false
     postBuildScripts:
-      - name: Embed runtime helper
+      - name: Embed runtime helper (Direct build only)
         script: |
+          # The privileged helper daemon and its LaunchDaemon plist ship only
+          # in the Direct build. The App Store (Release) build must not bundle
+          # a non-sandboxed executable, so this is intentionally skipped there.
+          if [ "$CONFIGURATION" != "Release-Direct" ]; then
+            echo "Skipping runtime helper embed for $CONFIGURATION"
+            exit 0
+          fi
           mkdir -p "$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/MacOS"
           mkdir -p "$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/Library/LaunchDaemons"
           if [ -f "$BUILT_PRODUCTS_DIR/kujto-runtime-helper" ]; then
