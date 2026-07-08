@@ -1,16 +1,18 @@
 ---
 name: Feature request
-about: Propozim per nje veçori te re / Suggest a new feature
+about: Suggest a new feature
 title: "[feat] "
 labels: enhancement
 ---
 
-### Problemi / Problem
-<!-- Cfare problem zgjidh kjo veçori? / What problem does this feature solve? -->
+### Problem
 
-### Zgjidhja e propozuar / Proposed solution
+<!-- What problem does this feature solve? -->
 
-### Alternativa / Alternatives
-<!-- Cfare keni provuar? / What have you tried? -->
+### Proposed solution
 
-### Konteksti shtese / Additional context
+### Alternatives
+
+<!-- What have you tried? -->
+
+### Additional context
