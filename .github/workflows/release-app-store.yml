@@ -99,10 +99,24 @@ jobs:
 
           STAGE="$RUNNER_TEMP/stage"
           APP="$STAGE/KujtoStudio.app"
+          EXT="$APP/Contents/PlugIns/KujtoRulesExtension.appex"
           mkdir -p "$STAGE"
           cp -R "$RUNNER_TEMP/KujtoStudio.xcarchive/Products/Applications/KujtoStudio.app" "$APP"
 
-          # Strip archive-time embedded provisioning profiles.
+          # Preserve the Mac App Store provisioning profiles that automatic
+          # distribution signing embedded in the archive, so we can restore
+          # them after the manual re-sign. Without an embedded profile the
+          # build uploads fine for App Review but is NOT eligible for
+          # TestFlight (App Store Connect warning 90889). The app and the
+          # app-extension each need their own profile.
+          APP_PROFILE="$RUNNER_TEMP/app.provisionprofile"
+          EXT_PROFILE="$RUNNER_TEMP/ext.provisionprofile"
+          cp "$APP/Contents/embedded.provisionprofile" "$APP_PROFILE"
+          cp "$EXT/Contents/embedded.provisionprofile" "$EXT_PROFILE"
+
+          # Strip archive-time embedded provisioning profiles; the matching
+          # profiles are restored below, before each bundle is re-signed, so
+          # the signature seals them in.
           find "$APP" -name embedded.provisionprofile -delete
           # App Store forbids third-party auto-updaters. Sparkle is linked and
           # embedded only in the Direct build (project.yml uses link:false, so
@@ -119,20 +133,29 @@ jobs:
           ENT_APP="integrations/xcode-extension/App/KujtoStudio.entitlements"
           ENT_EXT="integrations/xcode-extension/Extension/KujtoRulesExtension.entitlements"
 
+          # Restore the extension's profile before signing so it is sealed in.
+          cp "$EXT_PROFILE" "$EXT/Contents/embedded.provisionprofile"
           codesign --force --options runtime --timestamp \
             --entitlements "$ENT_EXT" \
             --sign "$APP_CERT" \
-            "$APP/Contents/PlugIns/KujtoRulesExtension.appex"
+            "$EXT"
 
           find "$APP/Contents/Frameworks" -maxdepth 2 -type d -name '*.framework' \
             -exec codesign --force --options runtime --timestamp --sign "$APP_CERT" {} \; 2>/dev/null || true
 
+          # Restore the app's profile last, then sign the outer bundle so the
+          # signature seals the profile that TestFlight requires.
+          cp "$APP_PROFILE" "$APP/Contents/embedded.provisionprofile"
           codesign --force --options runtime --timestamp \
             --entitlements "$ENT_APP" \
             --sign "$APP_CERT" \
             "$APP"
 
           codesign --verify --deep --strict --verbose=2 "$APP"
+          # Confirm the profile survived signing (TestFlight eligibility).
+          test -f "$APP/Contents/embedded.provisionprofile" \
+            && echo "App bundle carries an embedded provisioning profile." \
+            || { echo "::error::app is missing embedded.provisionprofile"; exit 1; }
 
           # Package as .pkg for the Mac App Store.
           PKG="$RUNNER_TEMP/KujtoStudio.pkg"
