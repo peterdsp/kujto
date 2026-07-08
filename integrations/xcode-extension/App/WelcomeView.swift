@@ -562,6 +562,7 @@ private struct StatusRow: View {
     }
 
     private enum RowAction {
+        case installCLI
         case copyCliInstall
         case openXcodeExtensions
         case installInVSCode
@@ -569,6 +570,7 @@ private struct StatusRow: View {
 
         var label: String {
             switch self {
+            case .installCLI:          return "Install"
             case .copyCliInstall:      return "Copy install"
             case .openXcodeExtensions: return "Open Settings"
             case .installInVSCode:     return "Install"
@@ -579,7 +581,10 @@ private struct StatusRow: View {
 
     private var action: RowAction? {
         switch component.key {
-        case "cli":    return .copyCliInstall
+        // One-click install when this build bundles the CLI (direct build);
+        // the App Store build can't ship it, so fall back to copying the
+        // command.
+        case "cli":    return CLIInstaller.canInstall ? .installCLI : .copyCliInstall
         case "xcode":  return .openXcodeExtensions
         case "vscode": return .installInVSCode
         case "cursor": return .installInCursor
@@ -596,6 +601,21 @@ private struct StatusRow: View {
     private func perform(_ action: RowAction) {
         installError = nil
         switch action {
+        case .installCLI:
+            do {
+                let result = try CLIInstaller.install()
+                installedFlash = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { installedFlash = false }
+                if result.needsPathHint {
+                    let dir = result.installedPath.deletingLastPathComponent().path
+                    installError = "Installed to \(result.installedPath.path). Add it to your PATH: export PATH=\"\(dir):$PATH\""
+                }
+            } catch let error as CLIInstaller.InstallError {
+                if case .grantDenied = error { return }  // user cancelled, stay silent
+                installError = error.errorDescription
+            } catch {
+                installError = error.localizedDescription
+            }
         case .copyCliInstall:
             NSPasteboard.general.clearContents()
             NSPasteboard.general.setString(InstallStatus.cliInstallCommand, forType: .string)

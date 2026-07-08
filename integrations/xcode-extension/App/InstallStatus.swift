@@ -48,6 +48,7 @@ enum InstallStatus {
     static let cliInstallCommand =
         "curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash"
 
+    @MainActor
     private static func cliStatus() -> Component {
         let fm = FileManager.default
         let purpose = "Runs kujto lint / rules / wire in your terminal, scripts, and CI."
@@ -56,6 +57,13 @@ enum InstallStatus {
             return Component(key: "cli", name: "kujto CLI",
                              purpose: purpose, skippedCost: skippedCost,
                              detail: hit, state: .ok)
+        }
+        // The one-click installer copies the bundled CLI into a folder the user
+        // granted; recognise that so the row flips to installed.
+        if CLIInstaller.isInstalled() {
+            return Component(key: "cli", name: "kujto CLI",
+                             purpose: purpose, skippedCost: skippedCost,
+                             detail: "installed", state: .ok)
         }
         return Component(key: "cli", name: "kujto CLI",
                          purpose: purpose, skippedCost: skippedCost,

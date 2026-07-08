@@ -68,6 +68,25 @@ targets:
           fi
           cp -f "$SRCROOT/App/LaunchDaemons/dev.peterdsp.kujto.runtime.plist" \
                 "$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/Library/LaunchDaemons/"
+      - name: Bundle kujto CLI (Direct build only)
+        script: |
+          # The direct build ships the kujto CLI in Contents/Resources so
+          # onboarding can install it with one click (CLIInstaller). The App
+          # Store build cannot bundle/extract a CLI (sandbox + review), so this
+          # is Release-Direct only; there it falls back to copying the command.
+          if [ "$CONFIGURATION" != "Release-Direct" ]; then
+            echo "Skipping kujto CLI bundle for $CONFIGURATION"
+            exit 0
+          fi
+          ROOT="$SRCROOT/../.."
+          swift build -c release --product kujto --package-path "$ROOT" \
+            || { echo "error: failed to build kujto CLI" >&2; exit 1; }
+          BINDIR="$(swift build -c release --product kujto --package-path "$ROOT" --show-bin-path)"
+          DEST="$TARGET_BUILD_DIR/$WRAPPER_NAME/Contents/Resources"
+          mkdir -p "$DEST"
+          cp -f "$BINDIR/kujto" "$DEST/kujto"
+          chmod +x "$DEST/kujto"
+          echo "Bundled kujto CLI from $BINDIR/kujto"
       - name: Embed Sparkle (Direct build only)
         script: |
           # The Direct build links Sparkle via autolink but link:false means

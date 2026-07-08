@@ -31,6 +31,11 @@ enum SharedConfig {
     private static let coreSimulatorBookmarkKey = "coreSimulatorBookmark"
     private static let coreSimulatorPathKey = "coreSimulatorPath"
 
+    // PATH bin-folder grant for the bundled kujto CLI. Points at the folder
+    // (e.g. ~/.local/bin) the user grants the first time they install the CLI.
+    private static let binFolderBookmarkKey = "binFolderBookmark"
+    private static let binFolderPathKey = "binFolderPath"
+
     static func saveRoot(_ url: URL) {
         save(url, bookmarkKey: bookmarkKey, pathKey: pathKey)
     }
@@ -93,6 +98,17 @@ enum SharedConfig {
     /// access; caller must stop the scope when done.
     static func resolveClaudeSkillsFolder() -> URL? {
         resolve(bookmarkKey: claudeSkillsBookmarkKey, pathKey: claudeSkillsPathKey)
+    }
+
+    /// Persists the PATH bin folder the user granted for the kujto CLI.
+    static func saveBinFolder(_ url: URL) {
+        save(url, bookmarkKey: binFolderBookmarkKey, pathKey: binFolderPathKey)
+    }
+
+    /// Resolves the persisted bin-folder grant. Starts security-scoped access;
+    /// caller must stop the scope when done.
+    static func resolveBinFolder() -> URL? {
+        resolve(bookmarkKey: binFolderBookmarkKey, pathKey: binFolderPathKey)
     }
 
     /// Persists the CoreSimulator devices folder grant.
