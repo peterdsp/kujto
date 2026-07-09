@@ -1,0 +1,11 @@
+.vscode/**
+.vscode-test/**
+src/**
+tsconfig.json
+package-lock.json
+PUBLISHING.md
+node_modules/**
+out/**/*.map
+*.vsix
+.DS_Store
+.gitignore

@@ -11,6 +11,7 @@ site/marketing/screenshots/exports/
 build/
 .build/
 DerivedData/
+.swiftpm/
 *.xcuserstate
 xcuserdata/
 *.xcworkspace/xcuserdata/

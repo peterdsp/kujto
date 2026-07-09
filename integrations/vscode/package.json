@@ -1,13 +1,54 @@
 {
   "name": "kujto-vscode",
-  "displayName": "Kujto",
-  "description": "Run kujto build / run / test from VS Code or Cursor, surface NDJSON diagnostics inline.",
+  "displayName": "Kujto Studio",
+  "description": "Run Kujto Studio memory, build, run, and test commands from VS Code or Cursor.",
   "version": "0.1.0",
   "publisher": "peterdsp",
+  "license": "MIT",
+  "icon": "assets/kujto-icon.png",
+  "pricing": "Free",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peterdsp/kujto.git",
+    "directory": "integrations/vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/peterdsp/kujto/issues"
+  },
+  "homepage": "https://kujto.peterdsp.dev",
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Linters",
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "kujto",
+    "memory",
+    "agents",
+    "rules",
+    "xcode",
+    "swift",
+    "cursor",
+    "diagnostics",
+    "local-first"
+  ],
+  "galleryBanner": {
+    "color": "#111827",
+    "theme": "dark"
+  },
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Kujto Studio runs the local kujto CLI against the workspace folder."
+    },
+    "virtualWorkspaces": false
+  },
   "activationEvents": [
     "onCommand:kujto.build",
     "onCommand:kujto.run",
@@ -15,6 +56,7 @@
     "onCommand:kujto.context",
     "onCommand:kujto.simulatorList",
     "onCommand:kujto.uiScreen",
+    "onCommand:kujto.stop",
     "onCommand:kujto.showRules",
     "onCommand:kujto.showMap",
     "onCommand:kujto.showLint",
@@ -80,11 +122,16 @@
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "vscode:prepublish": "npm run compile"
+    "vscode:prepublish": "npm run compile",
+    "vsce:package": "vsce package",
+    "vsce:package:pre": "vsce package --pre-release",
+    "vsce:publish": "vsce publish",
+    "vsce:publish:pre": "vsce publish --pre-release"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.6.2",
     "typescript": "^5.4.0"
   }
 }

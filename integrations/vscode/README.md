@@ -1,21 +1,53 @@
-# Kujto for VS Code and Cursor
+# Kujto Studio for VS Code and Cursor
 
-The Kujto extension surfaces the `kujto` CLI inside VS Code and Cursor. It
-spawns `kujto <op> --json`, parses NDJSON events, and turns `build_issue`
-and `test_failure` events into inline editor diagnostics. All the heavy
-lifting still lives in the CLI; the extension is a thin shell.
+Kujto Studio surfaces the `kujto` CLI inside VS Code and Cursor. It spawns
+`kujto <op> --json`, parses NDJSON events, and turns `build_issue` and
+`test_failure` events into inline editor diagnostics. All the heavy lifting
+still lives in the CLI; the extension is a thin shell.
 
-## Install (developer mode)
+## Requirements
+
+- VS Code 1.85.0 or newer, including VS Code forks such as Cursor.
+- The `kujto` CLI on `PATH`, or a configured `kujto.binaryPath` setting.
+- A local workspace folder. Virtual and untrusted workspaces are not supported
+  because the extension runs a local CLI against the workspace.
+
+## Install from VSIX
+
+```sh
+cd integrations/vscode
+npm install
+npm run vsce:package
+code --install-extension kujto-vscode-0.1.0.vsix
+```
+
+For Cursor, install the generated VSIX through the Extensions view.
+
+## Developer mode
+
+Open this folder in VS Code or Cursor and press F5 to launch an Extension
+Development Host. For a faster command-line loop:
 
 ```sh
 cd integrations/vscode
 npm install
 npm run compile
-code --install-extension . --pre-release
 ```
 
-Or open this folder in VS Code / Cursor and press F5 to launch an Extension
-Development Host.
+## Marketplace publishing
+
+This package is ready for `vsce`:
+
+```sh
+cd integrations/vscode
+npm install
+npm run vsce:package
+npm run vsce:publish
+```
+
+Publishing requires access to the `peterdsp` Visual Studio Marketplace
+publisher. Do not store Personal Access Tokens or Microsoft Entra tokens in
+the repo. See [PUBLISHING.md](PUBLISHING.md) for the release checklist.
 
 ## Commands
 
