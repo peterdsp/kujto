@@ -15,6 +15,7 @@ import KujtoCore
 /// context loss.
 struct CodexView: View {
     @ObservedObject var model: StudioModel
+    @Environment(\.openWindow) private var openWindow
 
     /// The file the user is focused on. When set, the Codex highlights only
     /// the rules that match. Populated from the focus bar or the palette.
@@ -41,7 +42,18 @@ struct CodexView: View {
             }
         }
         .background(paletteHotkey)
+        // Mirror the focus into the model so the Memory-Lens window, a
+        // separate scene, can follow the same file.
+        .onChange(of: focusFile) { _, newValue in model.focusFile = newValue }
         .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    openWindow(id: "memory-lens")
+                } label: {
+                    Label("Memory Lens", systemImage: "circle.dashed")
+                }
+                .help("Open the Memory-Lens window")
+            }
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     withAnimation(.spring(response: 0.32, dampingFraction: 0.85)) {

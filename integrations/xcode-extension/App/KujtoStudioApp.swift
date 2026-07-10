@@ -27,6 +27,14 @@ struct KujtoStudioApp: App {
                 .keyboardShortcut("W", modifiers: [.command, .shift])
             }
         }
+        // Memory-Lens: a Kujto-owned floating window that follows the focused
+        // file. A real window, not a global overlay, so it needs no
+        // Accessibility or Screen Recording permission.
+        Window("Memory Lens", id: "memory-lens") {
+            MemoryLensView(model: model)
+        }
+        .defaultSize(width: 360, height: 520)
+
         Settings { SettingsView(model: model, updater: updater) }
 
         // NOTE: `MenuBarExtra`'s `isInserted:` overload is intentionally NOT

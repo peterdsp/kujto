@@ -29,6 +29,10 @@ final class StudioModel: ObservableObject {
     @Published private(set) var lintIssues: [LintIssue] = []
     @Published var destination: Destination?
 
+    /// The file the Codex is focused on, mirrored here so the standalone
+    /// Memory-Lens window can follow the same selection across scenes.
+    @Published var focusFile: String = ""
+
     /// The current repo risk verdict from the last assessment, and the snapshot
     /// that preceded it, so a dashboard can show "current vs previous" risk.
     /// Populated off the main thread after each scan; nil until the first pass.
