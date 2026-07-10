@@ -1,0 +1,92 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto in VS Code</title>
+<style>
+  :root { --bg:#1E1E1E; --side:#252526; --act:#333333; --top:#3C3C3C; --ink:#D4D4D4; --dim:#858585;
+          --line:rgba(255,255,255,0.07); --blue:#569CD6; --kw:#C586C0; --str:#CE9178; --ty:#4EC9B0;
+          --num:#B5CEA8; --cmt:#6A9955; --gold:#C9A467; --red:#F14C4C; --amber:#CCA700; --violet:#9B8DF5; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1440px; height:900px; overflow:hidden;
+    font-family:-apple-system,"SF Pro Text",sans-serif;
+    background:linear-gradient(135deg,#141414,#1E1E1E 60%,#141414); }
+  body { padding:60px; display:grid; place-items:center; }
+  .win { width:1320px; height:780px; background:var(--bg); border-radius:12px; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06);
+    display:flex; flex-direction:column; position:relative; }
+  .titlebar { height:34px; background:var(--top); display:flex; align-items:center; gap:8px; padding:0 14px; }
+  .dot{width:12px;height:12px;border-radius:50%}.r{background:#FF5F57}.y{background:#FEBC2E}.g{background:#28C840}
+  .tt{flex:1;text-align:center;font-size:12px;color:var(--dim)}
+  .body{flex:1;display:flex;min-height:0}
+  .act{width:48px;background:var(--act);display:flex;flex-direction:column;align-items:center;gap:20px;padding:14px 0}
+  .ai{width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,0.18)}
+  .ai.on{background:var(--violet)}
+  .side{width:230px;background:var(--side);padding:10px 8px}
+  .sh{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;padding:6px 8px}
+  .f{display:flex;align-items:center;gap:7px;padding:4px 8px;font-size:12.5px;color:#CCCCCC;border-radius:4px}
+  .f.sel{background:#37373D}
+  .f .d{width:7px;height:7px;border-radius:50%}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .tabs{height:34px;background:var(--side);display:flex}
+  .tab{padding:0 16px;display:flex;align-items:center;font-size:12.5px;color:#CCCCCC;background:var(--bg);border-right:1px solid var(--line)}
+  .code{flex:1;padding:14px 18px;font-family:"SF Mono",monospace;font-size:12.5px;line-height:1.6;color:var(--ink)}
+  .kw{color:var(--kw)}.str{color:var(--str)}.ty{color:var(--ty)}.nu{color:var(--num)}.cmt{color:var(--cmt)}.bl{color:var(--blue)}
+  .squig{border-bottom:2px wavy var(--red);}
+  .panel{height:150px;background:var(--bg);border-top:1px solid var(--line);padding:8px 14px}
+  .pt{display:flex;gap:18px;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+  .pt .on{color:#FFFFFF;border-bottom:1px solid var(--violet);padding-bottom:4px}
+  .prob{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:#CCCCCC;padding:3px 0}
+  .prob .sev{font-size:11px}
+  .fileref{color:var(--dim);font-size:11.5px;margin-left:6px}
+  .status{height:24px;background:var(--violet);display:flex;align-items:center;gap:16px;padding:0 12px;font-size:11.5px;color:white}
+  .pal{position:absolute;top:44px;left:50%;transform:translateX(-50%);width:620px;background:#252526;
+    border:1px solid rgba(255,255,255,0.12);border-radius:8px;box-shadow:0 18px 40px -10px rgba(0,0,0,0.6);overflow:hidden;z-index:5}
+  .palin{padding:10px 14px;font-size:14px;color:#CCCCCC;border-bottom:1px solid var(--line)}
+  .palrow{padding:8px 14px;font-size:13px;color:#CCCCCC;display:flex;justify-content:space-between}
+  .palrow.on{background:var(--violet);color:white}
+  .palrow .c{opacity:0.7;font-size:11px}
+</style>
+</head><body>
+<div class="win">
+  <div class="titlebar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="tt">aurora - PaymentGateway.swift - Visual Studio Code</span></div>
+  <div class="body">
+    <div class="act"><div class="ai"></div><div class="ai on"></div><div class="ai"></div><div class="ai"></div></div>
+    <div class="side">
+      <div class="sh">Aurora</div>
+      <div class="f"><span class="d" style="background:#7FAE85"></span>HomeView.swift</div>
+      <div class="f"><span class="d" style="background:#CCA700"></span>AuroraCheckoutFeature.swift</div>
+      <div class="f sel"><span class="d" style="background:#F14C4C"></span>PaymentGateway.swift</div>
+      <div class="f"><span class="d" style="background:#7FAE85"></span>PaymentAuditLog.swift</div>
+      <div class="f"><span class="d" style="background:#858585"></span>StripeIntents.swift</div>
+      <div class="sh" style="margin-top:10px">Memory</div>
+      <div class="f"><span class="d" style="background:#C9A467"></span>payment_audit.md</div>
+    </div>
+    <div class="main">
+      <div class="tabs"><div class="tab">PaymentGateway.swift</div></div>
+      <div class="code">
+        <div><span class="kw">import</span> <span class="ty">Foundation</span></div>
+        <div>&nbsp;</div>
+        <div><span class="kw">final class</span> <span class="ty">PaymentGateway</span> {</div>
+        <div>&nbsp;&nbsp;<span class="kw">func</span> <span class="bl">charge</span>(_ amount: <span class="ty">Decimal</span>) <span class="kw">async throws</span> -&gt; <span class="ty">Receipt</span> {</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// TODO: refund path</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">let</span> intent = <span class="kw">try await</span> <span class="ty">Stripe</span>.<span class="squig">createIntent</span>(amount)</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="kw">try await</span> intent.confirm()</div>
+        <div>&nbsp;&nbsp;}</div>
+        <div>}</div>
+      </div>
+      <div class="panel">
+        <div class="pt"><span class="on">Problems <span style="color:var(--red)">2</span></span><span>Output</span><span>Terminal</span><span>Kujto</span></div>
+        <div class="prob"><span class="sev" style="color:var(--red)">✕</span><div>Risk escalating (61/100): payment rules apply and no sibling tests <span class="cmt">(via **/*Gateway.swift)</span><span class="fileref">PaymentGateway.swift  [kujto]</span></div></div>
+        <div class="prob"><span class="sev" style="color:var(--amber)">▲</span><div>Watch: this file has a TODO on a payment path; add coverage before shipping<span class="fileref">PaymentGateway.swift:5  [kujto]</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="status"><span>◔ Kujto risk: escalating</span><span>2 flagged in diff</span><span style="margin-left:auto">Ln 5, Col 9</span><span>Swift</span></div>
+
+  <div class="pal">
+    <div class="palin">&gt; Kujto: Risk for Changed Files</div>
+    <div class="palrow on">Kujto: Risk for Changed Files <span class="c">flag risky edits before commit</span></div>
+    <div class="palrow">Kujto: Show Rules for This File <span class="c">memory that applies here</span></div>
+    <div class="palrow">Kujto: Lint Memory <span class="c">deterministic checks</span></div>
+  </div>
+</div>
+</body></html>

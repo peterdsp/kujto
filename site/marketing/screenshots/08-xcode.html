@@ -1,0 +1,87 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto in Xcode</title>
+<style>
+  :root { --bg:#ECECEC; --editor:#FFFFFF; --nav:#E9E9E9; --ink:#1D1D1F; --dim:#8A8A8E;
+          --line:rgba(0,0,0,0.10); --gold:#B8860B; --violet:#7A63C7; --red:#B8272E;
+          --kw:#9B2393; --str:#C41A16; --type:#3900A0; --cmt:#5B8562; --num:#1C00CF; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1440px; height:900px; overflow:hidden;
+    font-family:-apple-system,"SF Pro Text",sans-serif;
+    background:linear-gradient(135deg,#D8D8D8,#ECECEC 60%,#DCDCDC); }
+  body { padding:60px; display:grid; place-items:center; }
+  .win { width:1320px; height:780px; background:var(--bg); border-radius:12px; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.5); display:flex; flex-direction:column; }
+  .bar { height:38px; background:linear-gradient(#F6F6F6,#E7E7E7); display:flex; align-items:center; gap:8px;
+    padding:0 14px; border-bottom:1px solid var(--line); }
+  .dot { width:12px; height:12px; border-radius:50%; }
+  .r{background:#FF5F57}.y{background:#FEBC2E}.g{background:#28C840}
+  .bt { flex:1; text-align:center; font-size:12.5px; color:#3A3A3C; font-weight:500; }
+  .run { font-size:12px; color:var(--violet); }
+  .body { flex:1; display:flex; }
+  .nav { width:230px; background:var(--nav); border-right:1px solid var(--line); padding:12px 8px; }
+  .grp { font-size:11px; color:var(--dim); font-weight:600; padding:6px 8px; }
+  .f { display:flex; align-items:center; gap:7px; padding:5px 8px; font-size:12.5px; color:#2A2A2C; border-radius:5px; }
+  .f.sel { background:#D3E3FB; }
+  .f .ic { width:13px; height:13px; border-radius:3px; background:var(--violet); opacity:0.85; }
+  .editor { flex:1; background:var(--editor); position:relative; }
+  .gutter { position:absolute; left:0; top:0; bottom:0; width:44px; background:#FAFAFA; border-right:1px solid var(--line); }
+  .code { padding:14px 18px 14px 56px; font-family:"SF Mono","JetBrains Mono",monospace; font-size:12.5px; line-height:1.62; color:var(--ink); }
+  .kw{color:var(--kw)} .str{color:var(--str)} .ty{color:var(--type)} .cmt{color:var(--cmt)} .nu{color:var(--num)}
+  .rulebox { margin:2px 0 10px; padding:10px 12px; border-left:3px solid var(--gold);
+    background:rgba(184,134,11,0.08); border-radius:0 6px 6px 0; font-family:"SF Mono",monospace; font-size:12px; color:#5a4a1a; line-height:1.6; }
+  .rulebox .h { color:var(--gold); font-weight:600; }
+  .rulebox .risk { color:var(--red); }
+  .menu { position:absolute; top:6px; right:22px; width:250px; background:#FBFBFB;
+    border:1px solid var(--line); border-radius:8px; box-shadow:0 14px 30px -10px rgba(0,0,0,0.28); padding:5px; font-size:12.5px; }
+  .mi { padding:6px 10px; border-radius:5px; color:#2A2A2C; display:flex; justify-content:space-between; }
+  .mi.on { background:var(--violet); color:white; }
+  .mi .k { opacity:0.6; font-size:11px; }
+  .mtitle { font-size:10px; color:var(--dim); padding:4px 10px; text-transform:uppercase; letter-spacing:0.06em; }
+</style>
+</head><body>
+<div class="win">
+  <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="bt">Aurora - AuroraCheckoutFeature.swift</span><span class="run">▶ Aurora</span></div>
+  <div class="body">
+    <div class="nav">
+      <div class="grp">AURORA</div>
+      <div class="f"><span class="ic"></span>AuroraApp.swift</div>
+      <div class="f"><span class="ic"></span>HomeView.swift</div>
+      <div class="f sel"><span class="ic"></span>AuroraCheckoutFeature.swift</div>
+      <div class="f"><span class="ic"></span>PaymentGateway.swift</div>
+      <div class="f"><span class="ic"></span>PaymentAuditLog.swift</div>
+      <div class="f"><span class="ic" style="background:#8A8A8E"></span>StripeIntents.swift</div>
+      <div class="f"><span class="ic"></span>SettingsView.swift</div>
+    </div>
+    <div class="editor">
+      <div class="gutter"></div>
+      <div class="code">
+        <div class="rulebox">
+          <div class="h">// Kujto - rules for AuroraCheckoutFeature.swift &nbsp;<span class="risk">[risk: payment]</span></div>
+          <div>//&nbsp;&nbsp;• Payment audit log: every refund needs a shadow log entry.</div>
+          <div>//&nbsp;&nbsp;• Never edit generated StripeIntents.swift, it is rebuilt from the schema.</div>
+          <div>//&nbsp;&nbsp;• Run: AuroraCheckoutFeatureTests, PaymentGatewayTests</div>
+        </div>
+        <div><span class="kw">import</span> <span class="ty">ComposableArchitecture</span></div>
+        <div>&nbsp;</div>
+        <div><span class="cmt">@Reducer</span></div>
+        <div><span class="kw">struct</span> <span class="ty">AuroraCheckoutFeature</span> {</div>
+        <div>&nbsp;&nbsp;<span class="kw">enum</span> <span class="ty">Action</span> {</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> payTapped</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">case</span> refundRequested(orderID: <span class="ty">UUID</span>)</div>
+        <div>&nbsp;&nbsp;}</div>
+        <div>&nbsp;&nbsp;<span class="kw">func</span> <span class="ty">reduce</span>(...) -&gt; <span class="ty">Effect</span>&lt;<span class="ty">Action</span>&gt; {</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt">// audit every payment intent, see PaymentAuditLog</span></div>
+        <div>&nbsp;&nbsp;}</div>
+        <div>}</div>
+      </div>
+      <div class="menu">
+        <div class="mtitle">Editor ▸ Kujto</div>
+        <div class="mi on">Show Kujto Rules <span class="k">⌃⌥K</span></div>
+        <div class="mi">Insert as comment <span class="k">⌃⌥I</span></div>
+        <div class="mi">Copy agent context <span class="k">⌃⌥C</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

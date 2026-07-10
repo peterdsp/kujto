@@ -1,0 +1,60 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto with Claude Code</title>
+<style>
+  :root { --bg:#0E1424; --panel:#141B2E; --ink:#E7E1D4; --dim:#9AA0B0; --gold:#C9A467;
+          --green:#7FAE85; --red:#E88374; --violet:#9B8DF5; --line:rgba(255,255,255,0.08); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1440px; height:900px; overflow:hidden;
+    font-family:-apple-system,"SF Pro Text",sans-serif;
+    background:linear-gradient(135deg,#0A0F1E,#141B2E 60%,#0A0F1E); }
+  body { padding:60px; display:grid; place-items:center; }
+  .win { width:1320px; height:780px; background:var(--bg); border-radius:14px; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.06); }
+  .bar { height:38px; background:#0A0F1E; display:flex; align-items:center; gap:8px; padding:0 14px;
+    border-bottom:1px solid var(--line); }
+  .dot { width:12px; height:12px; border-radius:50%; }
+  .r{background:#FF5F57}.y{background:#FEBC2E}.g{background:#28C840}
+  .bt { flex:1; text-align:center; font-size:12.5px; color:var(--dim);
+    font-family:"SF Mono",monospace; }
+  .term { padding:22px 26px; font-family:"SF Mono","JetBrains Mono",monospace; font-size:13px;
+    line-height:1.72; color:var(--ink); }
+  .muted{color:var(--dim)} .gold{color:var(--gold)} .grn{color:var(--green)} .red{color:var(--red)} .vi{color:var(--violet)}
+  .b{font-weight:600}
+  .card { margin:8px 0 8px 20px; padding:10px 14px; border-left:2px solid var(--gold);
+    background:rgba(201,164,103,0.06); border-radius:6px; }
+  .prompt{color:var(--green)}
+</style>
+</head><body>
+<div class="win">
+  <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="bt">aurora - claude - 132x34</span></div>
+  <div class="term">
+    <div><span class="prompt">➜  aurora</span> <span class="muted">git:(</span>refund-flow<span class="muted">)</span> claude</div>
+    <div style="height:8px"></div>
+    <div><span class="vi b">&gt;</span> add refund support to the checkout feature</div>
+    <div style="height:10px"></div>
+    <div><span class="gold b">●</span> I'll add refunds. First, let me check what Kujto knows about this file.</div>
+    <div style="height:6px"></div>
+    <div><span class="grn">⏺</span> <span class="muted">Bash</span> kujto preflight Sources/Checkout/AuroraCheckoutFeature.swift</div>
+    <div class="card">
+      <div><span class="muted">Readiness:</span> <span class="gold">Needs context (74/100)</span> · <span class="muted">Risk:</span> <span class="red">Escalating 61</span></div>
+      <div><span class="muted">Rule:</span> Payment audit log <span class="red">[risk: payment]</span> <span class="muted">(memory/domains/ios/payment_audit.md)</span></div>
+      <div><span class="muted">Resolve first:</span> risk-tagged file has no sibling tests to verify a change</div>
+      <div><span class="muted">Tests:</span> AuroraCheckoutFeatureTests.swift, PaymentGatewayTests.swift</div>
+    </div>
+    <div><span class="gold b">●</span> This is payment-risk code. Per Kujto's rule, every refund needs a shadow</div>
+    <div style="padding-left:20px">audit entry, and generated <span class="muted">StripeIntents.swift</span> must not be edited. I'll add</div>
+    <div style="padding-left:20px">a <span class="vi">RefundRequested</span> action, wire the audit log, then run both tests.</div>
+    <div style="height:8px"></div>
+    <div><span class="grn">⏺</span> <span class="muted">Update</span> Sources/Checkout/AuroraCheckoutFeature.swift <span class="grn">+38 -2</span></div>
+    <div><span class="grn">⏺</span> <span class="muted">Update</span> Sources/Checkout/PaymentAuditLog.swift <span class="grn">+12 -0</span></div>
+    <div style="height:8px"></div>
+    <div><span class="grn">⏺</span> <span class="muted">Bash</span> kujto risk --json | jq .level &nbsp;<span class="muted">→</span> <span class="gold">"watch"</span> <span class="muted">(was escalating)</span></div>
+    <div><span class="grn">⏺</span> <span class="muted">Test</span> AuroraCheckoutFeatureTests &nbsp;<span class="grn">✓ 14 passed</span></div>
+    <div><span class="grn">⏺</span> <span class="muted">Test</span> PaymentGatewayTests &nbsp;<span class="grn">✓ 9 passed</span></div>
+    <div style="height:10px"></div>
+    <div><span class="gold b">●</span> Done. Refund flow added with an audit entry, risk dropped to <span class="gold">Watch</span>,</div>
+    <div style="padding-left:20px">both payment tests green. Nothing touched the generated Stripe file.</div>
+  </div>
+</div>
+</body></html>

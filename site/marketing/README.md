@@ -16,14 +16,18 @@ site/marketing/
     04-sandbox.html                 Agent sandbox pre-flight
     05-rewind.html                  Governance rewind: rule history slider
     06-sync.html                    Team sync: signed proposals over Bonjour
+    07-claude-code.html             Claude Code honoring a Kujto rule
+    08-xcode.html                   Kujto Source Editor rules in Xcode
+    09-vscode.html                  Kujto risk diagnostics in VS Code
     exports/                        generated PNGs (see below)
 ```
 
-The set showcases the Repository Intelligence OS (Kujto Studio 1.1): a graded
-risk verdict with a trend, predictive risk on the current diff, agent
-pre-flight, governance rewind, and signed peer sync. They use
-fictional-but-honest data (a `checkout-flow` repo with a payment-risk rule) and
-the real command names, palette, and verdict model from the shipping app.
+Panels 01-06 showcase the Repository Intelligence OS (Kujto Studio 1.1): a
+graded risk verdict with a trend, predictive risk on the current diff, agent
+pre-flight, governance rewind, and signed peer sync. Panels 07-09 show Kujto at
+work inside other tools, Claude Code, Xcode, and VS Code, on a fictional
+`Aurora` payments app. All use fictional-but-honest data (a payment-risk rule)
+and the real command names, palette, and verdict model from the shipping app.
 
 ## Preview the mockups
 
