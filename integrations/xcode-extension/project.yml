@@ -63,6 +63,25 @@ targets:
           /usr/libexec/PlistBuddy -c "Add :NSBonjourServices array" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :NSBonjourServices:0 string _kujto-sync._tcp" "$PLIST"
           /usr/libexec/PlistBuddy -c "Add :NSBonjourServices:1 string _kujto-sync._udp" "$PLIST"
+      - name: Add Sparkle feed to Info.plist (Direct build only)
+        script: |
+          # The Direct build's auto-updater (Sparkle) reads SUFeedURL and
+          # SUPublicEDKey from Info.plist. Xcode's generated plist ignores
+          # INFOPLIST_KEY_* for these non-Apple keys, which is why the 1.0
+          # Direct build errored with "You must specify the URL of the appcast
+          # as the SUFeedURL key". Inject them here, before signing. App Store
+          # (Release) builds do not link Sparkle, so this is Direct-only.
+          if [ "$CONFIGURATION" != "Release-Direct" ]; then
+            echo "Skipping Sparkle Info.plist keys for $CONFIGURATION"
+            exit 0
+          fi
+          PLIST="$TARGET_BUILD_DIR/$INFOPLIST_PATH"
+          /usr/libexec/PlistBuddy -c "Delete :SUFeedURL" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :SUFeedURL string https://kujto.peterdsp.dev/appcast.xml" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Delete :SUPublicEDKey" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :SUPublicEDKey string VXr6caNYzxLPSrRlZoDbOE0ny4X7SxWSUth3jf5QTyU=" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Delete :SUEnableAutomaticChecks" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :SUEnableAutomaticChecks bool true" "$PLIST"
       - name: Embed runtime helper (Direct build only)
         script: |
           # The privileged helper daemon and its LaunchDaemon plist ship only
@@ -135,9 +154,12 @@ targets:
       configs:
         Release-Direct:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: DIRECT_BUILD
-          INFOPLIST_KEY_SUFeedURL: https://kujto.peterdsp.dev/appcast.xml
-          INFOPLIST_KEY_SUPublicEDKey: VXr6caNYzxLPSrRlZoDbOE0ny4X7SxWSUth3jf5QTyU=
-          INFOPLIST_KEY_SUEnableAutomaticChecks: "YES"
+          # NOTE: the Sparkle keys (SUFeedURL, SUPublicEDKey,
+          # SUEnableAutomaticChecks) are NOT set here. Xcode's generated
+          # Info.plist silently ignores INFOPLIST_KEY_* for non-Apple keys, so
+          # these never reached the plist and the Direct build errored with
+          # "You must specify the URL of the appcast as the SUFeedURL key". They
+          # are injected with PlistBuddy in the post-build script below instead.
     entitlements:
       path: App/KujtoStudio.entitlements
       properties:
