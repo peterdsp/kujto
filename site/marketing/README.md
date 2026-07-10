@@ -8,7 +8,7 @@ Everything you need to submit Kujto Studio to the Mac App Store and list it on K
 site/marketing/
   README.md                         you are here
   screenshots/
-    index.html                      browse all six mockups
+    index.html                      browse all eleven mockups
     _shell.css                      shared design system
     01-hero.html                    "Before you touch this file" inspector
     02-linter.html                  Memory linter panel
@@ -16,8 +16,18 @@ site/marketing/
     04-xcode.html                   Xcode Source Editor extension
     05-vscode.html                  VS Code / Cursor palette command
     06-menubar.html                 Menu bar dropdown
+    07-dashboard.html               Confidence dashboard: verdict, trend, causes
+    08-predictive.html              Predictive governance: risk before you commit
+    09-sandbox.html                 Agent sandbox pre-flight
+    10-rewind.html                  Governance rewind: rule history slider
+    11-sync.html                    Team sync: signed proposals over Bonjour
     exports/                        generated PNGs (see below)
 ```
+
+Panels 07-11 showcase the Repository Intelligence OS: predictive risk, agent
+pre-flight, governance rewind, and signed peer sync. Like the others, they use
+fictional-but-honest data (a `checkout-flow` repo with a payment-risk rule) and
+the real command names, palette, and verdict model from the shipping app.
 
 ## Preview the mockups
 

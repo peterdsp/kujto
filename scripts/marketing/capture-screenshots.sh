@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Renders the six marketing HTML mockups to PNG at the App Store retina size
+# Renders the marketing HTML mockups to PNG at the App Store retina size
 # (2880x1800) and the 13-inch size (1440x900) using headless Chrome.
 #
 # App Store Connect accepts screenshots at either size; retina 2880x1800 is
@@ -52,7 +52,7 @@ capture() {
         "file://$html" 2>/dev/null
 }
 
-for HTML in "$SCREENS_DIR"/0*.html; do
+for HTML in "$SCREENS_DIR"/[0-9][0-9]-*.html; do
     [ -f "$HTML" ] || continue
     case "$SIZE" in
         both|retina)   capture "$HTML" 1440 900 2 "$OUT_DIR/retina" ;;

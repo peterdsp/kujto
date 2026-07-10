@@ -1,0 +1,80 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto Studio, team sync</title>
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .peerbar { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink-2); margin-bottom:14px; }
+  .peerbar .live { width:8px; height:8px; border-radius:50%; background:var(--success); box-shadow:0 0 0 3px rgba(46,139,87,0.18); }
+  .peerchip { font-size:11px; color:var(--ink-2); background:var(--card); border:1px solid var(--line); padding:3px 9px; border-radius:999px; }
+  .prop { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:10px; }
+  .prop .h { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .prop .t { font-size:14px; font-weight:500; }
+  .prop .from { font-size:11px; color:var(--ink-3); }
+  .prop .fp { font-family:"SF Mono",monospace; font-size:11px; color:var(--ink-3); }
+  .valid { font-size:11px; font-weight:500; padding:3px 9px; border-radius:999px; background:rgba(46,139,87,0.14); color:var(--success); }
+  .invalid { font-size:11px; font-weight:500; padding:3px 9px; border-radius:999px; background:rgba(184,39,46,0.12); color:var(--danger); }
+  .glob { display:inline-block; font-family:"SF Mono",monospace; font-size:10px; color:var(--ink-2); background:var(--paper-2); padding:2px 7px; border-radius:999px; margin-top:6px; }
+  .adopt { font-size:12px; font-weight:500; color:var(--accent); margin-top:8px; }
+</style>
+</head><body>
+<div class="stage" style="display:flex; flex-direction:column;">
+  <div class="chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">Kujto Studio, team sync</span>
+  </div>
+  <div class="pane-body">
+
+    <div class="sidebar">
+      <div class="metric-row">
+        <div class="metric"><div class="num">2</div><div class="lbl">peers</div></div>
+        <div class="metric"><div class="num">3</div><div class="lbl">received</div></div>
+      </div>
+      <div class="section-label">On the network</div>
+      <div class="file-row"><span class="dot g"></span>Mira's MacBook</div>
+      <div class="file-row"><span class="dot g"></span>build-agent-02</div>
+      <div class="section-label" style="margin-top:14px;">Trust</div>
+      <div style="font-size:12px;color:var(--ink-3);line-height:1.6;padding:0 8px;">Signed proposals only. Nothing installs without your review.</div>
+    </div>
+
+    <div class="pane">
+      <div class="eyebrow">Team sync, signed proposals over Bonjour</div>
+      <div class="peerbar"><span class="live"></span> Connected: <span class="peerchip">Mira's MacBook</span> <span class="peerchip">build-agent-02</span></div>
+
+      <div class="prop">
+        <div class="h">
+          <span class="t">Rules for Reducer files</span>
+          <span class="valid">✓ signature valid</span>
+        </div>
+        <div class="from">from Mira's MacBook · Mira Kelmendi · repo payments-core</div>
+        <div class="fp">signer 14916e6225c8c402</div>
+        <span class="glob">**/*Reducer.swift</span>
+        <div class="adopt">→ Adopt into memory/</div>
+      </div>
+
+      <div class="prop">
+        <div class="h">
+          <span class="t">Snapshot testing conventions</span>
+          <span class="valid">✓ signature valid</span>
+        </div>
+        <div class="from">from build-agent-02 · CI bot · repo payments-core</div>
+        <div class="fp">signer 8b3d0af1c7e2</div>
+        <span class="glob">**/*SnapshotTests.swift</span>
+        <div class="adopt">→ Adopt into memory/</div>
+      </div>
+
+      <div class="prop" style="opacity:0.72">
+        <div class="h">
+          <span class="t">Unknown rule</span>
+          <span class="invalid">✗ invalid</span>
+        </div>
+        <div class="from" style="color:var(--danger)">signature does not verify · not adoptable</div>
+      </div>
+
+      <div class="footer-row">
+        <button class="btn primary">📡 Share my proposals</button>
+        <button class="btn">Stop sync</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto Studio, agent pre-flight</title>
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .ready { display:flex; align-items:baseline; gap:12px; margin-bottom:6px; }
+  .ready .lvl { font-size:26px; font-weight:500; color:var(--warning); letter-spacing:-0.02em; }
+  .ready .pill { font-size:12px; font-weight:500; padding:3px 10px; border-radius:999px; }
+  .ready .pill.w { background:rgba(197,122,24,0.12); color:var(--warning); }
+  .ready .pill.n { background:var(--paper-2); color:var(--ink-3); }
+  .brief { background:#0E1424; color:#E7E1D4; border-radius:12px; padding:14px 16px; font-family:"SF Mono","JetBrains Mono",monospace; font-size:11.5px; line-height:1.7; margin-top:10px; }
+  .brief .k { color:var(--gold); }
+  .brief .r { color:#E88374; }
+  .brief .dim { color:#9AA0B0; }
+  .wt { display:inline-flex; align-items:center; gap:6px; font-family:"SF Mono",monospace; font-size:11px; color:var(--ink-3); background:var(--paper-2); padding:4px 10px; border-radius:6px; margin-top:2px; }
+</style>
+</head><body>
+<div class="stage" style="display:flex; flex-direction:column;">
+  <div class="chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">Kujto Studio, agent pre-flight</span>
+  </div>
+  <div class="pane-body">
+
+    <div class="sidebar">
+      <div class="metric-row">
+        <div class="metric"><div class="num">74</div><div class="lbl">readiness</div></div>
+        <div class="metric"><div class="num">2</div><div class="lbl">gaps</div></div>
+      </div>
+      <div class="section-label">Sandbox</div>
+      <div class="file-row active"><span class="dot a"></span><span class="file-name">CheckoutFeature.swift</span></div>
+      <div class="section-label" style="margin-top:14px;">Isolation</div>
+      <div style="font-size:12px;color:var(--ink-3);line-height:1.6;padding:0 8px;">Dry-run in a throwaway git worktree. Applies nothing to the main tree.</div>
+    </div>
+
+    <div class="pane">
+      <div class="eyebrow">Agent sandbox, pre-flight</div>
+      <div class="ready">
+        <span class="lvl">Needs context</span>
+        <span class="pill w">74 / 100 ready</span>
+        <span class="pill n">Risk Escalating 61</span>
+      </div>
+      <div class="wt">⌥ sandbox worktree · /tmp/kujto-sandbox-checkout-9f2a</div>
+
+      <div class="card" style="margin-top:12px;">
+        <div class="card-head"><div class="card-title">Rules that apply</div><div class="card-sub">2 matched</div></div>
+        <ul>
+          <li>TCA (The Composable Architecture) &nbsp;<span style="color:var(--ink-3)">memory/domains/ios/tca.md</span></li>
+          <li>Payment audit log &nbsp;<span style="color:var(--danger)">[risk: payment]</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">Resolve first</div><div class="card-sub">2 gaps</div></div>
+        <ul>
+          <li>Risk-tagged file has no sibling tests to verify a change.</li>
+          <li>Not wired for: Cursor, Copilot. They would edit without this context.</li>
+        </ul>
+      </div>
+
+      <div class="brief">
+        <span class="dim">You are about to edit</span> CheckoutFeature.swift <span class="dim">in checkout-flow.</span><br>
+        <span class="k">Risk:</span> Escalating (61/100). Payment rules apply.<br>
+        <span class="k">Tests to run:</span> CheckoutFeatureTests.swift, PaymentClientTests.swift<br>
+        <span class="r">Do not apply changes until a human reviews the diff.</span>
+      </div>
+
+      <div class="footer-row">
+        <button class="btn primary">▶ Run sandbox, dry-run</button>
+        <button class="btn">📋 Copy brief</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body></html>

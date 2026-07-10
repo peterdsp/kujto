@@ -1,0 +1,74 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Kujto Studio, risk before you commit</title>
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .diffline { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px; margin-bottom:8px; border:1px solid var(--line); background:var(--card); }
+  .diffline .g { font-family:"SF Mono",monospace; font-size:12px; width:16px; text-align:center; font-weight:600; }
+  .diffline .fn { font-family:"SF Mono",monospace; font-size:12.5px; color:var(--ink-2); }
+  .diffline .why { margin-left:auto; font-size:11px; color:var(--ink-3); }
+  .lvlpill { font-size:11px; font-weight:500; padding:3px 9px; border-radius:999px; }
+  .lvlpill.esc { background:rgba(184,39,46,0.12); color:var(--danger); }
+  .lvlpill.watch { background:rgba(197,122,24,0.12); color:var(--warning); }
+  .lvlpill.safe { background:rgba(46,139,87,0.14); color:var(--success); }
+  .prehead { font-size:11px; color:var(--ink-3); letter-spacing:0.04em; text-transform:uppercase; margin:16px 0 8px; }
+</style>
+</head><body>
+<div class="stage" style="display:flex; flex-direction:column;">
+  <div class="chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">VS Code, checkout-flow, Problems</span>
+  </div>
+  <div class="pane-body">
+
+    <div class="sidebar">
+      <div class="metric-row">
+        <div class="metric"><div class="num">6</div><div class="lbl">changed</div></div>
+        <div class="metric"><div class="num">2</div><div class="lbl">flagged</div></div>
+      </div>
+      <div class="section-label">Staged &amp; modified</div>
+      <div class="file-row active"><span class="dot r"></span><span class="file-name">CheckoutFeature.swift</span></div>
+      <div class="file-row"><span class="dot a"></span><span class="file-name">PaymentClient.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">HomeView.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">Theme.swift</span></div>
+      <div class="file-row"><span class="dot g"></span><span class="file-name">README.md</span></div>
+    </div>
+
+    <div class="pane">
+      <div class="eyebrow">Predictive governance</div>
+      <div class="title-row">
+        <div class="title" style="font-family:inherit;">Risk before you commit</div>
+        <span class="badge warning">Watch, 2 flagged</span>
+      </div>
+      <div style="font-size:13px;color:var(--ink-3);margin-bottom:6px;">Kujto scored your working tree. Two files in this diff cross a governance rule; fix them before the commit lands.</div>
+
+      <div class="prehead">Diagnostics on changed files</div>
+
+      <div class="diffline">
+        <span class="g" style="color:var(--danger)">M</span>
+        <span class="fn">Sources/Checkout/CheckoutFeature.swift</span>
+        <span class="lvlpill esc">Escalating 61</span>
+      </div>
+      <div style="font-size:12px;color:var(--danger);margin:-2px 0 12px 26px;">Risk escalating: payment rules apply and no sibling tests (via **/Checkout*/**)</div>
+
+      <div class="diffline">
+        <span class="g" style="color:var(--warning)">M</span>
+        <span class="fn">Sources/Payments/PaymentClient.swift</span>
+        <span class="lvlpill watch">Watch 22</span>
+      </div>
+      <div style="font-size:12px;color:var(--warning);margin:-2px 0 12px 26px;">Risk watch: matches **/*Client.swift; review the client contract</div>
+
+      <div class="diffline" style="opacity:0.7">
+        <span class="g" style="color:var(--success)">M</span>
+        <span class="fn">Sources/Home/HomeView.swift</span>
+        <span class="lvlpill safe">Safe</span>
+      </div>
+
+      <div class="footer-row">
+        <button class="btn primary">🛡 Block commit until reviewed</button>
+        <button class="btn">Kujto: Risk for Changed Files</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body></html>
