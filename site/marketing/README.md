@@ -8,24 +8,20 @@ Everything you need to submit Kujto Studio to the Mac App Store and list it on K
 site/marketing/
   README.md                         you are here
   screenshots/
-    index.html                      browse all eleven mockups
+    index.html                      browse all six mockups
     _shell.css                      shared design system
-    01-hero.html                    "Before you touch this file" inspector
-    02-linter.html                  Memory linter panel
-    03-agents.html                  Six agents linked
-    04-xcode.html                   Xcode Source Editor extension
-    05-vscode.html                  VS Code / Cursor palette command
-    06-menubar.html                 Menu bar dropdown
-    07-dashboard.html               Confidence dashboard: verdict, trend, causes
-    08-predictive.html              Predictive governance: risk before you commit
-    09-sandbox.html                 Agent sandbox pre-flight
-    10-rewind.html                  Governance rewind: rule history slider
-    11-sync.html                    Team sync: signed proposals over Bonjour
+    01-hero.html                    Repository Intelligence OS overview
+    02-dashboard.html               Confidence dashboard: verdict, trend, causes
+    03-predictive.html              Predictive governance: risk before you commit
+    04-sandbox.html                 Agent sandbox pre-flight
+    05-rewind.html                  Governance rewind: rule history slider
+    06-sync.html                    Team sync: signed proposals over Bonjour
     exports/                        generated PNGs (see below)
 ```
 
-Panels 07-11 showcase the Repository Intelligence OS: predictive risk, agent
-pre-flight, governance rewind, and signed peer sync. Like the others, they use
+The set showcases the Repository Intelligence OS (Kujto Studio 1.1): a graded
+risk verdict with a trend, predictive risk on the current diff, agent
+pre-flight, governance rewind, and signed peer sync. They use
 fictional-but-honest data (a `checkout-flow` repo with a payment-risk rule) and
 the real command names, palette, and verdict model from the shipping app.
 
@@ -58,12 +54,12 @@ App Store Connect asks for six screenshots per screen size. Upload the six retin
 
 | Slot | File | What sells it |
 | --- | --- | --- |
-| 1 | `01-hero.png` | The killer screen: rules + risks + tests before you touch a payment file |
-| 2 | `03-agents.png` | One source of truth, six agents linked |
-| 3 | `02-linter.png` | Deterministic drift detection |
-| 4 | `04-xcode.png` | Native Xcode integration |
-| 5 | `05-vscode.png` | Same engine in VS Code and Cursor |
-| 6 | `06-menubar.png` | Always-visible menu bar |
+| 1 | `01-hero.png` | The overview: one local engine, six intelligence surfaces |
+| 2 | `02-dashboard.png` | A graded risk verdict with a trend and cause stack |
+| 3 | `03-predictive.png` | Risk flagged on the diff before you commit |
+| 4 | `04-sandbox.png` | Agent pre-flight: readiness, tests, dry-run |
+| 5 | `05-rewind.png` | Governance rewind: a rule's risk history |
+| 6 | `06-sync.png` | Signed rule proposals shared over Bonjour |
 
 App metadata (name, subtitle, description, keywords, review notes) lives at [`docs/app-store-metadata.md`](../../docs/app-store-metadata.md).
 
@@ -81,7 +77,6 @@ Suggested Ko-fi copy:
 
 - All screens use `_shell.css` for the palette (deep navy, gold, warm cream) and window chrome.
 - Change a file name, a rule title, or a badge color in-place; refresh the preview; re-export.
-- The app icon in `06-menubar.html` reads from `site/assets/kujto-icon-1024.png`. Swap the icon there and every screen updates.
 
 ## When you have the actual app running
 
