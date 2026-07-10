@@ -16,7 +16,7 @@ struct Kujto: ParsableCommand {
 
         Memory commands:
           wire, unwire, root, rules, map, lint, risk, preflight, history,
-          propose, sign-proposals, verify-proposal, agents
+          propose, sign-proposals, verify-proposal, debt, agents
 
         Apple toolchain (Phase 1–8 of the case study):
           context, config, build, run, test, logs, apps, stop, clean,
@@ -39,6 +39,7 @@ struct Kujto: ParsableCommand {
             ProposeCommand.self,
             SignProposalsCommand.self,
             VerifyProposalCommand.self,
+            DebtCommand.self,
             AgentsCommand.self,
             // Apple toolchain
             ContextCommand.self,
