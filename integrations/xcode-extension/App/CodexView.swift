@@ -102,7 +102,9 @@ struct CodexView: View {
 
     private var document: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 56) {
+            // LazyVStack so off-screen chapters (runtime, sync, proposals) do
+            // not render or run their .task work until scrolled into view.
+            LazyVStack(alignment: .leading, spacing: 56) {
                 prologue
                 confidenceChapter
                 debtChapter
@@ -113,7 +115,7 @@ struct CodexView: View {
                 proposalsChapter
                 agentsChapter
                 skillsChapter
-                if !conflicts.isEmpty { conflictsChapter }
+                if !model.conflicts.isEmpty { conflictsChapter }
                 healthChapter
                 rewindChapter
                 syncChapter
@@ -124,14 +126,6 @@ struct CodexView: View {
             .frame(maxWidth: 960, alignment: .leading)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-    }
-
-    // Conflicts are computed on demand from the current index. Cheap for
-    // typical rule counts and keeps model state simple.
-    private var conflicts: [Conflict] {
-        guard let root = model.rootPath.map({ URL(fileURLWithPath: $0) }),
-              let index = try? RuleIndex.load(root: root) else { return [] }
-        return ConflictLens.detect(in: index)
     }
 
     // MARK: - Prologue
@@ -461,12 +455,12 @@ struct CodexView: View {
             subtitle: "Kujto found structural disagreements - duplicated titles or overlapping scopes with divergent risk. It doesn't judge the meaning; the fix is yours to make."
         ) {
             VStack(spacing: 12) {
-                ForEach(Array(conflicts.enumerated()), id: \.offset) { _, conflict in
+                ForEach(Array(model.conflicts.enumerated()), id: \.offset) { _, conflict in
                     ConflictParagraph(conflict: conflict)
                 }
             }
         } marginalia: {
-            marginaliaHeader("Detected", value: "\(conflicts.count) disagreement\(conflicts.count == 1 ? "" : "s")")
+            marginaliaHeader("Detected", value: "\(model.conflicts.count) disagreement\(model.conflicts.count == 1 ? "" : "s")")
         }
     }
 

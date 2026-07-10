@@ -45,6 +45,14 @@ final class StudioModel: ObservableObject {
     /// The memory-debt heartbeat from the last assessment.
     @Published private(set) var debt: MemoryDebt?
 
+    /// Structural conflicts in the current index, recomputed on load rather than
+    /// per render, so scrolling the Codex never triggers a rule reload.
+    @Published private(set) var conflicts: [Conflict] = []
+
+    /// Bumps once per completed assessment so views can refresh cached data
+    /// (e.g. the risk trend) without re-querying on every SwiftUI render.
+    @Published private(set) var assessmentTick: Int = 0
+
     /// SwiftData-backed history of repo risk snapshots.
     private let riskLedger = RiskLedgerStore.shared
 
@@ -182,6 +190,7 @@ final class StudioModel: ObservableObject {
         rootPath = root.path
         let idx = try? RuleIndex.load(root: root)
         index = idx
+        conflicts = idx.map { ConflictLens.detect(in: $0) } ?? []
         map = try? MemoryMapScanner.scan(root: root)
         files = Self.swiftFiles(under: root)
             .map { rel in
@@ -217,7 +226,9 @@ final class StudioModel: ObservableObject {
             try? await Task.sleep(nanoseconds: 350_000_000)
             guard let self, !Task.isCancelled, let rootPath = self.rootPath else { return }
             let root = URL(fileURLWithPath: rootPath)
-            self.index = try? RuleIndex.load(root: root)
+            let idx = try? RuleIndex.load(root: root)
+            self.index = idx
+            self.conflicts = idx.map { ConflictLens.detect(in: $0) } ?? []
             self.map = try? MemoryMapScanner.scan(root: root)
             self.agents = AgentExport.status(target: root, root: root)
             self.lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
@@ -254,6 +265,7 @@ final class StudioModel: ObservableObject {
             self.riskFiles = assessment.files
             self.risk = assessment.verdict
             self.debt = debt
+            self.assessmentTick &+= 1
         }
     }
 

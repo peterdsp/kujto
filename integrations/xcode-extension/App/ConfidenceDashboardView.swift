@@ -18,6 +18,10 @@ struct ConfidenceDashboardView: View {
     /// Bound to the Codex focus field so "focus the riskiest file" works.
     @Binding var focusFile: String
 
+    /// Snapshot history cached here and refreshed only when a new assessment
+    /// lands, so scrolling never triggers a SwiftData fetch.
+    @State private var history: [RiskSnapshot] = []
+
     private var verdict: RiskScore? { model.risk }
 
     var body: some View {
@@ -30,6 +34,9 @@ struct ConfidenceDashboardView: View {
             } else {
                 pending
             }
+        }
+        .task(id: model.assessmentTick) {
+            history = model.riskHistory().sorted { $0.takenAt < $1.takenAt }
         }
     }
 
@@ -65,9 +72,9 @@ struct ConfidenceDashboardView: View {
     // MARK: - Trend chart
 
     private var trendCard: some View {
-        // Oldest-first for a left-to-right timeline.
-        let history = model.riskHistory().sorted { $0.takenAt < $1.takenAt }
-        return PaperCard(weight: .muted) {
+        // Uses the cached `history` (refreshed on assessmentTick), never a
+        // fetch during render.
+        PaperCard(weight: .muted) {
             VStack(alignment: .leading, spacing: 12) {
                 Text("RISK TREND")
                     .font(.system(size: 9, weight: .medium))
