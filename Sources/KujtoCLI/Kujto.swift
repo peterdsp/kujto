@@ -15,7 +15,8 @@ struct Kujto: ParsableCommand {
         Memorie AI dygjuhesh dhe orkestrator i veglave Apple.
 
         Memory commands:
-          wire, unwire, root, rules, map, lint, risk, preflight, history, propose, agents
+          wire, unwire, root, rules, map, lint, risk, preflight, history,
+          propose, sign-proposals, verify-proposal, agents
 
         Apple toolchain (Phase 1–8 of the case study):
           context, config, build, run, test, logs, apps, stop, clean,
@@ -36,6 +37,8 @@ struct Kujto: ParsableCommand {
             PreflightCommand.self,
             HistoryCommand.self,
             ProposeCommand.self,
+            SignProposalsCommand.self,
+            VerifyProposalCommand.self,
             AgentsCommand.self,
             // Apple toolchain
             ContextCommand.self,
