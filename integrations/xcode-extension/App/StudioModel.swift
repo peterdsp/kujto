@@ -214,7 +214,10 @@ final class StudioModel: ObservableObject {
     private func refreshRisk(root: URL) {
         Task { [weak self] in
             let assessment = await Task.detached(priority: .utility) {
-                try? RiskScorer.assess(root: root)
+                // Weight files in the current git diff so an edit in progress
+                // raises risk before it lands (predictive governance).
+                let changed = GitDiff.changedFiles(in: root)
+                return try? RiskScorer.assess(root: root, changedFiles: changed)
             }.value
             guard let self, let assessment else { return }
             // Capture the prior latest before recording the new snapshot.

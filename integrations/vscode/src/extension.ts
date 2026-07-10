@@ -44,7 +44,8 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand("kujto.showRules", showRulesForActiveFile),
         vscode.commands.registerCommand("kujto.showMap", () => runSnapshot("map")),
         vscode.commands.registerCommand("kujto.showLint", () => runSnapshot("lint")),
-        vscode.commands.registerCommand("kujto.showAgents", () => runSnapshot("agents"))
+        vscode.commands.registerCommand("kujto.showAgents", () => runSnapshot("agents")),
+        vscode.commands.registerCommand("kujto.showRisk", showRiskForChangedFiles)
     );
 }
 
@@ -248,6 +249,53 @@ async function showRulesForActiveFile() {
             const doc = await vscode.workspace.openTextDocument(path.join(cwd, pick.detail));
             await vscode.window.showTextDocument(doc);
         }
+    } catch (e: any) {
+        vscode.window.showErrorMessage(`Kujto: ${e.message}`);
+    }
+}
+
+/// Predictive Governance: run `kujto risk --json`, then flag every file that is
+/// in the current diff AND scores above Safe as an editor diagnostic, so a
+/// risky edit is surfaced before it is committed. The diagnostic message
+/// carries the precise rule cause the scorer reported.
+async function showRiskForChangedFiles() {
+    const cwd = workspaceCwd();
+    if (!cwd) { vscode.window.showErrorMessage("Open a workspace folder before running Kujto."); return; }
+    try {
+        const raw = await runCapturing(["risk"]);
+        const parsed = JSON.parse(raw);
+        const files: Array<{
+            file: string; level: string; score: number; headline: string; dirty: boolean;
+            causes?: Array<{ title: string; detail: string; weight: number }>;
+        }> = parsed.files ?? [];
+
+        diagnostics?.clear();
+        const byFile = new Map<string, vscode.Diagnostic[]>();
+        let flagged = 0;
+        for (const f of files) {
+            if (f.level === "safe" || !f.dirty) continue;
+            flagged++;
+            const filePath = path.isAbsolute(f.file) ? f.file : path.join(cwd, f.file);
+            const range = new vscode.Range(0, 0, 0, 1);
+            const cause = f.causes && f.causes[0] ? ` (${f.causes[0].detail})` : "";
+            const diag = new vscode.Diagnostic(
+                range,
+                `Risk ${f.level} (${f.score}/100): ${f.headline}${cause}`,
+                f.level === "watch" ? vscode.DiagnosticSeverity.Warning : vscode.DiagnosticSeverity.Error
+            );
+            diag.source = DIAGNOSTIC_SOURCE;
+            const existing = byFile.get(filePath) ?? [];
+            existing.push(diag);
+            byFile.set(filePath, existing);
+        }
+        publishDiagnostics(byFile);
+
+        output?.show(true);
+        output?.appendLine(`kujto risk: ${parsed.level} (${parsed.score}/100) - ${parsed.headline}`);
+        output?.appendLine(flagged === 0
+            ? "  No changed files above Safe. Nothing to flag before commit."
+            : `  Flagged ${flagged} changed file(s). See Problems panel.`);
+        setStatus(`$(shield) Kujto risk: ${parsed.level}`);
     } catch (e: any) {
         vscode.window.showErrorMessage(`Kujto: ${e.message}`);
     }
