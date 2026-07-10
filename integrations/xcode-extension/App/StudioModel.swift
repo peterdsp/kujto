@@ -42,6 +42,9 @@ final class StudioModel: ObservableObject {
     /// dashboard offer "focus the riskiest file" as a next action.
     @Published private(set) var riskFiles: [FileScore] = []
 
+    /// The memory-debt heartbeat from the last assessment.
+    @Published private(set) var debt: MemoryDebt?
+
     /// SwiftData-backed history of repo risk snapshots.
     private let riskLedger = RiskLedgerStore.shared
 
@@ -217,18 +220,22 @@ final class StudioModel: ObservableObject {
     /// never disturbs the rest of the shell.
     private func refreshRisk(root: URL) {
         Task { [weak self] in
-            let assessment = await Task.detached(priority: .utility) {
+            let result = await Task.detached(priority: .utility) { () -> (RepoAssessment, MemoryDebt)? in
                 // Weight files in the current git diff so an edit in progress
                 // raises risk before it lands (predictive governance).
                 let changed = GitDiff.changedFiles(in: root)
-                return try? RiskScorer.assess(root: root, changedFiles: changed)
+                guard let assessment = try? RiskScorer.assess(root: root, changedFiles: changed) else { return nil }
+                let debt = (try? MemoryDebtScanner.assess(root: root)) ?? MemoryDebtScanner.score(
+                    lintErrors: 0, lintWarnings: 0, conflicts: 0, staleRules: 0, overrides: 0)
+                return (assessment, debt)
             }.value
-            guard let self, let assessment else { return }
+            guard let self, let (assessment, debt) = result else { return }
             // Capture the prior latest before recording the new snapshot.
             self.previousRisk = self.riskLedger.latestSnapshot(forRepo: root.path)
             self.riskLedger.record(RiskSnapshot(assessment, repoPath: root.path))
             self.riskFiles = assessment.files
             self.risk = assessment.verdict
+            self.debt = debt
         }
     }
 

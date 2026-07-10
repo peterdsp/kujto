@@ -105,14 +105,17 @@ struct CodexView: View {
             VStack(alignment: .leading, spacing: 56) {
                 prologue
                 confidenceChapter
+                debtChapter
                 focusBar
                 if !focusFile.isEmpty { traceChapter }
                 baseMemoryChapter
                 scopedRulesChapter
+                proposalsChapter
                 agentsChapter
                 skillsChapter
                 if !conflicts.isEmpty { conflictsChapter }
                 healthChapter
+                rewindChapter
                 runtimeChapter
             }
             .padding(.horizontal, 40)
@@ -216,6 +219,52 @@ struct CodexView: View {
                     marginaliaHeader("Previous", value: "\(previous.level.label) · \(previous.score)/100")
                 }
             }
+        }
+    }
+
+    // MARK: - Repo sentiment chapter (memory debt)
+
+    private var debtChapter: some View {
+        chapterSpread(
+            mark: "∑",
+            title: "Repo sentiment",
+            subtitle: "One memory-debt number, built only from real signals: lint, conflicts, stale rules, and overrides. Every point explains itself."
+        ) {
+            DebtCardView(model: model).padding(.top, 4)
+        } marginalia: {
+            if let debt = model.debt {
+                marginaliaHeader("Debt", value: "\(debt.grade.label) · \(debt.score)/100")
+            } else {
+                marginaliaHeader("Debt", value: "Measuring…")
+            }
+        }
+    }
+
+    // MARK: - Proposed rules chapter (generative memory)
+
+    private var proposalsChapter: some View {
+        chapterSpread(
+            mark: "✎",
+            title: "Proposed rules",
+            subtitle: "Kujto drafts scoped rules for file groups that have none. Deterministic, and never written for you: you review and adopt."
+        ) {
+            ProposalsView(model: model).padding(.top, 4)
+        } marginalia: {
+            marginaliaHeader("Safety", value: "Drafts only · you adopt")
+        }
+    }
+
+    // MARK: - Governance rewind chapter (rule history)
+
+    private var rewindChapter: some View {
+        chapterSpread(
+            mark: "↺",
+            title: "Governance rewind",
+            subtitle: "Trace a rule through git: when it appeared, and when its risk tags or globs changed. Drag the slider back through time."
+        ) {
+            GovernanceRewindView(model: model).padding(.top, 4)
+        } marginalia: {
+            marginaliaHeader("Source", value: "Local git history")
         }
     }
 
