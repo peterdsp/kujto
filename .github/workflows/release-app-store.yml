@@ -103,16 +103,23 @@ jobs:
           mkdir -p "$STAGE"
           cp -R "$RUNNER_TEMP/KujtoStudio.xcarchive/Products/Applications/KujtoStudio.app" "$APP"
 
-          # Preserve the Mac App Store provisioning profiles that automatic
-          # distribution signing embedded in the archive, so we can restore
-          # them after the manual re-sign. Without an embedded profile the
-          # build uploads fine for App Review but is NOT eligible for
-          # TestFlight (App Store Connect warning 90889). The app and the
-          # app-extension each need their own profile.
+          # Preserve any Mac App Store provisioning profiles that automatic
+          # distribution signing embedded in the archive, so we can restore them
+          # after the manual re-sign. This is BEST-EFFORT: automatic signing
+          # does not always embed a profile, and a missing one must not abort
+          # the upload. Without an embedded profile the build still uploads fine
+          # for App Review; it is just not TestFlight-eligible (App Store Connect
+          # warning 90889) until a profile is present.
           APP_PROFILE="$RUNNER_TEMP/app.provisionprofile"
           EXT_PROFILE="$RUNNER_TEMP/ext.provisionprofile"
-          cp "$APP/Contents/embedded.provisionprofile" "$APP_PROFILE"
-          cp "$EXT/Contents/embedded.provisionprofile" "$EXT_PROFILE"
+          HAVE_APP_PROFILE=0
+          HAVE_EXT_PROFILE=0
+          if [ -f "$APP/Contents/embedded.provisionprofile" ]; then
+            cp "$APP/Contents/embedded.provisionprofile" "$APP_PROFILE"; HAVE_APP_PROFILE=1
+          fi
+          if [ -f "$EXT/Contents/embedded.provisionprofile" ]; then
+            cp "$EXT/Contents/embedded.provisionprofile" "$EXT_PROFILE"; HAVE_EXT_PROFILE=1
+          fi
 
           # Strip archive-time embedded provisioning profiles; the matching
           # profiles are restored below, before each bundle is re-signed, so
@@ -133,8 +140,12 @@ jobs:
           ENT_APP="integrations/xcode-extension/App/KujtoStudio.entitlements"
           ENT_EXT="integrations/xcode-extension/Extension/KujtoRulesExtension.entitlements"
 
-          # Restore the extension's profile before signing so it is sealed in.
-          cp "$EXT_PROFILE" "$EXT/Contents/embedded.provisionprofile"
+          # Restore the extension's profile before signing so it is sealed in
+          # (only if the archive gave us one). Use `if`, not `[ ] && cmd`, which
+          # would abort under `set -e` when the profile is absent.
+          if [ "$HAVE_EXT_PROFILE" = 1 ]; then
+            cp "$EXT_PROFILE" "$EXT/Contents/embedded.provisionprofile"
+          fi
           codesign --force --options runtime --timestamp \
             --entitlements "$ENT_EXT" \
             --sign "$APP_CERT" \
@@ -144,18 +155,23 @@ jobs:
             -exec codesign --force --options runtime --timestamp --sign "$APP_CERT" {} \; 2>/dev/null || true
 
           # Restore the app's profile last, then sign the outer bundle so the
-          # signature seals the profile that TestFlight requires.
-          cp "$APP_PROFILE" "$APP/Contents/embedded.provisionprofile"
+          # signature seals it (only if the archive gave us one).
+          if [ "$HAVE_APP_PROFILE" = 1 ]; then
+            cp "$APP_PROFILE" "$APP/Contents/embedded.provisionprofile"
+          fi
           codesign --force --options runtime --timestamp \
             --entitlements "$ENT_APP" \
             --sign "$APP_CERT" \
             "$APP"
 
           codesign --verify --deep --strict --verbose=2 "$APP"
-          # Confirm the profile survived signing (TestFlight eligibility).
-          test -f "$APP/Contents/embedded.provisionprofile" \
-            && echo "App bundle carries an embedded provisioning profile." \
-            || { echo "::error::app is missing embedded.provisionprofile"; exit 1; }
+          # A profile is nice (TestFlight eligibility) but not required for the
+          # App Store review upload, so a missing one is a warning, not a failure.
+          if [ -f "$APP/Contents/embedded.provisionprofile" ]; then
+            echo "App bundle carries an embedded provisioning profile (TestFlight-eligible)."
+          else
+            echo "::warning::No embedded provisioning profile; uploading for App Store review only (not TestFlight-external-eligible until a profile is added)."
+          fi
 
           # Package as .pkg for the Mac App Store.
           PKG="$RUNNER_TEMP/KujtoStudio.pkg"
