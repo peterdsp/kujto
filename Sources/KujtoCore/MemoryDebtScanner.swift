@@ -92,6 +92,31 @@ public enum MemoryDebtScanner {
         )
     }
 
+    /// Debt derived from a risk assessment that already counted lint and
+    /// conflicts, plus a fresh stale-rule count. Lets the app compute debt
+    /// without re-running the linter and conflict lens a second time.
+    public static func score(from assessment: RepoAssessment, staleRules: Int, overrides: Int = 0) -> MemoryDebt {
+        score(
+            lintErrors: assessment.lintErrorCount,
+            lintWarnings: assessment.lintWarningCount,
+            conflicts: assessment.conflictCount,
+            staleRules: staleRules,
+            overrides: overrides
+        )
+    }
+
+    /// Stale-rule count for a repo, loading the rule index itself. Cheap: it
+    /// walks only `memory/` and `skills/` and makes one `git log` call.
+    public static func staleRuleCount(
+        root: URL,
+        staleDays: Int = 180,
+        now: Date = Date(),
+        runner: ProcessRunner = ProcessRunner()
+    ) -> Int {
+        guard let index = try? RuleIndex.load(root: root) else { return 0 }
+        return staleRuleCount(index: index, in: root, staleDays: staleDays, now: now, runner: runner)
+    }
+
     /// Pure scoring from counts. Kept separate so the weighting is unit-tested
     /// without touching git or the filesystem.
     public static func score(
@@ -130,6 +155,11 @@ public enum MemoryDebtScanner {
 
     /// Rules whose most recent commit is older than the staleness window. A
     /// rule with no git history (new or uncommitted) is not counted as stale.
+    ///
+    /// Uses ONE `git log` over the memory/skills trees to get every rule's last
+    /// commit date at once. The old per-rule `git log` + `git show` pair spawned
+    /// two subprocesses per rule on every scan, which pegged the CPU on repos
+    /// with many rules.
     static func staleRuleCount(
         index: RuleIndex,
         in root: URL,
@@ -138,13 +168,41 @@ public enum MemoryDebtScanner {
         runner: ProcessRunner
     ) -> Int {
         let cutoff = now.addingTimeInterval(-Double(staleDays) * 86_400)
+        let dates = lastCommitDates(in: root, runner: runner)
         var stale = 0
         for rule in index.rules {
-            let history = RuleHistoryScanner.history(forRule: rule.path, in: root, limit: 1, runner: runner)
-            guard let latest = history.first, let date = parseDate(latest.date) else { continue }
+            guard let date = dates[rule.path] else { continue }
             if date < cutoff { stale += 1 }
         }
         return stale
+    }
+
+    /// Maps each file under `memory/` and `skills/` to its most recent commit
+    /// date, in a single `git log --name-only` pass scoped to those trees.
+    static func lastCommitDates(in root: URL, runner: ProcessRunner) -> [String: Date] {
+        guard let result = try? runner.run(
+            "git",
+            arguments: [
+                "-C", root.path, "log",
+                "--format=D\u{01}%ad", "--date=short", "--name-only",
+                "--", "memory", "skills"
+            ]
+        ), result.exitCode == 0 else {
+            return [:]
+        }
+
+        var map: [String: Date] = [:]
+        var currentDate: Date?
+        for rawLine in result.stdout.split(separator: "\n", omittingEmptySubsequences: false) {
+            let line = String(rawLine)
+            if line.hasPrefix("D\u{01}") {
+                currentDate = parseDate(String(line.dropFirst(2)))
+            } else if !line.isEmpty, let date = currentDate, map[line] == nil {
+                // Log is newest-first, so the first date we see for a path wins.
+                map[line] = date
+            }
+        }
+        return map
     }
 
     static func parseDate(_ string: String) -> Date? {

@@ -28,9 +28,10 @@ public enum RelatedTests {
         guard let walker = fm.enumerator(at: root, includingPropertiesForKeys: nil) else { return [] }
 
         var out: [String] = []
-        for case let url as URL in walker where url.pathExtension == "swift" {
+        for case let url as URL in walker {
+            if RepoWalk.isHeavyDirectory(url) { walker.skipDescendants(); continue }
+            guard url.pathExtension == "swift" else { continue }
             let path = url.resolvingSymlinksInPath().path
-            if path.contains("/.build/") || path.contains("/DerivedData/") { continue }
             let filename = (path as NSString).lastPathComponent
             let name = (filename as NSString).deletingPathExtension
             guard candidates.contains(name) else { continue }

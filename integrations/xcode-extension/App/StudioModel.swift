@@ -48,6 +48,11 @@ final class StudioModel: ObservableObject {
     /// SwiftData-backed history of repo risk snapshots.
     private let riskLedger = RiskLedgerStore.shared
 
+    /// Debounce handles so FSEvents bursts coalesce into a single reload and a
+    /// single risk assessment instead of stacking dozens of heavy scans.
+    private var reloadTask: Task<Void, Never>?
+    private var riskTask: Task<Void, Never>?
+
     /// Recorded risk snapshots for the current repo, newest first. Read fresh
     /// each call; the dashboard re-queries when `risk` publishes a new verdict.
     func riskHistory(limit: Int = 40) -> [RiskSnapshot] {
@@ -204,14 +209,20 @@ final class StudioModel: ObservableObject {
     /// the memory map, rules, and lint output without disturbing the current
     /// sidebar destination or selection.
     private func reloadInPlace() {
-        guard let rootPath else { return }
-        let root = URL(fileURLWithPath: rootPath)
-        let idx = try? RuleIndex.load(root: root)
-        index = idx
-        map = try? MemoryMapScanner.scan(root: root)
-        agents = AgentExport.status(target: root, root: root)
-        lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
-        refreshRisk(root: root)
+        // Coalesce FSEvents bursts: a save can fire many events in a few
+        // milliseconds. Cancel any pending reload and wait a beat so we rescan
+        // once per burst instead of once per event.
+        reloadTask?.cancel()
+        reloadTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 350_000_000)
+            guard let self, !Task.isCancelled, let rootPath = self.rootPath else { return }
+            let root = URL(fileURLWithPath: rootPath)
+            self.index = try? RuleIndex.load(root: root)
+            self.map = try? MemoryMapScanner.scan(root: root)
+            self.agents = AgentExport.status(target: root, root: root)
+            self.lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
+            self.refreshRisk(root: root)
+        }
     }
 
     /// Assesses repo risk off the main thread, records a snapshot, and
@@ -219,17 +230,24 @@ final class StudioModel: ObservableObject {
     /// and local; no model calls. Failures are swallowed so a scoring hiccup
     /// never disturbs the rest of the shell.
     private func refreshRisk(root: URL) {
-        Task { [weak self] in
+        // Debounce and run off the main thread. Cancelling the previous task
+        // keeps a rapid series of scans from piling up expensive git work.
+        riskTask?.cancel()
+        riskTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 250_000_000)
+            guard !Task.isCancelled else { return }
             let result = await Task.detached(priority: .utility) { () -> (RepoAssessment, MemoryDebt)? in
                 // Weight files in the current git diff so an edit in progress
                 // raises risk before it lands (predictive governance).
                 let changed = GitDiff.changedFiles(in: root)
                 guard let assessment = try? RiskScorer.assess(root: root, changedFiles: changed) else { return nil }
-                let debt = (try? MemoryDebtScanner.assess(root: root)) ?? MemoryDebtScanner.score(
-                    lintErrors: 0, lintWarnings: 0, conflicts: 0, staleRules: 0, overrides: 0)
+                // Derive debt from the assessment's own lint/conflict counts and
+                // one cheap stale-rule pass, instead of re-scanning the repo.
+                let stale = MemoryDebtScanner.staleRuleCount(root: root)
+                let debt = MemoryDebtScanner.score(from: assessment, staleRules: stale)
                 return (assessment, debt)
             }.value
-            guard let self, let (assessment, debt) = result else { return }
+            guard let self, !Task.isCancelled, let (assessment, debt) = result else { return }
             // Capture the prior latest before recording the new snapshot.
             self.previousRisk = self.riskLedger.latestSnapshot(forRepo: root.path)
             self.riskLedger.record(RiskSnapshot(assessment, repoPath: root.path))

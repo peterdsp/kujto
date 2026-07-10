@@ -126,9 +126,10 @@ public enum RuleProposalEngine {
         guard let walker = fm.enumerator(at: root, includingPropertiesForKeys: [.isRegularFileKey]) else { return [] }
 
         var out: [String] = []
-        for case let url as URL in walker where url.pathExtension == "swift" {
+        for case let url as URL in walker {
+            if RepoWalk.isHeavyDirectory(url) { walker.skipDescendants(); continue }
+            guard url.pathExtension == "swift" else { continue }
             let path = url.resolvingSymlinksInPath().path
-            if path.contains("/.git/") || path.contains("/.build/") || path.contains("/DerivedData/") { continue }
             let rel = path.hasPrefix(rootPath + "/") ? String(path.dropFirst(rootPath.count + 1)) : path
             if rel.hasPrefix("memory/") || rel.hasPrefix("skills/") { continue }
             out.append(rel)

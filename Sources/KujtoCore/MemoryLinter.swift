@@ -105,12 +105,12 @@ public enum MemoryLinter {
     private static func allRepoFiles(root: URL) -> [String] {
         let fm = FileManager.default
         let rootPath = root.resolvingSymlinksInPath().path
-        guard let walker = fm.enumerator(at: root, includingPropertiesForKeys: nil) else { return [] }
+        guard let walker = fm.enumerator(at: root, includingPropertiesForKeys: [.isRegularFileKey]) else { return [] }
         var out: [String] = []
         for case let url as URL in walker {
-            let path = url.resolvingSymlinksInPath().path
-            if path.contains("/.git/") || path.contains("/.build/") || path.contains("/DerivedData/") { continue }
+            if RepoWalk.isHeavyDirectory(url) { walker.skipDescendants(); continue }
             guard (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true else { continue }
+            let path = url.resolvingSymlinksInPath().path
             let rel = path.hasPrefix(rootPath + "/") ? String(path.dropFirst(rootPath.count + 1)) : path
             out.append(rel)
         }
