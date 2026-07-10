@@ -29,6 +29,15 @@ final class StudioModel: ObservableObject {
     @Published private(set) var lintIssues: [LintIssue] = []
     @Published var destination: Destination?
 
+    /// The current repo risk verdict from the last assessment, and the snapshot
+    /// that preceded it, so a dashboard can show "current vs previous" risk.
+    /// Populated off the main thread after each scan; nil until the first pass.
+    @Published private(set) var risk: RiskScore?
+    @Published private(set) var previousRisk: RiskSnapshot?
+
+    /// SwiftData-backed history of repo risk snapshots.
+    private let riskLedger = RiskLedgerStore.shared
+
     /// Parent folder the user pointed Kujto at (e.g. `~/git`). Everything
     /// under it is scanned once for git repos so the user can pick from a
     /// list instead of navigating a file panel.
@@ -168,6 +177,7 @@ final class StudioModel: ObservableObject {
         agents = AgentExport.status(target: root, root: root)
         lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
         destination = files.first.map { .file($0.id) } ?? .agents
+        refreshRisk(root: root)
         watcher.start(at: root.path) { [weak self] in
             self?.reloadInPlace()
         }
@@ -184,6 +194,24 @@ final class StudioModel: ObservableObject {
         map = try? MemoryMapScanner.scan(root: root)
         agents = AgentExport.status(target: root, root: root)
         lintIssues = (try? MemoryLinter.lint(root: root)) ?? []
+        refreshRisk(root: root)
+    }
+
+    /// Assesses repo risk off the main thread, records a snapshot, and
+    /// publishes the current verdict plus the previous snapshot. Deterministic
+    /// and local; no model calls. Failures are swallowed so a scoring hiccup
+    /// never disturbs the rest of the shell.
+    private func refreshRisk(root: URL) {
+        Task { [weak self] in
+            let assessment = await Task.detached(priority: .utility) {
+                try? RiskScorer.assess(root: root)
+            }.value
+            guard let self, let assessment else { return }
+            // Capture the prior latest before recording the new snapshot.
+            self.previousRisk = self.riskLedger.latestSnapshot(forRepo: root.path)
+            self.riskLedger.record(RiskSnapshot(assessment, repoPath: root.path))
+            self.risk = assessment.verdict
+        }
     }
 
     var lintErrorCount: Int { lintIssues.filter { $0.severity == .error }.count }

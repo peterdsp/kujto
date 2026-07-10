@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// Kujto Studio, the standalone Mac app. Hosts the SwiftUI shell plus the
 /// first-run welcome wizard and Settings scene. All state lives on a single
@@ -14,6 +15,7 @@ struct KujtoStudioApp: App {
                 .environmentObject(model)
                 .frame(minWidth: 820, minHeight: 520)
         }
+        .modelContainer(RiskLedgerContainer.shared)
         .commands {
             CommandGroup(after: .appInfo) {
                 Button("Check for Updates...") { updater.checkForUpdates() }
