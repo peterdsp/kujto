@@ -116,6 +116,7 @@ struct CodexView: View {
                 if !conflicts.isEmpty { conflictsChapter }
                 healthChapter
                 rewindChapter
+                syncChapter
                 runtimeChapter
             }
             .padding(.horizontal, 40)
@@ -265,6 +266,20 @@ struct CodexView: View {
             GovernanceRewindView(model: model).padding(.top, 4)
         } marginalia: {
             marginaliaHeader("Source", value: "Local git history")
+        }
+    }
+
+    // MARK: - Sync chapter (peer proposal exchange)
+
+    private var syncChapter: some View {
+        chapterSpread(
+            mark: "⇄",
+            title: "Team sync",
+            subtitle: "Share signed rule proposals with teammates on the local network. Everything is signature-checked on arrival and nothing installs without your review."
+        ) {
+            SyncView(model: model).padding(.top, 4)
+        } marginalia: {
+            marginaliaHeader("Trust", value: "Signed proposals · you adopt")
         }
     }
 

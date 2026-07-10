@@ -51,6 +51,18 @@ targets:
         product: Sparkle
         link: false
     postBuildScripts:
+      - name: Add Bonjour services to Info.plist
+        script: |
+          # NSBonjourServices must be an array, which the generated-Info.plist
+          # build settings cannot express, so inject it here. Runs before the
+          # code-sign phase, so the signature covers the final plist. Required
+          # for the Team Sync feature (MultipeerConnectivity) to discover peers
+          # on macOS 15+.
+          PLIST="$TARGET_BUILD_DIR/$INFOPLIST_PATH"
+          /usr/libexec/PlistBuddy -c "Delete :NSBonjourServices" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :NSBonjourServices array" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :NSBonjourServices:0 string _kujto-sync._tcp" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :NSBonjourServices:1 string _kujto-sync._udp" "$PLIST"
       - name: Embed runtime helper (Direct build only)
         script: |
           # The privileged helper daemon and its LaunchDaemon plist ship only
@@ -113,6 +125,11 @@ targets:
         INFOPLIST_KEY_LSMinimumSystemVersion: "14.0"
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
         INFOPLIST_KEY_NSHumanReadableCopyright: "MIT"
+        # Local-network usage for the Team Sync feature (MultipeerConnectivity
+        # over Bonjour). Signed proposals only; nothing is installed without a
+        # human adopting it.
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "Kujto discovers teammates on your local network to exchange signed rule proposals. Nothing is installed without your review."
+        INFOPLIST_KEY_NSBonjourServices: "_kujto-sync._tcp _kujto-sync._udp"
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
       configs:
@@ -129,6 +146,8 @@ targets:
         # user-granted ~/.vscode/extensions and ~/.cursor/extensions folders
         com.apple.security.files.user-selected.read-write: true
         com.apple.security.network.client: true
+        # network.server lets the Team Sync feature advertise over Bonjour.
+        com.apple.security.network.server: true
         com.apple.security.application-groups:
           - YTS4KJBX3P.dev.peterdsp.kujto
   KujtoRulesExtension:
