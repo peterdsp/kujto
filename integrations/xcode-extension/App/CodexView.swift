@@ -92,6 +92,7 @@ struct CodexView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 56) {
                 prologue
+                confidenceChapter
                 focusBar
                 if !focusFile.isEmpty { traceChapter }
                 baseMemoryChapter
@@ -180,6 +181,30 @@ struct CodexView: View {
             }
         }
         .padding(.top, 4)
+    }
+
+    // MARK: - Confidence chapter (the dashboard)
+
+    private var confidenceChapter: some View {
+        chapterSpread(
+            mark: "❖",
+            title: "Confidence",
+            subtitle: "A graded read on how risky this repo is to touch right now, with the trend over time and what is driving it. Deterministic, local, no model calls."
+        ) {
+            ConfidenceDashboardView(model: model, focusFile: $focusFile)
+                .padding(.top, 4)
+        } marginalia: {
+            VStack(alignment: .leading, spacing: 8) {
+                if let risk = model.risk {
+                    marginaliaHeader("Verdict", value: "\(risk.level.label) · \(risk.score)/100")
+                } else {
+                    marginaliaHeader("Verdict", value: "Assessing…")
+                }
+                if let previous = model.previousRisk {
+                    marginaliaHeader("Previous", value: "\(previous.level.label) · \(previous.score)/100")
+                }
+            }
+        }
     }
 
     // MARK: - Chapter I. Base memory

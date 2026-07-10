@@ -34,9 +34,19 @@ final class StudioModel: ObservableObject {
     /// Populated off the main thread after each scan; nil until the first pass.
     @Published private(set) var risk: RiskScore?
     @Published private(set) var previousRisk: RiskSnapshot?
+    /// The scored files behind the current verdict, riskiest first. Lets the
+    /// dashboard offer "focus the riskiest file" as a next action.
+    @Published private(set) var riskFiles: [FileScore] = []
 
     /// SwiftData-backed history of repo risk snapshots.
     private let riskLedger = RiskLedgerStore.shared
+
+    /// Recorded risk snapshots for the current repo, newest first. Read fresh
+    /// each call; the dashboard re-queries when `risk` publishes a new verdict.
+    func riskHistory(limit: Int = 40) -> [RiskSnapshot] {
+        guard let rootPath else { return [] }
+        return riskLedger.snapshots(forRepo: rootPath, limit: limit)
+    }
 
     /// Parent folder the user pointed Kujto at (e.g. `~/git`). Everything
     /// under it is scanned once for git repos so the user can pick from a
@@ -210,6 +220,7 @@ final class StudioModel: ObservableObject {
             // Capture the prior latest before recording the new snapshot.
             self.previousRisk = self.riskLedger.latestSnapshot(forRepo: root.path)
             self.riskLedger.record(RiskSnapshot(assessment, repoPath: root.path))
+            self.riskFiles = assessment.files
             self.risk = assessment.verdict
         }
     }
