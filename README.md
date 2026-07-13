@@ -117,6 +117,9 @@ Full command list:
 | `kujto context` | Inspect the current Xcode workspace/scheme |
 | `kujto build` / `run` / `test` / `logs` / `clean` | Xcode toolchain orchestrator (NDJSON events) |
 | `kujto simulator` / `device` / `ui` | Simulator control, device install, UI automation |
+| `kujto simulator appearance` / `location` / `status-bar` / `push` / `privacy` / `clipboard` / `container` / `create` / `delete` | Device-state controls (light/dark, GPS, status bar, push, permissions, pasteboard, container path, lifecycle) |
+| `kujto doctor` | Environment health check (xcrun, xcodebuild, simulators, git) |
+| `kujto localize audit <catalog.xcstrings>` | Audit a String Catalog for missing/needs-review/placeholder-mismatch translations |
 
 ---
 

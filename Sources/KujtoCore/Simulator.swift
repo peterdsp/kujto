@@ -10,7 +10,9 @@ public struct SimulatorDevice: Codable, Sendable {
 }
 
 public final class SimulatorController {
-    private let runner: ProcessRunner
+    /// Package-internal so the device-state controls in `SimulatorState.swift`
+    /// can reuse the same runner.
+    let runner: ProcessRunner
 
     public init(runner: ProcessRunner = ProcessRunner()) {
         self.runner = runner

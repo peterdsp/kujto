@@ -20,7 +20,7 @@ struct Kujto: ParsableCommand {
 
         Apple toolchain (Phase 1–8 of the case study):
           context, config, build, run, test, logs, apps, stop, clean,
-          simulator, device, ui
+          simulator, device, ui, doctor, localize
 
         Set KUJTO_LANG=sq for Albanian output, KUJTO_LANG=en for English.
         """,
@@ -53,7 +53,9 @@ struct Kujto: ParsableCommand {
             StopCommand.self,
             SimulatorCommand.self,
             DeviceCommand.self,
-            UICommand.self
+            UICommand.self,
+            DoctorCommand.self,
+            LocalizeCommand.self
         ]
     )
 }
