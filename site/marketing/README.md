@@ -73,9 +73,9 @@ Ko-fi's product page accepts up to five gallery images. Use the same six PNGs at
 
 Suggested Ko-fi copy:
 
-> **Kujto Studio Pro, €39 one time**
+> **Kujto Studio Pro, €17.99 one time**
 >
-> The direct build of Kujto Studio, made in Europe. Same app as the App Store version, plus early-access features (menu bar, TCA reducer graph, Shortcuts), Sparkle auto-update, and priority issue triage. You're backing an indie developer.
+> The direct build of Kujto Studio, made in Europe. Same app as the App Store version, plus early-access features (menu bar, TCA reducer graph, Shortcuts), Sparkle auto-update, and priority issue triage. Cheaper than the App Store, and you're backing an indie developer.
 
 ## Iterating on the mockups
 

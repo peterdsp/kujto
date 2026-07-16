@@ -48,7 +48,7 @@ Local-only indexing. Nothing leaves your machine.
 
 ## Install
 
-The CLI is the fastest path today. The Mac app is buildable from source; join the beta by starring the repo.
+Kujto Studio is on the [Mac App Store](https://apps.apple.com/app/id6786441748) for €19.99 one time, or direct from [Ko-fi](https://ko-fi.com/s/826e2c8d19) for €17.99 (same app, Sparkle auto-update, cheaper). The `kujto` CLI is free and MIT.
 
 ### CLI, one line
 
