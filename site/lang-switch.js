@@ -35,12 +35,14 @@
 
   function commit(html, href, push) {
     var doc = new DOMParser().parseFromString(html, 'text/html');
+    // Update the URL before inserting the new body so any relative asset
+    // paths in it resolve against the target page, not the previous one.
+    if (push) history.pushState({ langSwap: true }, '', href);
     if (doc.documentElement.lang) {
       document.documentElement.lang = doc.documentElement.lang;
     }
     document.title = doc.title;
     document.body.replaceWith(doc.body);
-    if (push) history.pushState({ langSwap: true }, '', href);
     prefetch();
   }
 
