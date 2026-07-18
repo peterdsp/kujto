@@ -98,6 +98,32 @@ pre code { background: transparent; padding: 0; border-radius: 0; }
 }
 .header-cta:hover { background: var(--ink-2); transform: translateY(-1px); }
 
+/* -------- Language switch -------- */
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: rgba(255, 253, 247, 0.6);
+  font-size: 12px;
+  font-weight: 500;
+}
+.lang-switch a {
+  color: var(--ink-3);
+  padding: 3px 9px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  transition: color 120ms ease, background 120ms ease;
+}
+.lang-switch a:hover { color: var(--ink); }
+.lang-switch a[aria-current="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
 /* -------- Hero -------- */
 
 .hero {
@@ -460,6 +486,7 @@ pre code { background: transparent; padding: 0; border-radius: 0; }
   .icon-plate { max-width: 320px; }
   .site-header { padding: 12px 20px; gap: 12px; }
   .nav { display: none; }
+  .lang-switch { margin-left: auto; }
   .section { padding: 72px 24px; }
   .section-head { margin-bottom: 40px; }
 }

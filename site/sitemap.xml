@@ -1,21 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://kujto.peterdsp.dev/</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-07-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/"/>
+  </url>
+  <url>
+    <loc>https://kujto.peterdsp.dev/sq/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/"/>
+  </url>
+  <url>
+    <loc>https://kujto.peterdsp.dev/el/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/"/>
   </url>
   <url>
     <loc>https://kujto.peterdsp.dev/press.html</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-07-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/press.html"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/press.html"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/press.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/press.html"/>
+  </url>
+  <url>
+    <loc>https://kujto.peterdsp.dev/sq/press.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/press.html"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/press.html"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/press.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/press.html"/>
+  </url>
+  <url>
+    <loc>https://kujto.peterdsp.dev/el/press.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/press.html"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/press.html"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/press.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/press.html"/>
   </url>
   <url>
     <loc>https://kujto.peterdsp.dev/privacy.html</loc>
-    <lastmod>2026-07-02</lastmod>
+    <lastmod>2026-07-18</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/privacy.html"/>
+  </url>
+  <url>
+    <loc>https://kujto.peterdsp.dev/sq/privacy.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/privacy.html"/>
+  </url>
+  <url>
+    <loc>https://kujto.peterdsp.dev/el/privacy.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/privacy.html"/>
   </url>
 </urlset>

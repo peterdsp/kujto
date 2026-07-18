@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kujto Studio, το τοπικό επίπεδο μνήμης για πράκτορες AI κωδικοποίησης</title>
+  <meta name="description" content="Το Kujto Studio είναι μια εφαρμογή Mac local-first που διαβάζει τη μνήμη του repo σας και εμφανίζει τους κανόνες που ισχύουν προτού αγγίξετε ένα αρχείο. Τώρα στο Mac App Store και στο Ko-fi. Μία μηχανή, τέσσερις επιφάνειες: εφαρμογή Mac, επέκταση Xcode, επέκταση VS Code / Cursor και CLI.">
+  <meta name="keywords" content="Kujto Studio, Kujto, μνήμη AI, Claude, Codex, Gemini, Copilot, Cursor, AGENTS.md, CLAUDE.md, εργαλεία προγραμματιστών, Mac App Store, επέκταση Xcode, επέκταση VS Code, local-first, κανόνες κώδικα, Ko-fi">
+  <meta name="author" content="Petros Dhespollari">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#0E1424">
+
+  <meta property="og:title" content="Kujto Studio, τώρα στο Mac App Store">
+  <meta property="og:description" content="Το τοπικό επίπεδο μνήμης για πράκτορες AI κωδικοποίησης. Διαβάζει τη μνήμη του repo σας και εμφανίζει τους κανόνες που ισχύουν προτού αγγίξετε ένα αρχείο. Διαθέσιμο στο Mac App Store και στο Ko-fi.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kujto.peterdsp.dev/el/">
+  <meta property="og:image" content="https://kujto.peterdsp.dev/marketing/screenshots/exports/standard/01-hero.png">
+  <meta property="og:image:width" content="1440">
+  <meta property="og:image:height" content="900">
+  <meta property="og:site_name" content="Kujto Studio">
+  <meta property="og:locale" content="el_GR">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kujto Studio, τώρα στο Mac App Store">
+  <meta name="twitter:description" content="Το τοπικό επίπεδο μνήμης που εμποδίζει πράκτορες AI και προγραμματιστές να παραβιάσουν τους κανόνες του κώδικά σας.">
+  <meta name="twitter:image" content="https://kujto.peterdsp.dev/marketing/screenshots/exports/standard/01-hero.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Kujto Studio",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS 14 ή νεότερο",
+    "url": "https://kujto.peterdsp.dev/el/",
+    "inLanguage": "el",
+    "downloadUrl": "https://apps.apple.com/app/id6786441748",
+    "description": "Εφαρμογή Mac local-first που αναδεικνύει τους κρυφούς κανόνες ενός κώδικα προτού ένας μηχανικός ή πράκτορας AI επεξεργαστεί ένα αρχείο.",
+    "offers": [
+      { "@type": "Offer", "name": "Kujto Studio (Mac App Store)", "price": "19.99", "priceCurrency": "EUR", "url": "https://apps.apple.com/app/id6786441748" },
+      { "@type": "Offer", "name": "Kujto Studio Pro (Ko-fi)", "price": "17.99", "priceCurrency": "EUR", "url": "https://ko-fi.com/s/826e2c8d19" },
+      { "@type": "Offer", "name": "Kujto CLI (ανοιχτού κώδικα)", "price": "0", "priceCurrency": "USD", "url": "https://github.com/peterdsp/kujto" }
+    ],
+    "author": { "@type": "Person", "name": "Petros Dhespollari", "url": "https://peterdsp.dev" },
+    "license": "https://github.com/peterdsp/kujto/blob/main/LICENSE",
+    "codeRepository": "https://github.com/peterdsp/kujto"
+  }
+  </script>
+
+  <link rel="canonical" href="https://kujto.peterdsp.dev/el/">
+  <link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/">
+  <link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/">
+  <link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/">
+  <link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="#top" aria-label="Αρχική του Kujto Studio">
+    <img class="brand-mark" src="/favicon-192.png" alt="" width="28" height="28">
+    <span class="brand-word">Kujto Studio</span>
+  </a>
+  <nav class="nav" aria-label="Κύρια">
+    <a href="#product">Προϊόν</a>
+    <a href="#surfaces">Πού ζει</a>
+    <a href="#download">Λήψη</a>
+    <a href="#pricing">Τιμές</a>
+    <a href="#roadmap">Πλάνο</a>
+    <a href="press.html">Τύπος</a>
+  </nav>
+  <div class="lang-switch" role="group" aria-label="Γλώσσα">
+    <a href="/index.html" lang="en">EN</a>
+    <a href="/sq/index.html" lang="sq">SQ</a>
+    <a href="index.html" aria-current="true" lang="el">EL</a>
+  </div>
+  <a class="header-cta" href="https://apps.apple.com/app/id6786441748">Αποκτήστε το στο App Store</a>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Τώρα στο Mac App Store</p>
+      <h1 class="hero-title">Σταματήστε να εξηγείτε τον ίδιο κώδικα στον πράκτορα AI σας κάθε μέρα.</h1>
+      <p class="hero-lede">
+        Το Kujto Studio είναι μια εφαρμογή Mac local-first που διαβάζει τη μνήμη του repo σας
+        και μετά εμφανίζει τους κανόνες που ισχύουν προτού αγγίξετε ένα αρχείο. Αρχιτεκτονική,
+        κίνδυνοι, σχετικά τεστ, το context του πράκτορα προς εισαγωγή, όλα σε ένα πάνελ.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://apps.apple.com/app/id6786441748">
+          <span aria-hidden="true">&#63743;</span> Λήψη στο Mac App Store
+        </a>
+        <a class="button ghost" href="https://ko-fi.com/s/826e2c8d19">Αποκτήστε το Pro στο Ko-fi &rarr;</a>
+      </div>
+      <p class="hero-meta">macOS 14 και νεότερο. Το CLI παραμένει δωρεάν και ανοιχτού κώδικα, MIT.</p>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="icon-plate">
+        <img src="/assets/kujto-icon-1024.png" alt="" class="app-icon">
+      </div>
+    </div>
+  </section>
+
+  <section class="proof-band" aria-label="Μία μηχανή, πολλές επιφάνειες">
+    <span>Mac App Store</span><i>&middot;</i>
+    <span>Επέκταση Xcode</span><i>&middot;</i>
+    <span>VS Code και Cursor</span><i>&middot;</i>
+    <span>Γραμμή μενού και Shortcuts</span><i>&middot;</i>
+    <span>Γραμμή εντολών</span><i>&middot;</i>
+    <span>Μόνο τοπικά</span>
+  </section>
+
+  <section id="product" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Το προϊόν</p>
+      <h2>Πριν αγγίξετε αυτό το αρχείο.</h2>
+      <p class="section-lede">
+        Κάθε repo έχει κρυφούς κανόνες. Οι νέοι πράκτορες τους ξεχνούν. Οι νέοι προγραμματιστές τους προσπερνούν.
+        Οι παλιές αποφάσεις ζουν σε PR, README, νήματα στο Slack, στο AGENTS.md και σε δεκάδες διάσπαρτα έγγραφα.
+        Το Kujto Studio κάνει αυτό το χάος ορατό ακριβώς τη στιγμή που το χρειάζεστε.
+      </p>
+    </div>
+
+    <div class="feature-grid">
+      <article class="feature">
+        <h3>Κανόνες ανά αρχείο</h3>
+        <p>
+          Οι κανόνες μνήμης φέρουν globs <code>applies_to</code> και ετικέτες κινδύνου. Επιλέξτε ένα αρχείο
+          και δείτε τους κανόνες αρχιτεκτονικής που το διέπουν, ταξινομημένους κατά εξειδίκευση.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Ετυμηγορία εμπιστοσύνης</h3>
+        <p>
+          Ασφαλές, χρειάζεται context ή ζώνη κινδύνου. Μία μόνο ένδειξη σας λέει αν το
+          αρχείο είναι ήρεμο έδαφος ή ένα σημείο που ένας νέος πράκτορας θα χαλάσει αθόρυβα.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Linter μνήμης</h3>
+        <p>
+          Εντοπίζει ξεπερασμένους κανόνες, σπασμένους συνδέσμους και αρχεία διακυβέρνησης που λείπουν,
+          προτού σας κοστίσουν ένα pull request. Ντετερμινιστικό, χωρίς AI.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Εισαγωγέας context για τον πράκτορα</h3>
+        <p>
+          Με ένα κλικ μετατρέπει τους κανόνες του τρέχοντος αρχείου σε ένα μπλοκ prompt που
+          μπορείτε να επικολλήσετε στο Claude, στο Codex, στο Cursor ή σε οποιονδήποτε editor με πράκτορα.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Σύνδεση πολλαπλών πρακτόρων</h3>
+        <p>
+          Μία μόνο πηγή αλήθειας, συνδεδεμένη με symlink σε <code>CLAUDE.md</code>, <code>CODEX.md</code>,
+          <code>GEMINI.md</code> και <code>AGENTS.md</code>. Χωρίς διπλότυπη μνήμη.
+        </p>
+      </article>
+      <article class="feature">
+        <h3>Μόνο τοπικά</h3>
+        <p>
+          Το repo σας παραμένει στη συσκευή σας. Τίποτα δεν ανεβαίνει. Η μνήμη είναι Markdown
+          μέσα στο repo σας, με έλεγχο εκδόσεων στο git, ελεγμένη όπως κάθε άλλη αλλαγή.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section id="surfaces" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Πού ζει</p>
+      <h2>Μία μηχανή, πέντε επιφάνειες.</h2>
+      <p class="section-lede">
+        Το ίδιο ευρετήριο μνήμης τροφοδοτεί την εφαρμογή Mac, μια επέκταση Xcode Source Editor,
+        μια επέκταση VS Code ή Cursor, έναν βοηθό στη γραμμή μενού με Shortcuts, και το
+        CLI <code>kujto</code>. Χρησιμοποιήστε ένα, χρησιμοποιήστε τα όλα.
+      </p>
+    </div>
+
+    <div class="surface-grid">
+      <article class="surface">
+        <div class="surface-tag">Διαθέσιμο</div>
+        <h3>Εφαρμογή Mac</h3>
+        <p>Χάρτης μνήμης στην πλαϊνή μπάρα, επιθεωρητής αρχείων, πάνελ πράκτορα, πάνελ lint. Εγγενές SwiftUI, σε sandbox στο App Store.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Διαθέσιμο</div>
+        <h3>Xcode</h3>
+        <p>Μενού editor &rsaquo; Kujto &rsaquo; Εμφάνιση κανόνων για αυτό το αρχείο. Εισάγει τους κανόνες ως επικεφαλίδα σχολίου.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Διαθέσιμο</div>
+        <h3>VS Code και Cursor</h3>
+        <p>Μια καταχώρηση στην παλέτα εντολών αναδεικνύει τους κανόνες για το ανοιχτό αρχείο, με ενσωματωμένα διαγνωστικά.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Διαθέσιμο</div>
+        <h3>Γραμμή μενού και Shortcuts</h3>
+        <p>Πάντα ορατό αναπτυσσόμενο μενού, συν App Intents ώστε το Siri και τα Shortcuts να συνοψίζουν τους κανόνες του repo και να προετοιμάζουν το context του πράκτορα.</p>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Ανοιχτού κώδικα</div>
+        <h3>kujto CLI</h3>
+        <p><code>rules</code>, <code>map</code>, <code>lint</code>, <code>agents</code>, <code>wire</code>. Έξοδος για ανθρώπους και JSON.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="download" class="section install-section">
+    <div class="section-head">
+      <p class="eyebrow">Λήψη</p>
+      <h2>Δύο τρόποι αγοράς, ένας τρόπος εγκατάστασης του CLI.</h2>
+      <p class="section-lede">
+        Το Kujto Studio διανέμεται από το Mac App Store και από το Ko-fi. Το CLI <code>kujto</code>
+        παραμένει δωρεάν για πάντα.
+      </p>
+    </div>
+
+    <div class="install-card install-card-3">
+      <div class="install-block">
+        <p class="install-label">Mac App Store</p>
+        <p class="install-block-lede">Σε sandbox, αυτόματες ενημερώσεις μέσω του App Store, μία φορά <strong>&euro;19.99</strong>.</p>
+        <a class="button primary install-cta" href="https://apps.apple.com/app/id6786441748">Λήψη στο Mac App Store</a>
+        <p class="install-hint">Πακέτο: Kujto Studio, επέκταση Xcode, επέκταση VS Code / Cursor.</p>
+      </div>
+      <div class="install-block">
+        <p class="install-label">Ko-fi, Pro</p>
+        <p class="install-block-lede">Άμεση έκδοση με αυτόματη ενημέρωση Sparkle, μία φορά <strong>&euro;17.99</strong>.</p>
+        <a class="button primary install-cta" href="https://ko-fi.com/s/826e2c8d19">Αποκτήστε το Kujto Studio Pro</a>
+        <p class="install-hint">Υπογεγραμμένο και notarized PKG. Η ίδια εφαρμογή, συν βοηθός στη γραμμή μενού, App Intents και διαχείριση κατά προτεραιότητα.</p>
+      </div>
+      <div class="install-block">
+        <p class="install-label">CLI, μία γραμμή</p>
+        <pre><code>curl -fsSL https://raw.githubusercontent.com/peterdsp/kujto/main/bin/install.sh | bash</code></pre>
+        <p class="install-hint">Συνδέει το <code>AGENTS.md</code> με τα <code>CLAUDE.md</code>, <code>CODEX.md</code>, <code>GEMINI.md</code> και κάθε άλλον υποστηριζόμενο πράκτορα. Δωρεάν, MIT.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Τιμές</p>
+      <h2>Τρία επίπεδα, χωρίς συνδρομές.</h2>
+      <p class="section-lede">Αγοράστε το μία φορά, είναι δικό σας. Το CLI παραμένει δωρεάν για πάντα.</p>
+    </div>
+    <div class="surface-grid">
+      <article class="surface">
+        <div class="surface-tag">Ανοιχτού κώδικα</div>
+        <h3>CLI</h3>
+        <p><strong>Δωρεάν.</strong> Η πλήρης γραμμή εντολών <code>kujto</code>: rules, map, lint, agents, wire. Με άδεια MIT. Όλη η λογική της μνήμης.</p>
+        <a class="surface-cta" href="https://github.com/peterdsp/kujto">Δείτε το στο GitHub &rarr;</a>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Mac App Store</div>
+        <h3>Kujto Studio</h3>
+        <p><strong>&euro;19.99, μία φορά.</strong> Η εφαρμογή Mac + επέκταση Xcode + επέκταση VS Code / Cursor. Σε sandbox, αυτόματες ενημερώσεις μέσω του App Store.</p>
+        <a class="surface-cta" href="https://apps.apple.com/app/id6786441748">Αποκτήστε το στο App Store &rarr;</a>
+      </article>
+      <article class="surface">
+        <div class="surface-tag">Ko-fi, Pro</div>
+        <h3>Kujto Studio Pro</h3>
+        <p><strong>&euro;17.99, μία φορά.</strong> Η ίδια εφαρμογή, με άμεση διανομή και αυτόματη ενημέρωση Sparkle. Φθηνότερα από το App Store, και στηρίζετε έναν ανεξάρτητο προγραμματιστή αντί να πληρώνετε το μερίδιο της Apple.</p>
+        <a class="surface-cta" href="https://ko-fi.com/s/826e2c8d19">Αγοράστε το στο Ko-fi &rarr;</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="roadmap" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Πλάνο ανάπτυξης</p>
+      <h2>Τι κυκλοφόρησε ήδη, και τι ακολουθεί.</h2>
+      <p class="section-lede">
+        Η εφαρμογή Mac, και οι δύο επεκτάσεις editor, ο βοηθός στη γραμμή μενού και τα App Intents
+        είναι ενεργά στην v1. Να τι βρίσκεται στη σειρά μετά την κυκλοφορία.
+      </p>
+    </div>
+    <div class="roadmap-grid">
+      <article><h3>Γράφος reducer TCA</h3><p>Ένα πέρασμα SwiftSyntax που χαρτογραφεί reducers, state, actions και dependency clients σε έναν επιθεωρήσιμο γράφο.</p></article>
+      <article><h3>Ευρετηρίαση με Spotlight</h3><p>Αναζητήστε τη μνήμη και τους κανόνες του repo σας απευθείας από το Spotlight, εκτός σύνδεσης.</p></article>
+      <article><h3>Πρότυπα μνήμης για ομάδες</h3><p>Μοιραστείτε και εκδώστε συμβάσεις σε μια ομάδα χωρίς να διπλασιάζετε αρχεία μνήμης.</p></article>
+      <article><h3>Deep links για Cursor / Copilot</h3><p>Ένα κλικ για να ανοίξετε το τρέχον σύνολο κανόνων μέσα σε μια συνομιλία πράκτορα, προφορτωμένη με το context του αρχείου.</p></article>
+      <article><h3>Βελτιώσεις του παρακολουθητή repo</h3><p>Άμεση επανευρετηρίαση στις αλλαγές του <code>memory/</code> με ενημερώσεις κάτω του δευτερολέπτου στην πλαϊνή μπάρα.</p></article>
+      <article><h3>Τοπικοποίηση</h3><p>Μεταφορά της διεπαφής στα αλβανικά, γαλλικά, γερμανικά και ισπανικά μέσω του String Catalog.</p></article>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="/favicon-192.png" alt="" width="20" height="20">
+      <strong>Kujto Studio</strong>
+      <span>Με άδεια MIT, ανοιχτού κώδικα.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://apps.apple.com/app/id6786441748">Mac App Store</a>
+      <a href="https://ko-fi.com/s/826e2c8d19">Ko-fi</a>
+      <a href="https://github.com/peterdsp/kujto">GitHub</a>
+      <a href="https://github.com/peterdsp/kujto/issues">Ζητήματα</a>
+      <a href="privacy.html">Απόρρητο</a>
+      <a href="https://peterdsp.dev">Δημιουργήθηκε από @peterdsp</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

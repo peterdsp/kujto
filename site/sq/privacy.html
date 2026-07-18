@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Politika e privatësisë, Kujto Studio</title>
+  <meta name="description" content="Kujto Studio është local-first. Pa llogari, pa telemetri, pa analitikë. Kjo faqe shpjegon çfarë ruan aplikacioni në makinën tuaj dhe çfarë largohet prej saj (asgjë).">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0E1424">
+
+  <meta property="og:title" content="Politika e privatësisë, Kujto Studio">
+  <meta property="og:description" content="Vetëm lokal nga dizajni. Pa llogari, pa telemetri, pa analitikë. Politika e plotë në një faqe të shkurtër.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kujto.peterdsp.dev/sq/privacy.html">
+  <meta property="og:image" content="https://kujto.peterdsp.dev/marketing/screenshots/exports/standard/01-hero.png">
+  <meta property="og:image:width" content="1440">
+  <meta property="og:image:height" content="900">
+  <meta property="og:site_name" content="Kujto Studio">
+  <meta property="og:locale" content="sq_AL">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Politika e privatësisë, Kujto Studio">
+  <meta name="twitter:description" content="Vetëm lokal nga dizajni. Pa llogari, pa telemetri, pa analitikë.">
+  <meta name="twitter:image" content="https://kujto.peterdsp.dev/marketing/screenshots/exports/standard/01-hero.png">
+
+  <link rel="canonical" href="https://kujto.peterdsp.dev/sq/privacy.html">
+  <link rel="alternate" hreflang="en" href="https://kujto.peterdsp.dev/privacy.html">
+  <link rel="alternate" hreflang="sq" href="https://kujto.peterdsp.dev/sq/privacy.html">
+  <link rel="alternate" hreflang="el" href="https://kujto.peterdsp.dev/el/privacy.html">
+  <link rel="alternate" hreflang="x-default" href="https://kujto.peterdsp.dev/privacy.html">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+
+  <style>
+    /* Privacy page, scoped additions layered on styles.css. */
+
+    .privacy-hero {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 96px 32px 40px;
+    }
+    .privacy-hero .eyebrow { margin-bottom: 22px; }
+    .privacy-hero h1 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(40px, 5.5vw, 60px);
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin: 0 0 20px;
+      max-width: 18ch;
+    }
+    .privacy-hero .lede {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-2);
+      max-width: 42em;
+      margin: 0 0 12px;
+    }
+    .privacy-hero .updated {
+      font-size: 13px;
+      color: var(--ink-3);
+      font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .privacy-body {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 24px 32px 96px;
+    }
+    .privacy-body h2 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(24px, 3vw, 32px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin: 56px 0 16px;
+    }
+    .privacy-body h2:first-child { margin-top: 0; }
+    .privacy-body p,
+    .privacy-body ul {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--ink-2);
+      margin: 0 0 1.1em;
+    }
+    .privacy-body ul {
+      padding-left: 22px;
+    }
+    .privacy-body li { margin: 0 0 6px; }
+    .privacy-body a {
+      color: var(--ink);
+      border-bottom: 1px solid var(--line-2);
+      padding-bottom: 1px;
+    }
+    .privacy-body a:hover { border-color: var(--ink); }
+    .privacy-body strong { color: var(--ink); font-weight: 600; }
+
+    .privacy-callout {
+      background: rgba(255, 253, 247, 0.65);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 24px 0 32px;
+    }
+    .privacy-callout p { margin: 0; color: var(--ink); }
+
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html" aria-label="Kryefaqja e Kujto Studio">
+    <img class="brand-mark" src="/favicon-192.png" alt="" width="28" height="28">
+    <span class="brand-word">Kujto Studio</span>
+  </a>
+  <nav class="nav" aria-label="Kryesore">
+    <a href="index.html#product">Produkti</a>
+    <a href="index.html#surfaces">Ku jeton</a>
+    <a href="index.html#pricing">Çmimet</a>
+    <a href="press.html">Shtypi</a>
+  </nav>
+  <div class="lang-switch" role="group" aria-label="Gjuha">
+    <a href="/privacy.html" lang="en">EN</a>
+    <a href="privacy.html" aria-current="true" lang="sq">SQ</a>
+    <a href="/el/privacy.html" lang="el">EL</a>
+  </div>
+  <a class="header-cta" href="https://apps.apple.com/app/id6786441748">Merre në App Store</a>
+</header>
+
+<main id="top">
+
+  <section class="privacy-hero" aria-labelledby="privacy-title">
+    <p class="eyebrow">Privatësia</p>
+    <h1 id="privacy-title">Politika e privatësisë e Kujto Studio</h1>
+    <p class="lede">
+      Kujto Studio është një mjet local-first. Gjithçka ndodh në makinën tuaj. Pa llogari, pa telemetri, pa analitikë.
+    </p>
+    <p class="updated">Përditësuar së fundmi: 2026-07-01</p>
+  </section>
+
+  <section class="privacy-body" aria-label="Detajet e politikës">
+
+    <h2>Çfarë bën Kujto Studio</h2>
+    <p>
+      Kujto Studio lexon një drejtori që ju e zgjidhni shprehimisht (një repozitor kodi) dhe ju shfaq rregullat e memories që zbatohen për skedarët brenda saj. Ai nuk e dërgon askund atë drejtori, përmbajtjen e saj, ose ndonjë të dhënë të nxjerrë prej saj.
+    </p>
+
+    <h2>Çfarë mbledhim</h2>
+    <div class="privacy-callout">
+      <p><strong>Asgjë.</strong> Kujto Studio nuk bën asnjë kërkesë rrjeti, nuk përmban analitikë, nuk ka raportues përplasjesh dhe nuk komunikon fshehtas me askënd. Aplikacioni është i izoluar (sandbox) dhe qaset vetëm te dosja së cilës i jepni akses leximi.</p>
+    </div>
+    <ul>
+      <li>Pa llogari përdoruesi, pa hyrje, pa sinkronizim në re.</li>
+      <li>Pa gjurmim përdorimi, pa telemetri.</li>
+      <li>Pa identifikues reklamimi.</li>
+      <li>Pa SDK të palëve të treta që mbledhin të dhëna.</li>
+    </ul>
+
+    <h2>Çfarë ruan Kujto Studio</h2>
+    <p>Gjendja e mëposhtme jeton vetëm në makinën tuaj, në bibliotekën tuaj të përdoruesit:</p>
+    <ul>
+      <li>Flamuri i përfundimit të hyrjes fillestare (<code>kujto.hasOnboarded</code> në <code>UserDefaults</code>).</li>
+      <li>Një faqerojtës me shtrirje sigurie te repo-ja që zgjodhët, që aplikacioni ta rilexojë pas një rinisjeje.</li>
+    </ul>
+    <p>Mund t'i fshini të dyja nga Cilësimet, Të përgjithshme, Rivendos hyrjen fillestare, ose duke fshirë aplikacionin.</p>
+
+    <h2>Çfarë bën Kujto CLI</h2>
+    <p>
+      Mjeti i rreshtit të komandës <code>kujto</code> është gjithashtu lokal. Kur ekzekutoni <code>kujto wire</code>, ai krijon symlink-e brenda repo-s së projektit tuaj (<code>CLAUDE.md</code>, <code>CODEX.md</code>, <code>GEMINI.md</code>, <code>AGENTS.md</code>, <code>.cursorrules</code> dhe <code>.github/copilot-instructions.md</code>) që tregojnë te vetë <code>AGENTS.md</code> i Kujto-s. Ato symlink-e ruhen në repo-n tuaj git nëse i kryeni commit. CLI-ja nuk dërgon asgjë përmes rrjetit.
+    </p>
+
+    <h2>Palët e treta</h2>
+    <p>
+      Kujto nuk integrohet me shërbime të palëve të treta. Agjentët e AI që lexojnë memorien e Kujto-s (Claude, Codex, Gemini, Copilot, Cursor) dërgojnë çfarëdo që dërgojnë mjetet e tyre, sipas politikave të tyre të privatësisë. Kujto qëndron midis jush dhe skedarëve tuaj; ai nuk i sheh kurrë promptet tuaja ose përgjigjet e modelit.
+    </p>
+
+    <h2>Faqja e marketingut</h2>
+    <p>
+      <a href="https://kujto.peterdsp.dev">kujto.peterdsp.dev</a> është HTML statik i strehuar në GitHub Pages. Ai nuk vendos cookie analitike. Përjashtimi i vetëm janë fontet e ngarkuara nga Google Fonts (Instrument Serif, Inter, JetBrains Mono); ato kërkesa qeverisen nga <a href="https://policies.google.com/privacy">politika e privatësisë e Google-it</a>. Nëse preferoni t'i strehoni vetë fontet, bëni fork repo-n dhe modifikoni <code>site/index.html</code>.
+    </p>
+
+    <h2>Ndryshimet</h2>
+    <p>
+      Nëse kjo politikë ndryshon ndonjëherë, versioni i ri do ta zëvendësojë këtë skedar në historikun e git. Data <em>Përditësuar së fundmi</em> në krye do të lëvizë.
+    </p>
+
+    <h2>Kontakti</h2>
+    <p>
+      Pyetje ose shqetësime: hapni një çështje te <a href="https://github.com/peterdsp/kujto/issues">github.com/peterdsp/kujto/issues</a> ose kontaktoni autorin te <a href="https://peterdsp.dev">peterdsp.dev</a>.
+    </p>
+
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="/favicon-192.png" alt="" width="20" height="20">
+      <strong>Kujto Studio</strong>
+      <span>I licencuar MIT, kod i hapur.</span>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Kryefaqja</a>
+      <a href="press.html">Shtypi</a>
+      <a href="privacy.html" aria-current="page">Privatësia</a>
+      <a href="https://github.com/peterdsp/kujto">GitHub</a>
+      <a href="https://peterdsp.dev">Krijuar nga @peterdsp</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
