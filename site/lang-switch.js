@@ -1,14 +1,17 @@
-/* Kujto Studio, instant language switch.
+/* Kujto Studio, instant language switch with a crossfade.
    Progressive enhancement: the EN/SQ/EL links are real hrefs to the
    /sq/ and /el/ pages and work without JavaScript. When JS is on, a tap
-   swaps the page content in place instead of doing a full reload. The
-   target language is prefetched on load, so the switch is instant. */
+   swaps the page content in place (no full reload, the target language is
+   prefetched on load) and animates the change with a crossfade via the
+   View Transitions API, falling back to a simple opacity fade. */
 (function () {
   'use strict';
 
   if (!('fetch' in window) || !window.history || !window.DOMParser) return;
 
   var cache = Object.create(null);
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function load(href) {
     if (cache[href]) return Promise.resolve(cache[href]);
@@ -30,20 +33,39 @@
     }
   }
 
-  function apply(html) {
+  function commit(html, href, push) {
     var doc = new DOMParser().parseFromString(html, 'text/html');
     if (doc.documentElement.lang) {
       document.documentElement.lang = doc.documentElement.lang;
     }
     document.title = doc.title;
     document.body.replaceWith(doc.body);
+    if (push) history.pushState({ langSwap: true }, '', href);
     prefetch();
+  }
+
+  function animatedApply(html, href, push) {
+    if (reduceMotion) { commit(html, href, push); return; }
+
+    if (document.startViewTransition) {
+      document.startViewTransition(function () { commit(html, href, push); });
+      return;
+    }
+
+    // Fallback: fade out, swap, fade in.
+    var root = document.documentElement;
+    root.classList.add('lang-fading');
+    window.setTimeout(function () {
+      commit(html, href, push);
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { root.classList.remove('lang-fading'); });
+      });
+    }, 160);
   }
 
   function swap(href, push) {
     return load(href).then(function (html) {
-      apply(html);
-      if (push) history.pushState({ langSwap: true }, '', href);
+      animatedApply(html, href, push);
     }).catch(function () {
       location.href = href;
     });

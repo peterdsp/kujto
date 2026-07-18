@@ -474,6 +474,21 @@ pre code { background: transparent; padding: 0; border-radius: 0; }
 .footer-links a { color: var(--ink-2); font-weight: 500; }
 .footer-links a:hover { color: var(--ink); }
 
+/* -------- Language switch transition -------- */
+
+/* Crossfade the in-place language swap (View Transitions API). */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: ease;
+  }
+}
+
+/* Fallback fade for browsers without View Transitions. */
+body { transition: opacity 200ms ease; }
+html.lang-fading body { opacity: 0; }
+
 /* -------- Responsive -------- */
 
 @media (max-width: 900px) {
