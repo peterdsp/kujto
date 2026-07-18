@@ -13,6 +13,21 @@
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Prefetch same-origin pages just before they are clicked, so navigating
+  // between pages (home, press, privacy, other languages) has no load wait.
+  (function speculate() {
+    try {
+      if (HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
+        var sr = document.createElement('script');
+        sr.type = 'speculationrules';
+        sr.textContent = JSON.stringify({
+          prefetch: [{ source: 'document', where: { href_matches: '/*' }, eagerness: 'moderate' }],
+        });
+        document.head.appendChild(sr);
+      }
+    } catch (e) {}
+  })();
+
   function load(href) {
     if (cache[href]) return Promise.resolve(cache[href]);
     return fetch(href, { credentials: 'same-origin' })

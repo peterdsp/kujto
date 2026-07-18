@@ -1,6 +1,9 @@
 /* Kujto Studio, marketing site
    Palette derived from the app icon: deep navy body, gold accent, warm cream canvas. */
 
+/* Animate navigations between pages (no reload flicker) where supported. */
+@view-transition { navigation: auto; }
+
 :root {
   --ink: #0E1424;
   --ink-2: #2A2F3F;
