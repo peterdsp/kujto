@@ -19,14 +19,20 @@ public final class GitPanelModel: ObservableObject {
     @Published public var commitMessage: String = ""
     @Published public private(set) var syncStatus: SyncStatus = .idle
     @Published public var theme: Theme
+    /// The rules-in-commit strip for the currently staged set. Nil when no
+    /// inspector is configured.
+    @Published public private(set) var inspection: CommitInspection?
 
     private let client: GitClient
     private let repo: URL
+    private let inspector: CommitInspector?
 
-    public init(repo: URL, client: GitClient = ShellGitClient(), theme: Theme = Themes.default) {
+    public init(repo: URL, client: GitClient = ShellGitClient(),
+                theme: Theme = Themes.default, inspector: CommitInspector? = nil) {
         self.repo = repo
         self.client = client
         self.theme = theme
+        self.inspector = inspector
     }
 
     /// Commit is allowed only with something staged and a non-empty message.
@@ -76,6 +82,8 @@ public final class GitPanelModel: ObservableObject {
         branch = status.branch
         staged = status.changes.filter { $0.isStaged }
         unstaged = status.changes.filter { !$0.isStaged }
+        // The fusion: re-resolve rules for the staged set on every change.
+        inspection = inspector.map { $0.inspect(staged: staged) }
     }
 
     /// Runs blocking git work off the main actor and returns to it with the

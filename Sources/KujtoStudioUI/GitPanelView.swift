@@ -1,4 +1,5 @@
 import SwiftUI
+import KujtoCore
 import KujtoGit
 import KujtoSync
 
@@ -126,7 +127,10 @@ struct CommitBox: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // rulesStrip: step 3 renders the "Before you commit" strip here.
+            // rulesStrip: the fusion. Rules for the staged set, shown before commit.
+            if let inspection = model.inspection, !inspection.isEmpty {
+                CommitRulesStrip(inspection: inspection, theme: model.theme)
+            }
             TextField("Commit message", text: $model.commitMessage)
                 .textFieldStyle(.roundedBorder)
             HStack {
@@ -138,6 +142,54 @@ struct CommitBox: View {
                 }
                 .disabled(!model.canCommit)
             }
+        }
+    }
+}
+
+/// The "Before you commit" strip: the aggregate verdict, the risk tags, and the
+/// tests to run for the staged set. Advisory, never blocking. This is the seam
+/// where the git client becomes the enforcement point for the memory.
+struct CommitRulesStrip: View {
+    let inspection: CommitInspection
+    let theme: Theme
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 8) {
+                Text(verdictLabel)
+                    .font(.caption.bold())
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(verdictColor.opacity(0.22))
+                    .foregroundColor(verdictColor)
+                    .cornerRadius(6)
+                if !inspection.riskTags.isEmpty {
+                    Text(inspection.riskTags.joined(separator: ", "))
+                        .font(.caption)
+                        .foregroundColor(theme.textSecondaryColor)
+                }
+                Spacer()
+            }
+            if !inspection.testsToRun.isEmpty {
+                Text("Run: \(inspection.testsToRun.joined(separator: ", "))")
+                    .font(.caption)
+                    .foregroundColor(theme.textSecondaryColor)
+                    .lineLimit(2)
+                    .truncationMode(.middle)
+            }
+        }
+        .padding(10)
+        .background(verdictColor.opacity(0.08))
+        .cornerRadius(8)
+    }
+
+    private var verdictLabel: String { inspection.verdict.label }
+
+    private var verdictColor: Color {
+        switch inspection.verdict {
+        case .safe: return .green
+        case .needsContext: return .yellow
+        case .dangerZone: return .red
         }
     }
 }

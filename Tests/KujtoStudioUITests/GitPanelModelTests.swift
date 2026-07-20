@@ -1,5 +1,6 @@
 import XCTest
 @testable import KujtoStudioUI
+import KujtoCore
 import KujtoGit
 import KujtoSync
 
@@ -97,5 +98,31 @@ final class GitPanelModelTests: XCTestCase {
         let model = GitPanelModel(repo: repo, client: FakeGitClient(status: status([])))
         model.setSyncStatus(.needsAttention)
         XCTAssertEqual(model.syncStatus, .needsAttention)
+    }
+
+    func testInspectionNilWithoutInspector() async throws {
+        let client = FakeGitClient(status: status([
+            change("App/PaymentClient.swift", index: .modified, worktree: .unmodified)
+        ]))
+        let model = GitPanelModel(repo: repo, client: client)
+        try await model.refresh()
+        XCTAssertNil(model.inspection)
+    }
+
+    func testInspectionPopulatesForStagedSet() async throws {
+        let index = RuleIndex(rules: [
+            Rule(path: "memory/pay.md", title: "Pay", appliesTo: ["**/*PaymentClient.swift"],
+                 risk: ["payment"], kind: .memory)
+        ])
+        let inspector = CommitInspector(index: index, testsResolver: { _ in [] })
+        let client = FakeGitClient(status: status([
+            change("App/PaymentClient.swift", index: .modified, worktree: .unmodified)
+        ]))
+        let model = GitPanelModel(repo: repo, client: client, inspector: inspector)
+
+        try await model.refresh()
+
+        XCTAssertEqual(model.inspection?.verdict, .dangerZone)
+        XCTAssertEqual(model.inspection?.riskTags, ["payment"])
     }
 }

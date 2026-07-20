@@ -38,7 +38,7 @@ let package = Package(
         ),
         .target(
             name: "KujtoStudioUI",
-            dependencies: ["KujtoGit", "KujtoSync"],
+            dependencies: ["KujtoCore", "KujtoGit", "KujtoSync"],
             path: "Sources/KujtoStudioUI"
         ),
         .executableTarget(
@@ -71,7 +71,7 @@ let package = Package(
         ),
         .testTarget(
             name: "KujtoStudioUITests",
-            dependencies: ["KujtoStudioUI", "KujtoGit", "KujtoSync"],
+            dependencies: ["KujtoStudioUI", "KujtoCore", "KujtoGit", "KujtoSync"],
             path: "Tests/KujtoStudioUITests"
         )
     ]
