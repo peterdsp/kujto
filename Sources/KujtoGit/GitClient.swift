@@ -144,6 +144,10 @@ public enum RebaseOutcome: Equatable, Sendable {
 public protocol GitClient: Sendable {
     /// True when `url` is inside a git working tree.
     func isRepository(_ url: URL) -> Bool
+    /// Clone `remote` into `destination` (which must not yet exist).
+    func clone(_ remote: String, to destination: URL) throws
+    /// The `origin` remote URL for `repo`, or nil when there is none.
+    func remoteURL(in repo: URL) -> String?
     /// Full working-set status for `repo`.
     func status(in repo: URL) throws -> GitStatus
     /// Per-file diffs. `staged` selects `--cached`; `path` narrows to one file.

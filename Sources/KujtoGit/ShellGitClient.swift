@@ -27,6 +27,36 @@ public struct ShellGitClient: GitClient {
         return result.exitCode == 0 && result.stdout.trimmingCharacters(in: .whitespacesAndNewlines) == "true"
     }
 
+    public func clone(_ remote: String, to destination: URL) throws {
+        // git clone creates the leaf directory but not intermediate parents, so
+        // ensure the parent exists, then clone to the full destination path.
+        let parent = destination.deletingLastPathComponent()
+        try? FileManager.default.createDirectory(at: parent, withIntermediateDirectories: true)
+        let result: ProcessRunner.Result
+        do {
+            result = try runner.run("git", arguments: ["clone", remote, destination.path])
+        } catch let error as KujtoError {
+            throw error
+        } catch {
+            throw Self.error(.process, sq: "clone deshtoi: \(error.localizedDescription)",
+                             en: "clone failed: \(error.localizedDescription)")
+        }
+        guard result.exitCode == 0 else {
+            let detail = result.stderr.trimmingCharacters(in: .whitespacesAndNewlines)
+            throw Self.error(.process, sq: "git clone doli me kod \(result.exitCode): \(detail)",
+                             en: "git clone exited with code \(result.exitCode): \(detail)")
+        }
+    }
+
+    public func remoteURL(in repo: URL) -> String? {
+        guard let result = try? runner.run(
+            "git",
+            arguments: ["-C", repo.path, "remote", "get-url", "origin"]
+        ), result.exitCode == 0 else { return nil }
+        let url = result.stdout.trimmingCharacters(in: .whitespacesAndNewlines)
+        return url.isEmpty ? nil : url
+    }
+
     // MARK: Status
 
     public func status(in repo: URL) throws -> GitStatus {
