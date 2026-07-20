@@ -57,6 +57,16 @@ public struct ShellGitClient: GitClient {
         return url.isEmpty ? nil : url
     }
 
+    public func changedFiles(inCommit sha: String, in repo: URL) throws -> [String] {
+        // `git show --name-only` lists the files a commit touched and, unlike
+        // `diff-tree`, handles the root commit (which has no parent).
+        let result = try git(["show", "--name-only", "--pretty=format:", sha], in: repo)
+        return result.stdout
+            .split(separator: "\n", omittingEmptySubsequences: true)
+            .map { String($0).trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+    }
+
     // MARK: Status
 
     public func status(in repo: URL) throws -> GitStatus {

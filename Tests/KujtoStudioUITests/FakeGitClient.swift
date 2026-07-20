@@ -18,9 +18,16 @@ final class FakeGitClient: GitClient, @unchecked Sendable {
         lock.lock(); _status = status; lock.unlock()
     }
 
+    /// Files a given commit touched, scriptable per sha for history tests.
+    var changedFilesByCommit: [String: [String]] = [:]
+
     func isRepository(_ url: URL) -> Bool { true }
     func clone(_ remote: String, to destination: URL) throws {}
     func remoteURL(in repo: URL) -> String? { nil }
+    func changedFiles(inCommit sha: String, in repo: URL) throws -> [String] {
+        lock.lock(); defer { lock.unlock() }
+        return changedFilesByCommit[sha] ?? []
+    }
 
     func status(in repo: URL) throws -> GitStatus {
         lock.lock(); defer { lock.unlock() }
