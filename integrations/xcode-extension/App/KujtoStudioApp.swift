@@ -35,6 +35,13 @@ struct KujtoStudioApp: App {
         }
         .defaultSize(width: 360, height: 520)
 
+        // The native git panel (Glint's surface) plus the rules-in-commit
+        // fusion, following the repo chosen in the Studio.
+        Window("Git", id: "git-panel") {
+            GitPanelWindowView(model: model)
+        }
+        .defaultSize(width: 420, height: 600)
+
         Settings { SettingsView(model: model, updater: updater) }
 
         // NOTE: `MenuBarExtra`'s `isInserted:` overload is intentionally NOT

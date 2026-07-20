@@ -19,6 +19,8 @@ struct KujtoMenuBar: View {
         Button("Show Lint (\(model.lintIssues.count))") { openDestination(.lint) }.disabled(model.rootPath == nil)
         Button("Show Agents (\(model.linkedAgentCount)/\(model.agents.count))") { openDestination(.agents) }
             .disabled(model.rootPath == nil)
+        Button("Show Git") { openWindow(id: "git-panel"); activateWindow() }
+            .disabled(model.rootPath == nil)
         Divider()
         Button("Quit Kujto Studio") { NSApp.terminate(nil) }
             .keyboardShortcut("q")
