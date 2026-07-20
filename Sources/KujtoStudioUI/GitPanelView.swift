@@ -17,10 +17,15 @@ public struct GitPanelView: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             header
+            modePicker
             Divider().overlay(model.theme.borderColor)
-            sections
-            Spacer(minLength: 0)
-            CommitBox(model: model)
+            if model.mode == .changes {
+                sections
+                Spacer(minLength: 0)
+                CommitBox(model: model)
+            } else {
+                HistoryView(model: model)
+            }
         }
         .padding(16)
         .background(
@@ -43,6 +48,15 @@ public struct GitPanelView: View {
             Spacer()
             SyncStatusBadge(status: model.syncStatus, theme: model.theme)
         }
+    }
+
+    private var modePicker: some View {
+        Picker("", selection: $model.mode) {
+            Text("Changes").tag(PanelMode.changes)
+            Text("History").tag(PanelMode.history)
+        }
+        .pickerStyle(.segmented)
+        .labelsHidden()
     }
 
     private var sections: some View {
@@ -143,6 +157,102 @@ struct CommitBox: View {
                 .disabled(!model.canCommit)
             }
         }
+    }
+}
+
+/// The history face: the commit log, each row flagged when it touched a rule
+/// (the commit-to-rules half of the cross-link). Selecting a flagged commit
+/// expands the rules it changed, so the history shows not just what changed but
+/// which governance it moved.
+struct HistoryView: View {
+    @ObservedObject var model: GitPanelModel
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 6) {
+                if model.commits.isEmpty {
+                    Text("No history")
+                        .font(.callout)
+                        .foregroundColor(model.theme.textSecondaryColor)
+                }
+                ForEach(model.commits, id: \.sha) { commit in
+                    CommitHistoryRow(
+                        commit: commit,
+                        touchesRules: model.ruleTouchingSHAs.contains(commit.sha),
+                        selected: model.selectedCommitSHA == commit.sha,
+                        theme: model.theme
+                    ) {
+                        model.selectedCommitSHA = model.selectedCommitSHA == commit.sha ? nil : commit.sha
+                    }
+                    if model.selectedCommitSHA == commit.sha {
+                        rulesTouched(by: commit.sha)
+                    }
+                }
+            }
+        }
+        .task { try? await model.loadHistory() }
+    }
+
+    private func rulesTouched(by sha: String) -> some View {
+        let rules = model.rules(inCommit: sha)
+        return VStack(alignment: .leading, spacing: 4) {
+            if rules.isEmpty {
+                Text("No rules touched")
+                    .font(.caption)
+                    .foregroundColor(model.theme.textSecondaryColor)
+            } else {
+                ForEach(rules, id: \.path) { rule in
+                    HStack(spacing: 6) {
+                        Image(systemName: "book.closed")
+                            .font(.caption2)
+                            .foregroundColor(model.theme.accentColor)
+                        Text(rule.title).font(.caption)
+                        if !rule.risk.isEmpty {
+                            Text(rule.risk.joined(separator: ", "))
+                                .font(.caption2)
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.leading, 22)
+        .padding(.vertical, 4)
+    }
+}
+
+/// One commit row in the history list, with a rule flag when it touched
+/// governance.
+struct CommitHistoryRow: View {
+    let commit: GitCommit
+    let touchesRules: Bool
+    let selected: Bool
+    let theme: Theme
+    let tap: () -> Void
+
+    var body: some View {
+        Button(action: tap) {
+            HStack(spacing: 10) {
+                Text(commit.shortSha)
+                    .font(.system(.caption, design: .monospaced))
+                    .foregroundColor(theme.textSecondaryColor)
+                    .frame(width: 56, alignment: .leading)
+                Text(commit.subject)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                Spacer()
+                if touchesRules {
+                    Image(systemName: "book.closed.fill")
+                        .font(.caption2)
+                        .foregroundColor(theme.accentColor)
+                }
+            }
+            .padding(.vertical, 4)
+            .padding(.horizontal, 10)
+            .background((selected ? theme.accentColor.opacity(0.18) : theme.surfaceColor.opacity(0.4)))
+            .cornerRadius(8)
+        }
+        .buttonStyle(.plain)
     }
 }
 

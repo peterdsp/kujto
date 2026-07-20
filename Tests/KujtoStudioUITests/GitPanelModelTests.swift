@@ -109,6 +109,40 @@ final class GitPanelModelTests: XCTestCase {
         XCTAssertNil(model.inspection)
     }
 
+    func testLoadHistoryFlagsRuleTouchingCommits() async throws {
+        let client = FakeGitClient(status: status([]))
+        client.commitLog = [
+            GitCommit(sha: "aaa", shortSha: "aaa", authorName: "T", authorEmail: "t@x",
+                      date: Date(timeIntervalSince1970: 2), subject: "touch rule", body: ""),
+            GitCommit(sha: "bbb", shortSha: "bbb", authorName: "T", authorEmail: "t@x",
+                      date: Date(timeIntervalSince1970: 1), subject: "touch code", body: "")
+        ]
+        client.changedFilesByCommit["aaa"] = ["memory/pay.md"]
+        client.changedFilesByCommit["bbb"] = ["src/App.swift"]
+
+        let rules = [Rule(path: "memory/pay.md", title: "Pay", appliesTo: ["**/*.swift"],
+                          risk: ["payment"], kind: .memory)]
+        let linker = HistoryLinker(client: client, rules: rules, root: repo)
+        let model = GitPanelModel(repo: repo, client: client, historyLinker: linker)
+
+        try await model.loadHistory()
+
+        XCTAssertEqual(model.commits.map { $0.sha }, ["aaa", "bbb"])
+        XCTAssertEqual(model.ruleTouchingSHAs, ["aaa"])
+        XCTAssertEqual(model.rules(inCommit: "aaa").map { $0.title }, ["Pay"])
+        XCTAssertTrue(model.rules(inCommit: "bbb").isEmpty)
+    }
+
+    func testLoadHistoryWithoutLinkerFlagsNothing() async throws {
+        let client = FakeGitClient(status: status([]))
+        client.commitLog = [GitCommit(sha: "x", shortSha: "x", authorName: "T", authorEmail: "t@x",
+                                      date: Date(timeIntervalSince1970: 0), subject: "s", body: "")]
+        let model = GitPanelModel(repo: repo, client: client)
+        try await model.loadHistory()
+        XCTAssertEqual(model.commits.count, 1)
+        XCTAssertTrue(model.ruleTouchingSHAs.isEmpty)
+    }
+
     func testInspectionPopulatesForStagedSet() async throws {
         let index = RuleIndex(rules: [
             Rule(path: "memory/pay.md", title: "Pay", appliesTo: ["**/*PaymentClient.swift"],

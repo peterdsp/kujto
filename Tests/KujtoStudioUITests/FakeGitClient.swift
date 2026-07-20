@@ -20,6 +20,8 @@ final class FakeGitClient: GitClient, @unchecked Sendable {
 
     /// Files a given commit touched, scriptable per sha for history tests.
     var changedFilesByCommit: [String: [String]] = [:]
+    /// The commit log returned by `log`, scriptable for history tests.
+    var commitLog: [GitCommit] = []
 
     func isRepository(_ url: URL) -> Bool { true }
     func clone(_ remote: String, to destination: URL) throws {}
@@ -55,7 +57,10 @@ final class FakeGitClient: GitClient, @unchecked Sendable {
                          date: Date(timeIntervalSince1970: 0), subject: message, body: "")
     }
 
-    func log(in repo: URL, maxCount: Int) throws -> [GitCommit] { [] }
+    func log(in repo: URL, maxCount: Int) throws -> [GitCommit] {
+        lock.lock(); defer { lock.unlock() }
+        return Array(commitLog.prefix(maxCount))
+    }
     func pullRebase(in repo: URL) throws -> RebaseOutcome { .upToDate }
     func push(in repo: URL) throws {}
 }

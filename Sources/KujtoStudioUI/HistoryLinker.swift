@@ -12,15 +12,23 @@ import KujtoGit
 ///
 /// Pure composition over `RuleHistoryScanner`, `GitClient`, and `RuleIndex`; no
 /// new history parsing.
-public struct HistoryLinker {
+public struct HistoryLinker: Sendable {
     private let client: GitClient
-    private let index: RuleIndex
+    private let rules: [Rule]
     private let root: URL
 
-    public init(client: GitClient, index: RuleIndex, root: URL) {
+    /// A snapshot of the rules is held (not the `RuleIndex`) so the linker is
+    /// `Sendable` and can run on a background actor when precomputing which
+    /// commits touch rules.
+    public init(client: GitClient, rules: [Rule], root: URL) {
         self.client = client
-        self.index = index
+        self.rules = rules
         self.root = root
+    }
+
+    /// Convenience: take the rules from an index.
+    public init(client: GitClient, index: RuleIndex, root: URL) {
+        self.init(client: client, rules: index.rules, root: root)
     }
 
     /// Revisions of a rule file, newest first, each with its frontmatter at that
@@ -35,7 +43,7 @@ public struct HistoryLinker {
     public func rules(inCommit sha: String) -> [Rule] {
         let changed = Set((try? client.changedFiles(inCommit: sha, in: root)) ?? [])
         guard !changed.isEmpty else { return [] }
-        return index.rules
+        return rules
             .filter { changed.contains($0.path) }
             .sorted { $0.path < $1.path }
     }

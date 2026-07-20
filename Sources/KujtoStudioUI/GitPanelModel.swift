@@ -1,7 +1,15 @@
 import Foundation
 import Combine
+import KujtoCore
 import KujtoGit
 import KujtoSync
+
+/// Which face of the panel is showing: the working changes or the commit
+/// history.
+public enum PanelMode: Sendable {
+    case changes
+    case history
+}
 
 /// The view-model behind the git panel. It turns a `GitClient` and a repo into
 /// observable panel state: the staged and unstaged rows, the branch, the commit
@@ -23,16 +31,29 @@ public final class GitPanelModel: ObservableObject {
     /// inspector is configured.
     @Published public private(set) var inspection: CommitInspection?
 
+    /// Which face of the panel is showing.
+    @Published public var mode: PanelMode = .changes
+    /// The commit history, newest first, when the history face is shown.
+    @Published public private(set) var commits: [GitCommit] = []
+    /// SHAs of commits that touched a rule file, precomputed so the history
+    /// list can flag governance-relevant commits without a git call per row.
+    @Published public private(set) var ruleTouchingSHAs: Set<String> = []
+    /// The commit whose touched rules are expanded in the history list.
+    @Published public var selectedCommitSHA: String?
+
     private let client: GitClient
     private let repo: URL
     private let inspector: CommitInspector?
+    private let historyLinker: HistoryLinker?
 
     public init(repo: URL, client: GitClient = ShellGitClient(),
-                theme: Theme = Themes.default, inspector: CommitInspector? = nil) {
+                theme: Theme = Themes.default, inspector: CommitInspector? = nil,
+                historyLinker: HistoryLinker? = nil) {
         self.repo = repo
         self.client = client
         self.theme = theme
         self.inspector = inspector
+        self.historyLinker = historyLinker
     }
 
     /// Commit is allowed only with something staged and a non-empty message.
@@ -68,6 +89,35 @@ public final class GitPanelModel: ObservableObject {
         _ = try await offMain { [client, repo] in try client.commit(message: message, in: repo) }
         commitMessage = ""
         try await refresh()
+    }
+
+    /// Loads the commit history and precomputes which commits touched a rule,
+    /// both off the main actor.
+    public func loadHistory(maxCount: Int = 50) async throws {
+        let linker = historyLinker
+        let (list, touching) = try await offMain { [client, repo] in
+            let commits = try client.log(in: repo, maxCount: maxCount)
+            var set = Set<String>()
+            if let linker {
+                for commit in commits where linker.touchesRules(commit.sha) {
+                    set.insert(commit.sha)
+                }
+            }
+            return (commits, set)
+        }
+        commits = list
+        ruleTouchingSHAs = touching
+    }
+
+    /// The rules a commit touched, for the expanded row. Runs one git call for
+    /// the single selected commit, so it stays cheap.
+    public func rules(inCommit sha: String) -> [Rule] {
+        historyLinker?.rules(inCommit: sha) ?? []
+    }
+
+    /// The revision timeline of a rule file, for a rule-focused view.
+    public func revisions(forRule path: String) -> [RuleRevision] {
+        historyLinker?.revisions(forRule: path) ?? []
     }
 
     /// Lets an owner (the app, driven by the sync coordinator) push status into

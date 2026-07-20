@@ -48,13 +48,15 @@ struct GitPanelWindowView: View {
             return
         }
         let root = URL(fileURLWithPath: rootPath)
-        let inspector = (try? RuleIndex.load(root: root)).map {
-            KujtoStudioUI.CommitInspector(index: $0, root: root)
-        }
+        let client = ShellGitClient()
+        let index = try? RuleIndex.load(root: root)
+        let inspector = index.map { KujtoStudioUI.CommitInspector(index: $0, root: root) }
+        let history = index.map { KujtoStudioUI.HistoryLinker(client: client, index: $0, root: root) }
         panel = KujtoStudioUI.GitPanelModel(
             repo: root,
-            client: ShellGitClient(),
+            client: client,
             theme: KujtoStudioUI.Themes.default,
-            inspector: inspector)
+            inspector: inspector,
+            historyLinker: history)
     }
 }
