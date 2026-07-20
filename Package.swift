@@ -9,7 +9,8 @@ let package = Package(
     products: [
         .executable(name: "kujto", targets: ["KujtoCLI"]),
         .library(name: "KujtoCore", targets: ["KujtoCore"]),
-        .library(name: "KujtoGit", targets: ["KujtoGit"])
+        .library(name: "KujtoGit", targets: ["KujtoGit"]),
+        .library(name: "KujtoSync", targets: ["KujtoSync"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.3.0")
@@ -23,6 +24,11 @@ let package = Package(
             name: "KujtoGit",
             dependencies: ["KujtoCore"],
             path: "Sources/KujtoGit"
+        ),
+        .target(
+            name: "KujtoSync",
+            dependencies: ["KujtoCore", "KujtoGit"],
+            path: "Sources/KujtoSync"
         ),
         .executableTarget(
             name: "KujtoCLI",
@@ -41,6 +47,11 @@ let package = Package(
             name: "KujtoGitTests",
             dependencies: ["KujtoGit", "KujtoCore"],
             path: "Tests/KujtoGitTests"
+        ),
+        .testTarget(
+            name: "KujtoSyncTests",
+            dependencies: ["KujtoSync", "KujtoGit", "KujtoCore"],
+            path: "Tests/KujtoSyncTests"
         )
     ]
 )
