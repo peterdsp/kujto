@@ -1,5 +1,6 @@
 import SwiftUI
 import KujtoAuth
+import KujtoSync
 
 /// App settings. Two tabs: Status (what is wired) and General (re-run
 /// onboarding, reset). The onboarding wizard is reused verbatim from Welcome.
@@ -56,6 +57,7 @@ private struct UpdatesTab: View {
 /// only drives the device-flow and reflects its state.
 private struct MemorySyncTab: View {
     @ObservedObject private var provisioning = GitProvisioningService.shared
+    @ObservedObject private var sync = MemorySyncService.shared
     @State private var kind: ProviderKind = .github
 
     var body: some View {
@@ -80,9 +82,42 @@ private struct MemorySyncTab: View {
                 .disabled(isBusy)
 
             statusView
+
+            Divider().padding(.vertical, 4)
+            syncSection
             Spacer()
         }
         .padding(20)
+    }
+
+    private var syncSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Text("Background sync").font(.system(size: 13, weight: .medium))
+                Circle().fill(syncColor).frame(width: 7, height: 7)
+                Text(sync.status.rawValue).font(.system(size: 11)).foregroundStyle(.secondary)
+                Spacer()
+                Button(sync.isRunning ? "Stop" : "Start") {
+                    sync.isRunning ? sync.stop() : sync.start()
+                }
+                .controlSize(.small)
+                .disabled(!sync.isReady && !sync.isRunning)
+            }
+            if let message = sync.lastMessage {
+                Text(message).font(.system(size: 11)).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var syncColor: Color {
+        switch sync.status {
+        case .idle: return .secondary
+        case .syncing: return .accentColor
+        case .synced: return .green
+        case .offline: return .yellow
+        case .needsAttention: return .red
+        }
     }
 
     private var isBusy: Bool {

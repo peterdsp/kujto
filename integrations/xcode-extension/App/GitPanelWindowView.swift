@@ -12,6 +12,7 @@ import KujtoStudioUI
 /// Every `KujtoStudioUI` type is qualified here so the two never collide.
 struct GitPanelWindowView: View {
     @ObservedObject var model: StudioModel
+    @ObservedObject private var sync = MemorySyncService.shared
     @State private var panel: KujtoStudioUI.GitPanelModel?
 
     var body: some View {
@@ -23,8 +24,9 @@ struct GitPanelWindowView: View {
             }
         }
         .frame(minWidth: 380, minHeight: 460)
-        .onAppear { rebuild() }
+        .onAppear { rebuild(); panel?.setSyncStatus(sync.status) }
         .onChange(of: model.rootPath) { _, _ in rebuild() }
+        .onChange(of: sync.status) { _, status in panel?.setSyncStatus(status) }
     }
 
     private var noRepo: some View {
