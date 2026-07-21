@@ -62,7 +62,11 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showWelcome) { WelcomeView(model: model) }
-        .onAppear { model.loadSavedRoot() }
+        .onAppear {
+            model.loadSavedRoot()
+            // Resume the memory sync loop if a memory repo is already cloned.
+            if MemorySyncService.shared.isReady { MemorySyncService.shared.start() }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .showKujtoWelcome)) { _ in
             showWelcome = true
         }

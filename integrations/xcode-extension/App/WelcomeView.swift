@@ -1,6 +1,7 @@
 import SwiftUI
 import AppKit
 import KujtoCore
+import KujtoAuth
 
 /// First-run onboarding wizard. Four steps: welcome, pick a repo, verify
 /// installed surfaces, done. Smooth spring transitions between steps, no
@@ -18,7 +19,7 @@ struct WelcomeView: View {
     @State private var refreshTick: Int = 0
 
     enum Step: Int, CaseIterable {
-        case hello, pickRepo, wire, done
+        case hello, pickRepo, wire, memory, done
     }
 
     var body: some View {
@@ -35,6 +36,7 @@ struct WelcomeView: View {
                     case .hello:     helloStep
                     case .pickRepo:  pickRepoStep
                     case .wire:      wireStep
+                    case .memory:    memoryStep
                     case .done:      doneStep
                     }
                 }
@@ -95,6 +97,7 @@ struct WelcomeView: View {
         case .hello: return "Get started"
         case .pickRepo: return model.rootPath == nil ? "Choose repo..." : "Continue"
         case .wire: return "Continue"
+        case .memory: return "Continue"
         case .done: return "Finish"
         }
     }
@@ -230,6 +233,10 @@ struct WelcomeView: View {
         .padding(30)
     }
 
+    private var memoryStep: some View {
+        MemoryOnboardingStep()
+    }
+
     private var doneStep: some View {
         VStack(spacing: 20) {
             Image(systemName: "checkmark.seal.fill")
@@ -252,6 +259,67 @@ struct WelcomeView: View {
         panel.allowsMultipleSelection = false
         if panel.runModal() == .OK, let url = panel.url {
             model.open(url)
+        }
+    }
+}
+
+// MARK: - Memory onboarding step
+
+/// The "carry your memory everywhere" wizard step. Optional: the user can
+/// connect a provider now or skip and do it later in Settings. Reuses the same
+/// GitProvisioningService the settings tab drives.
+private struct MemoryOnboardingStep: View {
+    @ObservedObject private var provisioning = GitProvisioningService.shared
+    @State private var kind: ProviderKind = .github
+
+    var body: some View {
+        VStack(spacing: 16) {
+            StepTitle(icon: "arrow.triangle.2.circlepath", title: "Carry your memory everywhere",
+                      subtitle: "Connect a git provider to create a private memory repo on your own account. Your rules, skills, and agents sync through your remote, never our servers. You can skip this and do it later.")
+
+            Picker("Provider", selection: $kind) {
+                Text("GitHub").tag(ProviderKind.github)
+                Text("GitLab").tag(ProviderKind.gitlab)
+                Text("Gitea").tag(ProviderKind.gitea)
+            }
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 320)
+
+            Button("Connect \(kind.rawValue.capitalized)...") { provisioning.connect(kind: kind) }
+                .buttonStyle(.borderedProminent)
+                .disabled(isBusy)
+
+            statusText
+        }
+        .padding(40)
+        .frame(maxWidth: 500)
+    }
+
+    private var isBusy: Bool {
+        switch provisioning.state {
+        case .connecting, .awaitingApproval: return true
+        default: return false
+        }
+    }
+
+    @ViewBuilder
+    private var statusText: some View {
+        switch provisioning.state {
+        case .idle:
+            EmptyView()
+        case .connecting:
+            Text("Requesting a code...").font(.system(size: 12)).foregroundStyle(.secondary)
+        case let .awaitingApproval(userCode, _):
+            VStack(spacing: 4) {
+                Text("Enter this code in the browser:").font(.system(size: 12)).foregroundStyle(.secondary)
+                Text(userCode).font(.system(size: 18, weight: .semibold, design: .monospaced))
+            }
+        case let .provisioned(_, repo, created):
+            Text("\(created ? "Created" : "Found") \(repo). Memory sync is ready.")
+                .font(.system(size: 12)).foregroundStyle(Theme.success)
+        case let .failed(message):
+            Text(message).font(.system(size: 12)).foregroundStyle(Theme.danger)
+                .multilineTextAlignment(.center)
         }
     }
 }
