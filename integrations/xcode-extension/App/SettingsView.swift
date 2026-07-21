@@ -1,4 +1,5 @@
 import SwiftUI
+import KujtoAuth
 
 /// App settings. Two tabs: Status (what is wired) and General (re-run
 /// onboarding, reset). The onboarding wizard is reused verbatim from Welcome.
@@ -11,6 +12,8 @@ struct SettingsView: View {
         TabView {
             StatusTab(model: model, showOnboarding: $showOnboarding)
                 .tabItem { Label("Status", systemImage: "waveform.path.ecg") }
+            MemorySyncTab()
+                .tabItem { Label("Memory Sync", systemImage: "arrow.triangle.2.circlepath") }
             AppearanceTab()
                 .tabItem { Label("Appearance", systemImage: "paintbrush") }
             GeneralTab(showOnboarding: $showOnboarding)
@@ -45,6 +48,70 @@ private struct UpdatesTab: View {
     }
     private static func format(_ date: Date) -> String {
         let f = DateFormatter(); f.dateStyle = .medium; f.timeStyle = .short; return f.string(from: date)
+    }
+}
+
+/// Provisioning surface: connect a git provider so the memory repo can be
+/// created and synced. The token is handled by KujtoAuth (Keychain); this tab
+/// only drives the device-flow and reflects its state.
+private struct MemorySyncTab: View {
+    @ObservedObject private var provisioning = GitProvisioningService.shared
+    @State private var kind: ProviderKind = .github
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Carry your memory everywhere")
+                .font(.system(size: 14, weight: .medium))
+            Text("Connect a git provider to create a private memory repo on your own account. Your rules, skills, and agents sync through your remote, never our servers.")
+                .font(.system(size: 12)).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Picker("Provider", selection: $kind) {
+                Text("GitHub").tag(ProviderKind.github)
+                Text("GitLab").tag(ProviderKind.gitlab)
+                Text("Gitea").tag(ProviderKind.gitea)
+            }
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 320)
+
+            Button("Connect \(kind.rawValue.capitalized)...") { provisioning.connect(kind: kind) }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+                .disabled(isBusy)
+
+            statusView
+            Spacer()
+        }
+        .padding(20)
+    }
+
+    private var isBusy: Bool {
+        switch provisioning.state {
+        case .connecting, .awaitingApproval: return true
+        default: return false
+        }
+    }
+
+    @ViewBuilder
+    private var statusView: some View {
+        switch provisioning.state {
+        case .idle:
+            EmptyView()
+        case .connecting:
+            HStack(spacing: 8) { ProgressView().scaleEffect(0.5); Text("Requesting a code...").font(.system(size: 12)) }
+        case let .awaitingApproval(userCode, uri):
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Enter this code in the browser:").font(.system(size: 12)).foregroundStyle(.secondary)
+                Text(userCode).font(.system(size: 18, weight: .semibold, design: .monospaced))
+                Text(uri).font(.system(size: 11)).foregroundStyle(.secondary)
+            }
+        case let .provisioned(login, repo, created):
+            Text("\(created ? "Created" : "Found") \(repo) for \(login). Memory sync is ready.")
+                .font(.system(size: 12)).foregroundStyle(.green)
+        case let .failed(message):
+            Text(message).font(.system(size: 12)).foregroundStyle(.red)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 }
 

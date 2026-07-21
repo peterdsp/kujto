@@ -33,6 +33,9 @@ targets:
       # The native git panel (Glint's surface) plus the rules-in-commit fusion.
       - package: KujtoCore
         product: KujtoStudioUI
+      # Device-flow provisioning of the private memory repo.
+      - package: KujtoCore
+        product: KujtoAuth
       - target: KujtoRulesExtension
       # embed:false keeps the privileged runtime helper out of the app bundle.
       # It is a non-sandboxed daemon (runs xcrun simctl outside the sandbox),
