@@ -46,6 +46,18 @@ Local-only indexing. Nothing leaves your machine.
 
 ---
 
+## Git client and memory sync
+
+Kujto Studio now carries a native git client, its surface and liquid-glass design language drawn from [Glint](https://github.com/peterdsp/glint), reimplemented in SwiftUI on libgit2. It is not a bolt-on: the memory engine and the git client fuse at the commit.
+
+- **Rules light up the commit.** Stage a diff and Kujto resolves each file through the rule index right there: risk tags, the rules that apply, the tests to run, and a confidence verdict (safe, needs context, danger zone) before you commit. Advisory, never blocking.
+- **History knows your rules.** The history view flags the commits that touched a governance file and expands to show which rules changed, the other half of Governance Rewind.
+- **Your memory follows you.** On first run, connect a git provider (GitHub device flow, or GitLab / Gitea) and Kujto provisions a private `kujto-memory` repo on your own account. Your rules, skills, agents, and a registry of your projects sync through it, so a new machine rehydrates your whole working set.
+
+The privacy stance holds: local-first, synced through your own remote, never our servers. Sync is opt-in, and a secret guard refuses to commit anything that looks like a credential.
+
+---
+
 ## Install
 
 Kujto Studio is on the [Mac App Store](https://apps.apple.com/app/id6786441748) for €19.99 one time, or direct from [Ko-fi](https://ko-fi.com/s/826e2c8d19) for €17.99 (same app, Sparkle auto-update, cheaper). The `kujto` CLI is free and MIT.
@@ -197,10 +209,18 @@ The base language is English. The no-em-dash rule is an identity rule enforced b
 
 ## Roadmap
 
-- **Beta**: Mac app on TestFlight, VS Code / Cursor extension in the Marketplace
+Shipped:
+
+- **Native git client** inside Studio, with the rules-in-commit fusion and the history-and-rules cross-link
+- **Invisible memory sync** to a private repo you own, with conflict resolution and a secret guard
+- **Provider adapters** for GitHub, GitLab, and Gitea via OAuth device flow
+- **Project registry and rehydrate** so a new machine restores your working set
+
+Next:
+
 - **TCA reducer graph** (paid tier): SwiftSyntax pass mapping State, Action, dependency clients, and navigation
-- **Menu bar helper** and **App Intents** for Shortcuts (`Summarize repo rules`, `Prepare agent context`)
 - **Spotlight indexing** of memory and rules
+- **App Intents** for Shortcuts (`Summarize repo rules`, `Prepare agent context`)
 - **Team memory templates**: share and version conventions across a team without duplicating memory
 
 ---
