@@ -88,6 +88,9 @@ final class StudioModel: ObservableObject {
         SharedConfig.saveRoot(url)
         load(url)
         PromptBarBridge.shared.repoRoot = url
+        // Record the repo in the synced registry so it follows the user to
+        // other machines. A no-op until a memory repo is provisioned.
+        RegistryService.shared.record(root: url)
     }
 
     func loadSavedRoot() {

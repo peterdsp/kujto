@@ -58,6 +58,7 @@ private struct UpdatesTab: View {
 private struct MemorySyncTab: View {
     @ObservedObject private var provisioning = GitProvisioningService.shared
     @ObservedObject private var sync = MemorySyncService.shared
+    @ObservedObject private var registry = RegistryService.shared
     @State private var kind: ProviderKind = .github
 
     var body: some View {
@@ -85,9 +86,29 @@ private struct MemorySyncTab: View {
 
             Divider().padding(.vertical, 4)
             syncSection
+            rehydrateSection
             Spacer()
         }
         .padding(20)
+        .onAppear { registry.refreshPlan() }
+    }
+
+    @ViewBuilder
+    private var rehydrateSection: some View {
+        if registry.actionableCount > 0 {
+            Divider().padding(.vertical, 4)
+            VStack(alignment: .leading, spacing: 6) {
+                Text("This machine is missing \(registry.actionableCount) of your projects.")
+                    .font(.system(size: 12))
+                Button("Re-clone and re-wire \(registry.actionableCount) project\(registry.actionableCount == 1 ? "" : "s")") {
+                    registry.rehydrate()
+                }
+                .controlSize(.small)
+            }
+        }
+        if let message = registry.message {
+            Text(message).font(.system(size: 11)).foregroundStyle(.secondary)
+        }
     }
 
     private var syncSection: some View {
