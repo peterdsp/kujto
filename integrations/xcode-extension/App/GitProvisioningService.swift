@@ -57,6 +57,8 @@ final class GitProvisioningService: ObservableObject {
                 }
             }
             state = .provisioned(login: result.login, repo: result.repo.fullName, created: result.created)
+            // Hand the repo to the sync service: clone it and start the loop.
+            MemorySyncService.shared.adoptRepo(cloneURL: result.repo.httpsURL)
         } catch {
             state = .failed(Self.describe(error))
         }

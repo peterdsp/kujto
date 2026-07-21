@@ -53,6 +53,32 @@ final class MemorySyncService: ObservableObject {
         Task { await syncNow() }
     }
 
+    /// Adopts a freshly provisioned repo: clones it to the memory directory if
+    /// it is not already there, then starts the loop. The clone shells to `git`
+    /// and uses the system credential helper (the design's bring-your-own-cred
+    /// path); if credentials are not available the loop simply stays idle until
+    /// the user configures them, and nothing is lost.
+    func adoptRepo(cloneURL: String) {
+        let dir = memoryDirectory
+        let client = ShellGitClient()
+        if client.isRepository(dir) {
+            start()
+            return
+        }
+        lastMessage = "Cloning your memory repo..."
+        Task.detached {
+            do {
+                try client.clone(cloneURL, to: dir)
+                await MainActor.run { self.start() }
+            } catch {
+                await MainActor.run {
+                    self.status = .offline
+                    self.lastMessage = "Could not clone yet. Check your git credentials, then Start."
+                }
+            }
+        }
+    }
+
     /// Forces an immediate sync (app launch, foreground, manual refresh).
     func syncNow() async {
         guard let coordinator else { return }
