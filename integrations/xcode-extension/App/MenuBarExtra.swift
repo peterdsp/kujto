@@ -1,10 +1,12 @@
 import SwiftUI
+import KujtoSync
 
 /// A discreet menu bar item that shows the current repo's memory health at a
 /// glance, and gives one-click access to the four main destinations of the
 /// Studio window. Toggled from Settings > General.
 struct KujtoMenuBar: View {
     @ObservedObject var model: StudioModel
+    @ObservedObject private var sync = MemorySyncService.shared
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
@@ -12,6 +14,9 @@ struct KujtoMenuBar: View {
             Text((root as NSString).lastPathComponent).font(.system(size: 11))
         } else {
             Text("No repo chosen").font(.system(size: 11)).foregroundStyle(.secondary)
+        }
+        if sync.isRunning {
+            Text("Memory sync: \(sync.status.rawValue)").font(.system(size: 11)).foregroundStyle(.secondary)
         }
         Divider()
         Button("Open Kujto Studio") { activateWindow() }
