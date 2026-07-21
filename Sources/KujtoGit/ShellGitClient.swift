@@ -67,6 +67,16 @@ public struct ShellGitClient: GitClient {
             .filter { !$0.isEmpty }
     }
 
+    public func rebaseContinue(in repo: URL) throws {
+        // GIT_EDITOR=true accepts the default rebase message without opening an
+        // editor, so continuing never blocks on interactive input.
+        _ = try git(["-c", "core.editor=true", "rebase", "--continue"], in: repo)
+    }
+
+    public func rebaseAbort(in repo: URL) throws {
+        _ = try git(["rebase", "--abort"], in: repo)
+    }
+
     // MARK: Status
 
     public func status(in repo: URL) throws -> GitStatus {

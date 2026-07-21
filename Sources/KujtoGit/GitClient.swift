@@ -150,6 +150,10 @@ public protocol GitClient: Sendable {
     func remoteURL(in repo: URL) -> String?
     /// Repo-relative paths changed by commit `sha`. Handles the root commit.
     func changedFiles(inCommit sha: String, in repo: URL) throws -> [String]
+    /// Stage resolved paths and continue an in-progress rebase.
+    func rebaseContinue(in repo: URL) throws
+    /// Abort an in-progress rebase, restoring the pre-rebase state.
+    func rebaseAbort(in repo: URL) throws
     /// Full working-set status for `repo`.
     func status(in repo: URL) throws -> GitStatus
     /// Per-file diffs. `staged` selects `--cached`; `path` narrows to one file.

@@ -15,6 +15,10 @@ import KujtoSync
 final class MemorySyncService: ObservableObject {
     @Published private(set) var status: SyncStatus = .idle
     @Published private(set) var lastMessage: String?
+    /// Files with a same-line clash awaiting a "keep both?" decision.
+    @Published private(set) var conflictFiles: [String] = []
+    /// Credentials the guard found, blocking the last sync.
+    @Published private(set) var secretHits: [SecretHit] = []
 
     static let shared = MemorySyncService()
 
@@ -85,6 +89,38 @@ final class MemorySyncService: ObservableObject {
         let outcome = await coordinator.syncNow()
         status = await coordinator.status
         lastMessage = Self.describe(outcome)
+        switch outcome {
+        case let .conflict(files): conflictFiles = files; secretHits = []
+        case let .blockedBySecret(hits): secretHits = hits; conflictFiles = []
+        default: conflictFiles = []; secretHits = []
+        }
+    }
+
+    /// Resolves the outstanding same-line clash and re-syncs.
+    func resolveConflict(_ resolution: ConflictResolution) {
+        let files = conflictFiles
+        guard !files.isEmpty else { return }
+        let dir = memoryDirectory
+        lastMessage = "Resolving..."
+        Task {
+            do {
+                try await Task.detached { try ConflictResolver().resolve(resolution, files: files, in: dir) }.value
+                conflictFiles = []
+                await syncNow()
+            } catch {
+                lastMessage = "Could not resolve: \(error.localizedDescription)"
+            }
+        }
+    }
+
+    /// Abandons the sync attempt, restoring the pre-sync state.
+    func abortConflict() {
+        let dir = memoryDirectory
+        Task {
+            try? await Task.detached { try ConflictResolver().abort(in: dir) }.value
+            conflictFiles = []
+            await syncNow()
+        }
     }
 
     /// Stops watching and releases the loop.

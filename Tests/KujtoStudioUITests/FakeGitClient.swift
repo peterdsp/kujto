@@ -61,6 +61,8 @@ final class FakeGitClient: GitClient, @unchecked Sendable {
         lock.lock(); defer { lock.unlock() }
         return Array(commitLog.prefix(maxCount))
     }
+    func rebaseContinue(in repo: URL) throws {}
+    func rebaseAbort(in repo: URL) throws {}
     func pullRebase(in repo: URL) throws -> RebaseOutcome { .upToDate }
     func push(in repo: URL) throws {}
 }

@@ -107,7 +107,41 @@ private struct MemorySyncTab: View {
                 Text(message).font(.system(size: 11)).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            if !sync.conflictFiles.isEmpty { conflictCard }
+            if !sync.secretHits.isEmpty { secretCard }
         }
+    }
+
+    private var conflictCard: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Two versions of a rule").font(.system(size: 12, weight: .medium)).foregroundStyle(.red)
+            Text(sync.conflictFiles.joined(separator: ", "))
+                .font(.system(size: 11, design: .monospaced)).foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                Button("Keep both") { sync.resolveConflict(.keepBoth) }.controlSize(.small)
+                Button("Keep mine") { sync.resolveConflict(.keepLocal) }.controlSize(.small)
+                Button("Keep remote") { sync.resolveConflict(.keepRemote) }.controlSize(.small)
+                Button("Abort") { sync.abortConflict() }.controlSize(.small)
+            }
+        }
+        .padding(10)
+        .background(Color.red.opacity(0.08))
+        .cornerRadius(8)
+    }
+
+    private var secretCard: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Won't sync: possible secret").font(.system(size: 12, weight: .medium)).foregroundStyle(.red)
+            ForEach(sync.secretHits, id: \.masked) { hit in
+                Text("\(hit.file):\(hit.line) - \(hit.kind) (\(hit.masked))")
+                    .font(.system(size: 11, design: .monospaced)).foregroundStyle(.secondary)
+            }
+            Text("Remove the secret from the file, then Start again.")
+                .font(.system(size: 11)).foregroundStyle(.secondary)
+        }
+        .padding(10)
+        .background(Color.red.opacity(0.08))
+        .cornerRadius(8)
     }
 
     private var syncColor: Color {
