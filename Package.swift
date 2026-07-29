@@ -12,6 +12,7 @@ let package = Package(
         .library(name: "KujtoGit", targets: ["KujtoGit"]),
         .library(name: "KujtoSync", targets: ["KujtoSync"]),
         .library(name: "KujtoAuth", targets: ["KujtoAuth"]),
+        .library(name: "KujtoAgents", targets: ["KujtoAgents"]),
         .library(name: "KujtoStudioUI", targets: ["KujtoStudioUI"])
     ],
     dependencies: [
@@ -35,6 +36,10 @@ let package = Package(
         .target(
             name: "KujtoAuth",
             path: "Sources/KujtoAuth"
+        ),
+        .target(
+            name: "KujtoAgents",
+            path: "Sources/KujtoAgents"
         ),
         .target(
             name: "KujtoStudioUI",
@@ -70,6 +75,11 @@ let package = Package(
             name: "KujtoAuthTests",
             dependencies: ["KujtoAuth"],
             path: "Tests/KujtoAuthTests"
+        ),
+        .testTarget(
+            name: "KujtoAgentsTests",
+            dependencies: ["KujtoAgents"],
+            path: "Tests/KujtoAgentsTests"
         ),
         .testTarget(
             name: "KujtoStudioUITests",
