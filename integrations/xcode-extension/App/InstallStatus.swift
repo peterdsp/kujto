@@ -80,8 +80,19 @@ enum InstallStatus {
             .flatMap { try? FileManager.default.contentsOfDirectory(at: $0, includingPropertiesForKeys: nil) }
             .map { entries in entries.contains { $0.pathExtension == "appex" } }
             ?? false
+        let xcodeInstalled = findXcode() != nil
         let purpose = "Adds 'Show Kujto Rules' to Xcode's Editor menu for the open file."
         let skippedCost = "Studio's sidebar shows the same rules. You just switch apps to see them."
+        if !xcodeInstalled {
+            return Component(
+                key: "xcode",
+                name: "Xcode extension",
+                purpose: purpose,
+                skippedCost: "Xcode isn't installed on this Mac.",
+                detail: "Xcode not installed",
+                state: .unknown
+            )
+        }
         return Component(
             key: "xcode",
             name: "Xcode extension",
@@ -90,6 +101,21 @@ enum InstallStatus {
             detail: bundled ? "enable in System Settings > Extensions" : "not bundled",
             state: bundled ? .missing : .unknown
         )
+    }
+
+    /// Find Xcode in /Applications, tolerating versioned names like
+    /// `Xcode-16.2.app` or `Xcode 26.6.0.app`.
+    static func findXcode() -> String? {
+        let fm = FileManager.default
+        if fm.fileExists(atPath: "/Applications/Xcode.app") {
+            return "/Applications/Xcode.app"
+        }
+        guard let entries = try? fm.contentsOfDirectory(atPath: "/Applications") else {
+            return nil
+        }
+        return entries
+            .first { $0.hasPrefix("Xcode") && $0.hasSuffix(".app") }
+            .map { "/Applications/\($0)" }
     }
 
     // MARK: - Editor extensions

@@ -21,6 +21,8 @@ struct CodexView: View {
     /// the rules that match. Populated from the focus bar or the palette.
     @State private var focusFile: String = ""
     @State private var showPalette = false
+    @State private var wireMessage: String?
+    @State private var chapterProxy: ScrollViewProxy?
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -39,6 +41,10 @@ struct CodexView: View {
                     isVisible: $showPalette
                 )
                 .transition(.opacity)
+            }
+
+            if model.rootPath != nil, let proxy = chapterProxy {
+                ChapterNav(proxy: proxy, model: model, focusFile: focusFile)
             }
         }
         .background(paletteHotkey)
@@ -101,36 +107,37 @@ struct CodexView: View {
     // MARK: - Document
 
     private var document: some View {
-        ScrollView {
-            // LazyVStack so off-screen chapters (runtime, sync, proposals) do
-            // not render or run their .task work until scrolled into view.
-            LazyVStack(alignment: .leading, spacing: 56) {
-                prologue
-                confidenceChapter
-                debtChapter
-                focusBar
-                if !focusFile.isEmpty { traceChapter }
-                baseMemoryChapter
-                scopedRulesChapter
-                proposalsChapter
-                agentsChapter
-                skillsChapter
-                if !model.conflicts.isEmpty { conflictsChapter }
-                healthChapter
-                rewindChapter
-                syncChapter
-                runtimeChapter
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 56) {
+                    prologue(scrollProxy: proxy).id("chapter-prologue")
+                    confidenceChapter.id("chapter-confidence")
+                    debtChapter.id("chapter-debt")
+                    focusBar
+                    if !focusFile.isEmpty { traceChapter }
+                    baseMemoryChapter.id("chapter-rules")
+                    scopedRulesChapter.id("chapter-scoped")
+                    proposalsChapter.id("chapter-proposals")
+                    agentsChapter.id("chapter-agents")
+                    skillsChapter.id("chapter-skills")
+                    if !model.conflicts.isEmpty { conflictsChapter }
+                    healthChapter.id("chapter-health")
+                    rewindChapter.id("chapter-rewind")
+                    syncChapter.id("chapter-sync")
+                    runtimeChapter.id("chapter-runtime")
+                }
+                .padding(.horizontal, 40)
+                .padding(.vertical, 48)
+                .frame(maxWidth: 960, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.horizontal, 40)
-            .padding(.vertical, 48)
-            .frame(maxWidth: 960, alignment: .leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .onAppear { chapterProxy = proxy }
         }
     }
 
     // MARK: - Prologue
 
-    private var prologue: some View {
+    private func prologue(scrollProxy proxy: ScrollViewProxy) -> some View {
         let counts = repoCounts()
         return VStack(alignment: .leading, spacing: 16) {
             Text("PROLOGUE")
@@ -142,12 +149,22 @@ struct CodexView: View {
                 .foregroundStyle(Theme.ink)
                 .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 10) {
-                CountPill(number: counts.rules, label: "rules")
-                CountPill(number: counts.scoped, label: "file-scoped")
-                CountPill(number: counts.agents, label: "agents wired")
-                CountPill(number: counts.skills, label: "skills")
+                CountPill(number: counts.rules, label: "rules") {
+                    withAnimation { proxy.scrollTo("chapter-rules", anchor: .top) }
+                }
+                CountPill(number: counts.scoped, label: "file-scoped") {
+                    withAnimation { proxy.scrollTo("chapter-scoped", anchor: .top) }
+                }
+                CountPill(number: counts.agents, label: "agents wired") {
+                    withAnimation { proxy.scrollTo("chapter-agents", anchor: .top) }
+                }
+                CountPill(number: counts.skills, label: "skills") {
+                    withAnimation { proxy.scrollTo("chapter-skills", anchor: .top) }
+                }
                 if counts.lint > 0 {
-                    CountPill(number: counts.lint, label: "issues", tone: .warning)
+                    CountPill(number: counts.lint, label: "issues", tone: .warning) {
+                        withAnimation { proxy.scrollTo("chapter-health", anchor: .top) }
+                    }
                 }
             }
             .padding(.top, 4)
@@ -354,7 +371,15 @@ struct CodexView: View {
                 marginaliaHeader("Sync", value: "\(model.linkedAgentCount) of 6 in sync")
                 if model.rootPath != nil {
                     Button {
-                        _ = model.wireCurrentRepo()
+                        let error = model.wireCurrentRepo()
+                        withAnimation(.easeOut(duration: 0.25)) {
+                            wireMessage = error ?? "\(model.linkedAgentCount) of 6 wired"
+                        }
+                        if error == nil {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation { wireMessage = nil }
+                            }
+                        }
                     } label: {
                         Text(model.linkedAgentCount == 0 ? "Wire this repo" : "Re-wire")
                             .font(.system(size: 12, weight: .medium))
@@ -363,10 +388,25 @@ struct CodexView: View {
                     .buttonStyle(.plain)
                     .padding(.top, 4)
                     if model.linkedAgentCount > 0 {
-                        Button("Unwire") { _ = model.unwireCurrentRepo() }
-                            .buttonStyle(.plain)
-                            .font(.system(size: 12))
-                            .foregroundStyle(Theme.inkTertiary)
+                        Button("Unwire") {
+                            let error = model.unwireCurrentRepo()
+                            withAnimation(.easeOut(duration: 0.25)) {
+                                wireMessage = error ?? "Unwired"
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation { wireMessage = nil }
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .font(.system(size: 12))
+                        .foregroundStyle(Theme.inkTertiary)
+                    }
+                    if let msg = wireMessage {
+                        Text(msg)
+                            .font(.system(size: 11))
+                            .foregroundStyle(msg.contains("wired") || msg == "Unwired"
+                                             ? Theme.success : Theme.warning)
+                            .transition(.opacity)
                     }
                 }
             }
@@ -579,10 +619,13 @@ struct CodexView: View {
 // MARK: - Prologue support
 
 /// Small numeric pill for the prologue. Number reads big, label small.
+/// Tappable when an action is provided: scrolls to the relevant chapter.
 private struct CountPill: View {
     let number: Int
     let label: String
     var tone: SoftPill.Tone = .neutral
+    var action: (() -> Void)? = nil
+    @State private var isHovered = false
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
@@ -595,7 +638,10 @@ private struct CountPill: View {
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 12)
-        .background(bg, in: Capsule())
+        .background(isHovered ? hoverBg : bg, in: Capsule())
+        .onHover { isHovered = $0 }
+        .onTapGesture { action?() }
+        .help(action != nil ? "Jump to \(label)" : "")
     }
 
     private var fg: Color {
@@ -616,6 +662,97 @@ private struct CountPill: View {
         case .warning: return Theme.warningSoft
         case .danger:  return Theme.dangerSoft
         }
+    }
+
+    private var hoverBg: Color {
+        switch tone {
+        case .neutral: return Theme.card
+        case .accent:  return Theme.accent.opacity(0.18)
+        case .success: return Theme.success.opacity(0.18)
+        case .warning: return Theme.warning.opacity(0.18)
+        case .danger:  return Theme.danger.opacity(0.18)
+        }
+    }
+}
+
+// MARK: - Chapter navigation
+
+/// Compact floating chapter index, bottom-trailing. Lets the user jump
+/// between chapters without scrolling the full document.
+private struct ChapterNav: View {
+    let proxy: ScrollViewProxy
+    @ObservedObject var model: StudioModel
+    let focusFile: String
+    @State private var isExpanded = false
+    @State private var isHovered = false
+
+    private var chapters: [(id: String, mark: String, label: String)] {
+        var list: [(String, String, String)] = [
+            ("chapter-prologue", "P", "Prologue"),
+            ("chapter-confidence", "C", "Confidence"),
+            ("chapter-debt", "S", "Sentiment"),
+            ("chapter-rules", "I", "Base memory"),
+            ("chapter-scoped", "II", "Scoped rules"),
+            ("chapter-proposals", "P", "Proposals"),
+            ("chapter-agents", "III", "Agents"),
+            ("chapter-skills", "IV", "Skills"),
+            ("chapter-health", "VI", "Health"),
+            ("chapter-rewind", "R", "Rewind"),
+            ("chapter-sync", "Sy", "Sync"),
+            ("chapter-runtime", "Rt", "Runtime"),
+        ]
+        if !model.conflicts.isEmpty {
+            list.insert(("chapter-health", "V", "Conflicts"), at: 8)
+        }
+        return list
+    }
+
+    var body: some View {
+        VStack(alignment: .trailing, spacing: 0) {
+            Spacer()
+            HStack(spacing: 0) {
+                Spacer()
+                VStack(alignment: .trailing, spacing: 2) {
+                    if isExpanded {
+                        ForEach(chapters, id: \.id) { chapter in
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.35)) {
+                                    proxy.scrollTo(chapter.id, anchor: .top)
+                                }
+                            } label: {
+                                Text(chapter.label)
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundStyle(Theme.ink)
+                                    .padding(.vertical, 4)
+                                    .padding(.horizontal, 10)
+                            }
+                            .buttonStyle(.plain)
+                            .background(Theme.card, in: RoundedRectangle(cornerRadius: 4))
+                        }
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                    }
+
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            isExpanded.toggle()
+                        }
+                    } label: {
+                        Image(systemName: isExpanded ? "xmark" : "list.bullet")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(Theme.ink)
+                            .frame(width: 32, height: 32)
+                            .background(Theme.card, in: Circle())
+                            .overlay(Circle().stroke(Theme.hairline, lineWidth: 0.5))
+                    }
+                    .buttonStyle(.plain)
+                    .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
+                }
+                .padding(16)
+            }
+        }
+        .opacity(isHovered || isExpanded ? 1 : 0.5)
+        .onHover { isHovered = $0 }
+        .animation(.easeOut(duration: 0.2), value: isHovered)
     }
 }
 

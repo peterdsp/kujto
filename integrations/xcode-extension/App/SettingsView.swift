@@ -211,6 +211,7 @@ private struct StatusTab: View {
     @ObservedObject var model: StudioModel
     @Binding var showOnboarding: Bool
     @State private var components: [InstallStatus.Component] = []
+    @State private var installMessage: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -218,12 +219,19 @@ private struct StatusTab: View {
                 Text("Installed surfaces").font(.system(size: 14, weight: .medium))
                 Spacer()
                 Button {
-                    withAnimation { components = InstallStatus.snapshot() }
+                    refresh()
                 } label: { Image(systemName: "arrow.clockwise") }
                     .buttonStyle(.plain).foregroundStyle(.secondary)
             }
             ForEach(components) { c in
-                SettingsStatusRow(component: c)
+                SettingsStatusRow(component: c, onInstall: { installAction(c) })
+                    .transition(.opacity)
+            }
+            if let msg = installMessage {
+                Text(msg)
+                    .font(.system(size: 11))
+                    .foregroundStyle(msg.contains("installed") || msg.contains("Opened")
+                                     ? .green : .orange)
                     .transition(.opacity)
             }
             Divider().padding(.vertical, 4)
@@ -238,7 +246,56 @@ private struct StatusTab: View {
             Spacer()
         }
         .padding(20)
-        .onAppear { components = InstallStatus.snapshot() }
+        .onAppear { refresh() }
+    }
+
+    private func refresh() {
+        withAnimation { components = InstallStatus.snapshot() }
+    }
+
+    @MainActor
+    private func installAction(_ component: InstallStatus.Component) {
+        switch component.key {
+        case "cli":
+            if CLIInstaller.canInstall {
+                do {
+                    let result = try CLIInstaller.install()
+                    withAnimation { installMessage = "CLI installed at \(result.installedPath.path)" }
+                    refresh()
+                } catch {
+                    withAnimation { installMessage = error.localizedDescription }
+                }
+            } else {
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(InstallStatus.cliInstallCommand, forType: .string)
+                withAnimation { installMessage = "Install command copied to clipboard" }
+            }
+        case "xcode":
+            if let url = URL(string: "x-apple.systempreferences:com.apple.ExtensionsPreferences") {
+                NSWorkspace.shared.open(url)
+                withAnimation { installMessage = "Opened System Settings" }
+            }
+        case "vscode":
+            do {
+                _ = try EditorExtensionInstaller.install(for: .vscode)
+                withAnimation { installMessage = "VS Code extension installed" }
+                refresh()
+            } catch {
+                withAnimation { installMessage = error.localizedDescription }
+            }
+        case "cursor":
+            do {
+                _ = try EditorExtensionInstaller.install(for: .cursor)
+                withAnimation { installMessage = "Cursor extension installed" }
+                refresh()
+            } catch {
+                withAnimation { installMessage = error.localizedDescription }
+            }
+        default: break
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            withAnimation { installMessage = nil }
+        }
     }
 }
 
@@ -371,12 +428,19 @@ private struct GeneralTab: View {
 
 private struct SettingsStatusRow: View {
     let component: InstallStatus.Component
+    var onInstall: (() -> Void)? = nil
+
     var body: some View {
         HStack {
             Image(systemName: iconName).foregroundStyle(iconColor).frame(width: 20)
             Text(component.name).font(.system(size: 13))
             Spacer()
-            if let detail = component.detail {
+            if component.state != .ok, let action = onInstall, component.state != .unknown {
+                Button(actionLabel) { action() }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Theme.accent)
+                    .controlSize(.mini)
+            } else if let detail = component.detail {
                 Text(detail)
                     .font(.system(size: 11, design: .monospaced))
                     .foregroundStyle(.tertiary)
@@ -384,6 +448,15 @@ private struct SettingsStatusRow: View {
             }
         }
     }
+
+    private var actionLabel: String {
+        switch component.key {
+        case "cli": return CLIInstaller.canInstall ? "Install" : "Copy command"
+        case "xcode": return "Open Settings"
+        default: return "Install"
+        }
+    }
+
     private var iconName: String {
         switch component.state {
         case .ok: return "checkmark.circle.fill"
