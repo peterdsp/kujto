@@ -1,0 +1,37 @@
+# Gitleaks configuration for Kujto.
+#
+# Extends the default rule set (every upstream rule stays active) and allowlists
+# the exact values that the scanner captures as "secrets" but which are not
+# credentials. Each regex matches the captured value itself, so it is narrow: a
+# real credential elsewhere on the same line, or in the same file, is still
+# reported.
+#
+# Nothing here suppresses a genuine secret. The repo rule stands: no
+# credentials, tokens, or certificates are ever committed.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Values that look like secrets but are a public key, a Swift type name, or a test fixture"
+regexes = [
+  # Sparkle's EdDSA *public* key. It ships inside the app bundle by design so
+  # the updater can verify a release; the private half is generated offline and
+  # never enters the repo. Carried by the project.yml build setting and by the
+  # PlistBuddy injection in the post-build script.
+  '''VXr6caNYzxLPSrRlZoDbOE0ny4X7SxWSUth3jf5QTyU=''',
+
+  # ProposalSigner declares a parameter and a property named `privateKey` whose
+  # type is CryptoKit's Curve25519.Signing.PrivateKey. The captured value is the
+  # type name. The real signing key is generated at runtime and written to
+  # ~/.kujto/identity.key, which is never committed.
+  '''Curve25519\.Signing\.PrivateKey''',
+
+  # Fixture credentials in the tests that prove the secret guard works. Each is
+  # built from a sequential alphabet or an official vendor example, so none can
+  # collide with a live credential.
+  '''0123456789abcdefghijklmnopqrstuvwxyz''',
+  '''abcdefghijklmnopqrstuvwxyz123''',
+  '''AKIAIOSFODNN7EXAMPLE''',
+  '''xoxb-1234567890-abcdefghij''',
+]
