@@ -15,6 +15,9 @@ final class AccountsService: ObservableObject {
     @Published private(set) var usage: [String: UsageSnapshot] = [:]
     @Published private(set) var message: String?
     @Published private(set) var lastHandoffPath: String?
+    /// Tokens spent before the first recorded switch, so the UI can say how
+    /// much is unaccounted for rather than silently dropping it.
+    @Published private(set) var unattributedTokens: Int = 0
 
     static let shared = AccountsService()
 
@@ -71,6 +74,8 @@ final class AccountsService: ObservableObject {
             case let .switched(_, handoffPath):
                 roster = working
                 try? store.save(working)
+                // Stamp the activation so later usage can be attributed to it.
+                try? SwitchLogStore(root: AccountPaths.root()).record(id, at: Date())
                 lastHandoffPath = handoffPath
                 message = "Now on \(working.active?.label ?? id)."
             case .alreadyActive:
@@ -118,28 +123,26 @@ final class AccountsService: ObservableObject {
         return KeychainCredential.read(account: key)
     }
 
+    /// Reads real session transcripts and attributes them to accounts via the
+    /// switch log. Runs off the main actor: a few hundred transcripts is more
+    /// work than a UI refresh should do inline.
     private func reloadUsage() {
-        guard let data = try? Data(contentsOf: usageFile),
-              let raw = try? JSONDecoder().decode([UsageRecordFile].self, from: data) else {
-            usage = [:]
-            return
+        let root = AccountPaths.root()
+        let transcripts = AccountPaths.transcriptRoot()
+        Task.detached(priority: .utility) {
+            let log = (try? SwitchLogStore(root: root).load()) ?? SwitchLog()
+            let attributor = UsageAttributor(pricing: ModelPricing.load(root: root))
+            // A 30 day window keeps the scan bounded and matches what a user
+            // means by "where am I".
+            let since = Calendar.current.date(byAdding: .day, value: -30, to: Date())
+            let result = attributor.attribute(transcriptRoot: transcripts, log: log,
+                                              since: since, window: "30d")
+            await MainActor.run {
+                self.usage = Dictionary(uniqueKeysWithValues:
+                    result.snapshots.map { ($0.profileID, $0) })
+                self.unattributedTokens = result.unattributedTokens
+            }
         }
-        let records = raw.map {
-            UsageTracker.Record(profileID: $0.profileID, inputTokens: $0.inputTokens,
-                                outputTokens: $0.outputTokens, costUSD: $0.costUSD,
-                                sessionID: $0.sessionID)
-        }
-        usage = Dictionary(uniqueKeysWithValues:
-            tracker.snapshots(from: records).map { ($0.profileID, $0) })
-    }
-
-    /// On-disk shape of a usage record.
-    private struct UsageRecordFile: Codable {
-        var profileID: String
-        var inputTokens: Int
-        var outputTokens: Int
-        var costUSD: Double?
-        var sessionID: String?
     }
 }
 

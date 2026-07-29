@@ -50,6 +50,24 @@ struct AccountsView: View {
                     Spacer()
                 }
 
+                if accounts.unattributedTokens > 0 {
+                    PaperCard(weight: .muted) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "questionmark.circle")
+                                .foregroundStyle(Theme.warning)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("\(UsageSnapshot.compact(accounts.unattributedTokens)) tokens unattributed")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundStyle(Theme.ink)
+                                Text("Usage recorded before the first account switch cannot be assigned to an account.")
+                                    .font(.system(size: 11))
+                                    .foregroundStyle(Theme.inkTertiary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+                    }
+                }
+
                 if let message = accounts.message {
                     Text(message)
                         .font(.system(size: 12))
@@ -140,10 +158,15 @@ private struct AccountCard: View {
                         .foregroundStyle(Theme.inkTertiary)
                 }
 
-                HStack(spacing: 10) {
-                    Text(usage.map { $0.summary } ?? "No usage recorded")
+                if let usage {
+                    UsageSection(usage: usage)
+                } else {
+                    Text("No usage recorded")
                         .font(.system(size: 11))
-                        .foregroundStyle(Theme.inkSecondary)
+                        .foregroundStyle(Theme.inkTertiary)
+                }
+
+                HStack(spacing: 10) {
                     Spacer()
                     if !isActive {
                         Button("Use") { onUse() }
@@ -267,5 +290,69 @@ private struct AccountEditor: View {
         Binding(
             get: { profile.settings[key] ?? "" },
             set: { profile.settings[key] = $0 })
+    }
+}
+
+/// Token counts, cost, and model mix for one account. The layout is
+/// compact (one card section, not a dashboard) so the accounts list stays
+/// scannable when there are three or four of them.
+private struct UsageSection: View {
+    let usage: UsageSnapshot
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 12) {
+                stat(UsageSnapshot.compact(usage.totalTokens), label: "tokens")
+                if let cost = usage.costUSD {
+                    stat(String(format: "$%.2f", cost), label: "cost")
+                }
+                stat("\(usage.sessions)", label: usage.sessions == 1 ? "session" : "sessions")
+                if usage.turns > 0 {
+                    stat("\(usage.turns)", label: usage.turns == 1 ? "turn" : "turns")
+                }
+                Spacer()
+                Text(usage.window)
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(Theme.inkTertiary)
+            }
+
+            if !usage.modelBreakdown.isEmpty {
+                HStack(spacing: 6) {
+                    ForEach(usage.modelBreakdown.prefix(4), id: \.model) { slice in
+                        modelPill(slice)
+                    }
+                }
+            }
+        }
+    }
+
+    private func stat(_ value: String, label: String) -> some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text(value)
+                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .foregroundStyle(Theme.ink)
+            Text(label)
+                .font(.system(size: 9, weight: .medium))
+                .foregroundStyle(Theme.inkTertiary)
+        }
+    }
+
+    private func modelPill(_ slice: ModelSlice) -> some View {
+        let pct = usage.totalTokens > 0
+            ? Int(Double(slice.totalTokens) / Double(usage.totalTokens) * 100)
+            : 0
+        let name = shortName(slice.model)
+        return Text("\(name) \(pct)%")
+            .font(.system(size: 10, weight: .medium))
+            .foregroundStyle(Theme.inkSecondary)
+            .padding(.vertical, 3)
+            .padding(.horizontal, 8)
+            .background(Theme.cardMuted, in: Capsule())
+    }
+
+    private func shortName(_ model: String) -> String {
+        var name = model
+        if name.hasPrefix("claude-") { name = String(name.dropFirst(7)) }
+        return name
     }
 }

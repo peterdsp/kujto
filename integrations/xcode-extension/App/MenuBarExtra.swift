@@ -43,6 +43,17 @@ struct KujtoMenuBar: View {
             Text("Account: \(active.label)").font(.system(size: 11))
             if let usage = accounts.usage(for: active) {
                 Text(usage.summary).font(.system(size: 11)).foregroundStyle(.secondary)
+                if !usage.modelBreakdown.isEmpty {
+                    let top = usage.modelBreakdown.prefix(2).map { slice in
+                        var name = slice.model
+                        if name.hasPrefix("claude-") { name = String(name.dropFirst(7)) }
+                        let pct = usage.totalTokens > 0
+                            ? Int(Double(slice.totalTokens) / Double(usage.totalTokens) * 100)
+                            : 0
+                        return "\(name) \(pct)%"
+                    }.joined(separator: ", ")
+                    Text(top).font(.system(size: 10)).foregroundStyle(.secondary)
+                }
             }
         } else {
             Text("No account selected").font(.system(size: 11)).foregroundStyle(.secondary)

@@ -13,15 +13,23 @@ public struct UsageSnapshot: Equatable, Sendable {
     public var sessions: Int
     /// The window these numbers cover, for example "today".
     public var window: String
+    /// How many assistant turns contributed to this snapshot.
+    public var turns: Int
+    /// Tokens and cost broken down by model family, sorted by total tokens
+    /// descending so the dominant model comes first.
+    public var modelBreakdown: [ModelSlice]
 
     public init(profileID: String, inputTokens: Int = 0, outputTokens: Int = 0,
-                costUSD: Double? = nil, sessions: Int = 0, window: String = "all") {
+                costUSD: Double? = nil, sessions: Int = 0, window: String = "all",
+                turns: Int = 0, modelBreakdown: [ModelSlice] = []) {
         self.profileID = profileID
         self.inputTokens = inputTokens
         self.outputTokens = outputTokens
         self.costUSD = costUSD
         self.sessions = sessions
         self.window = window
+        self.turns = turns
+        self.modelBreakdown = modelBreakdown
     }
 
     public var totalTokens: Int { inputTokens + outputTokens }
@@ -39,12 +47,48 @@ public struct UsageSnapshot: Equatable, Sendable {
     }
 
     /// 1234 -> "1.2k", 1234567 -> "1.2M". Keeps the glyph readable.
-    static func compact(_ n: Int) -> String {
+    public static func compact(_ n: Int) -> String {
         switch n {
         case ..<1_000: return "\(n)"
         case ..<1_000_000: return String(format: "%.1fk", Double(n) / 1_000)
         default: return String(format: "%.1fM", Double(n) / 1_000_000)
         }
+    }
+}
+
+/// One slice of a model breakdown: how much of an account's spend came from a
+/// particular model family (e.g. "claude-sonnet-4").
+public struct ModelSlice: Equatable, Sendable {
+    public var model: String
+    public var inputTokens: Int
+    public var outputTokens: Int
+    public var costUSD: Double?
+    public var turns: Int
+
+    public init(model: String, inputTokens: Int = 0, outputTokens: Int = 0,
+                costUSD: Double? = nil, turns: Int = 0) {
+        self.model = model
+        self.inputTokens = inputTokens
+        self.outputTokens = outputTokens
+        self.costUSD = costUSD
+        self.turns = turns
+    }
+
+    public var totalTokens: Int { inputTokens + outputTokens }
+
+    /// The model family (strips dated suffixes). "claude-sonnet-4-20260115" -> "claude-sonnet-4".
+    public var family: String {
+        Self.familyName(model)
+    }
+
+    static func familyName(_ model: String) -> String {
+        let parts = model.split(separator: "-")
+        var family: [Substring] = []
+        for part in parts {
+            if part.count >= 8, part.allSatisfy(\.isNumber) { break }
+            family.append(part)
+        }
+        return family.isEmpty ? model : family.joined(separator: "-")
     }
 }
 
@@ -63,14 +107,18 @@ public struct UsageTracker: Sendable {
         public var costUSD: Double?
         /// Session identifier, so sessions are counted rather than lines.
         public var sessionID: String?
+        /// Which model produced this record.
+        public var model: String?
 
         public init(profileID: String, inputTokens: Int, outputTokens: Int,
-                    costUSD: Double? = nil, sessionID: String? = nil) {
+                    costUSD: Double? = nil, sessionID: String? = nil,
+                    model: String? = nil) {
             self.profileID = profileID
             self.inputTokens = inputTokens
             self.outputTokens = outputTokens
             self.costUSD = costUSD
             self.sessionID = sessionID
+            self.model = model
         }
     }
 
@@ -82,12 +130,14 @@ public struct UsageTracker: Sendable {
     public func snapshots(from records: [Record], window: String = "all") -> [UsageSnapshot] {
         var byProfile: [String: UsageSnapshot] = [:]
         var sessionsByProfile: [String: Set<String>] = [:]
+        var modelsByProfile: [String: [String: ModelSlice]] = [:]
 
         for record in records {
             var snapshot = byProfile[record.profileID]
                 ?? UsageSnapshot(profileID: record.profileID, window: window)
             snapshot.inputTokens += record.inputTokens
             snapshot.outputTokens += record.outputTokens
+            snapshot.turns += 1
             if let cost = record.costUSD {
                 snapshot.costUSD = (snapshot.costUSD ?? 0) + cost
             }
@@ -96,11 +146,26 @@ public struct UsageTracker: Sendable {
             if let session = record.sessionID {
                 sessionsByProfile[record.profileID, default: []].insert(session)
             }
+
+            if let model = record.model {
+                let family = ModelSlice.familyName(model)
+                var slice = modelsByProfile[record.profileID, default: [:]][family]
+                    ?? ModelSlice(model: family)
+                slice.inputTokens += record.inputTokens
+                slice.outputTokens += record.outputTokens
+                slice.turns += 1
+                if let cost = record.costUSD {
+                    slice.costUSD = (slice.costUSD ?? 0) + cost
+                }
+                modelsByProfile[record.profileID, default: [:]][family] = slice
+            }
         }
 
         return byProfile.map { id, snapshot in
             var copy = snapshot
             copy.sessions = sessionsByProfile[id]?.count ?? 0
+            copy.modelBreakdown = (modelsByProfile[id] ?? [:]).values
+                .sorted { $0.totalTokens > $1.totalTokens }
             return copy
         }.sorted { $0.profileID < $1.profileID }
     }
