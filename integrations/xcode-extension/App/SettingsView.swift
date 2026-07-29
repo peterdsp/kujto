@@ -15,6 +15,8 @@ struct SettingsView: View {
                 .tabItem { Label("Status", systemImage: "waveform.path.ecg") }
             MemorySyncTab()
                 .tabItem { Label("Memory Sync", systemImage: "arrow.triangle.2.circlepath") }
+            AccountsView(model: model)
+                .tabItem { Label("Accounts", systemImage: "person.2") }
             AppearanceTab()
                 .tabItem { Label("Appearance", systemImage: "paintbrush") }
             GeneralTab(showOnboarding: $showOnboarding)

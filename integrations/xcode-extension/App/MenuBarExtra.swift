@@ -7,6 +7,7 @@ import KujtoSync
 struct KujtoMenuBar: View {
     @ObservedObject var model: StudioModel
     @ObservedObject private var sync = MemorySyncService.shared
+    @ObservedObject private var accounts = AccountsService.shared
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
@@ -19,6 +20,8 @@ struct KujtoMenuBar: View {
             Text("Memory sync: \(sync.status.rawValue)").font(.system(size: 11)).foregroundStyle(.secondary)
         }
         Divider()
+        accountsSection
+        Divider()
         Button("Open Kujto Studio") { activateWindow() }
         Button("Show Memory Map") { openDestination(.agents) }.disabled(model.rootPath == nil)
         Button("Show Lint (\(model.lintIssues.count))") { openDestination(.lint) }.disabled(model.rootPath == nil)
@@ -29,6 +32,34 @@ struct KujtoMenuBar: View {
         Divider()
         Button("Quit Kujto Studio") { NSApp.terminate(nil) }
             .keyboardShortcut("q")
+    }
+
+    /// The account selector: the active account with its usage, then every
+    /// other account as a one-click switch. Kept flat (no submenu) so changing
+    /// account is a single gesture from the menu bar.
+    @ViewBuilder
+    private var accountsSection: some View {
+        if let active = accounts.active {
+            Text("Account: \(active.label)").font(.system(size: 11))
+            if let usage = accounts.usage(for: active) {
+                Text(usage.summary).font(.system(size: 11)).foregroundStyle(.secondary)
+            }
+        } else {
+            Text("No account selected").font(.system(size: 11)).foregroundStyle(.secondary)
+        }
+
+        ForEach(accounts.roster.profiles.filter { $0.id != accounts.roster.activeID }) { profile in
+            Button("Switch to \(profile.label)\(profile.isReady ? "" : " (incomplete)")") {
+                accounts.activate(profile.id,
+                                  repoRoot: model.rootPath.map { URL(fileURLWithPath: $0) })
+            }
+            .disabled(!profile.isReady)
+        }
+
+        Button("Manage accounts...") {
+            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            activateWindow()
+        }
     }
 
     private func openDestination(_ destination: StudioModel.Destination) {

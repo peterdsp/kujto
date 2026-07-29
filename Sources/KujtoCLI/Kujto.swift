@@ -42,6 +42,7 @@ struct Kujto: ParsableCommand {
             DebtCommand.self,
             AgentsCommand.self,
             SyncCommand.self,
+            AccountCommand.self,
             // Apple toolchain
             ContextCommand.self,
             ConfigCommand.self,

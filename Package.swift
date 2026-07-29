@@ -52,6 +52,7 @@ let package = Package(
                 "KujtoCore",
                 "KujtoGit",
                 "KujtoSync",
+                "KujtoAgents",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
             path: "Sources/KujtoCLI"
